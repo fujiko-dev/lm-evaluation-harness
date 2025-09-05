@@ -1,0 +1,998 @@
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4168字符, 140行
+   预览: """
+HFSS Antenna-Array Example with PyAEDT
+--------------------------------------...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.427
+🔍 API分析: 参考API=16, 生成API=31
+   参考APIs: ['print', 'get_antenna_ffd_solution_data', 'polar_plot_3d']...
+   生成APIs: ['show', 'open', 'create_setup']...
+📊 API Recall得分: 8/16 = 0.500
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 5734字符, 154行
+   预览: # pip install python-sc2
+# python -m sc2.bin.map_list  (to verify CatalystLE is available)
+...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.634
+🔍 API分析: 参考API=27, 生成API=28
+   参考APIs: ['attack', 'select_build_worker', 'Bot']...
+   生成APIs: ['attack', 'select_build_worker', 'Bot']...
+📊 API Recall得分: 16/27 = 0.593
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4881字符, 143行
+   预览: """
+SIwave DCIR analysis in HFSS 3D Layout using PyAEDT
+--------------------------------------------...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.401
+🔍 API分析: 参考API=24, 生成API=20
+   参考APIs: ['create_current_source_on_pin_group', 'gettempdir', 'analyze']...
+   生成APIs: ['download_file', 'add_siwave_dc_analysis', 'mkdtemp']...
+📊 API Recall得分: 9/24 = 0.375
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 7141字符, 218行
+   预览: """
+End-to-end continual-learning question-answering on SQuAD with T5 and Avalanche.
+The script...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.500
+🔍 API分析: 参考API=36, 生成API=32
+   参考APIs: ['ConstantSequence', 'CrossEntropyLoss', 'keys']...
+   生成APIs: ['SQuADQADataset', 'dataset_benchmark', '__init__']...
+📊 API Recall得分: 18/36 = 0.500
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 7876字符, 250行
+   预览: """
+Full workflow for coupled Darcy flow and advection–diffusion transport
+using PorePy.  The script...
+❌ 结果: FAIL (功能错误)
+📈 当前Pass@1: 0/1 = 0.000
+----------------------------------------
+📊 ChrF得分: 0.520
+🔍 API分析: 参考API=54, 生成API=0
+   参考APIs: ['assign_node_ordering', 'set_tensor', 'abs']...
+   生成APIs: []
+📊 API Recall得分: 0/54 = 0.000
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4656字符, 130行
+   预览: #!/usr/bin/env python3
+"""
+Scatter estimation for PET using SIRF....
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.365
+🔍 API分析: 参考API=25, 生成API=30
+   参考APIs: ['set_output_prefix', 'set_attenuation_image', 'set_num_iterations']...
+   生成APIs: ['title', 'show', 'write']...
+📊 API Recall得分: 13/25 = 0.520
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 5106字符, 158行
+   预览: #!/usr/bin/env python3
+"""
+Example driver for a hydro‐scheduling problem using mpi-sppy....
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.556
+🔍 API分析: 参考API=26, 生成API=23
+   参考APIs: ['write_first_stage_solution', 'add_to_config', 'WheelSpinner']...
+   生成APIs: ['write_first_stage_solution', 'add_to_config', 'WheelSpinner']...
+📊 API Recall得分: 13/26 = 0.500
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 6012字符, 197行
+   预览: #!/usr/bin/env python3
+"""
+Looping-video generator with audio-sync, title & credits....
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.383
+🔍 API分析: 参考API=27, 生成API=38
+   参考APIs: ['write', 'TextClip', 'exists']...
+   生成APIs: ['prepare_audio', 'finalize_main_clip', 'run']...
+📊 API Recall得分: 17/27 = 0.630
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 2655字符, 84行
+   预览: #!/usr/bin/env python3
+"""
+Minimal dd4hep + Geant4 simulation example...
+❌ 结果: FAIL (功能错误)
+📈 当前Pass@1: 0/1 = 0.000
+----------------------------------------
+📊 ChrF得分: 0.267
+🔍 API分析: 参考API=26, 生成API=17
+   参考APIs: ['detectorDescription', 'execute', 'run']...
+   生成APIs: ['detectorDescription', 'addProcess', 'setupGun']...
+📊 API Recall得分: 11/26 = 0.423
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 6033字符, 160行
+   预览: """
+Complete workflow with PorePy:
+- import a fracture network from CSV...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.454
+🔍 API分析: 参考API=52, 生成API=35
+   参考APIs: ['assign_node_ordering', 'set_tensor', 'hstack']...
+   生成APIs: ['assign_node_ordering', 'array', 'linspace']...
+📊 API Recall得分: 18/52 = 0.346
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 2629字符, 89行
+   预览: #!/usr/bin/env python3
+"""
+SeedEmu example: three-layer topology with stub AS creation helper...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.231
+🔍 API分析: 参考API=16, 生成API=16
+   参考APIs: ['createNetwork', 'Emulator', 'createRouter']...
+   生成APIs: ['createNetwork', 'range', 'Emulator']...
+📊 API Recall得分: 12/16 = 0.750
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4544字符, 141行
+   预览: """
+Complete workflow: create a Maxwell 2D project in non-graphical mode,
+build geometry, assign exc...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.325
+🔍 API分析: 参考API=18, 生成API=20
+   参考APIs: ['assign_winding', 'create_region', 'get_solution_data']...
+   生成APIs: ['show', 'create_setup', 'gettempdir']...
+📊 API Recall得分: 9/18 = 0.500
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4864字符, 133行
+   预览: """
+Visualize a wrench (force/torque) applied to a 6-DOF robot arm.
+...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.368
+🔍 API分析: 参考API=44, 生成API=36
+   参考APIs: ['globals', 'show', 'open']...
+   生成APIs: ['hstack', 'show', 'open']...
+📊 API Recall得分: 15/44 = 0.341
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 8080字符, 222行
+   预览: import numpy as np
+import pyvista as pv
+...
+❌ 结果: FAIL (功能错误)
+📈 当前Pass@1: 0/1 = 0.000
+----------------------------------------
+📊 ChrF得分: 0.287
+🔍 API分析: 参考API=29, 生成API=33
+   参考APIs: ['show', 'ParametricBour', 'ParametricBohemianDome']...
+   生成APIs: ['show', 'ParametricBour', 'ParametricBohemianDome']...
+📊 API Recall得分: 27/29 = 0.931
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4601字符, 148行
+   预览: #!/usr/bin/env python3
+"""
+Complete emulation using seed-emulator:...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.421
+🔍 API分析: 参考API=29, 生成API=25
+   参考APIs: ['addBinding', 'addLayer', 'Binding']...
+   生成APIs: ['addLayer', 'addAutonomousSystem', 'joinNetwork']...
+📊 API Recall得分: 19/29 = 0.655
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 5009字符, 143行
+   预览: import numpy as np
+import porepy as pp
+import csv...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.432
+🔍 API分析: 参考API=51, 生成API=30
+   参考APIs: ['assign_node_ordering', 'set_tensor', 'open']...
+   生成APIs: ['makedirs', 'open', 'num_graph_edges']...
+📊 API Recall得分: 12/51 = 0.235
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 6496字符, 171行
+   预览: """
+Dummy shutter + spectrometer experiment using nplab
+--------------------------------------------...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.543
+🔍 API分析: 参考API=25, 生成API=37
+   参考APIs: ['auto_connect_by_name', 'show', 'DumbIrradiationExperiment_Gui']...
+   生成APIs: ['show', 'open', 'setWindowTitle']...
+📊 API Recall得分: 11/25 = 0.440
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 3082字符, 87行
+   预览: #!/usr/bin/env python3
+"""
+Demonstration of parallelized CCSD with k-point sampling in PySCF....
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.400
+🔍 API分析: 参考API=17, 生成API=16
+   参考APIs: ['print', 'abs', 'array']...
+   生成APIs: ['print', 'eye', 'eaccsd']...
+📊 API Recall得分: 8/17 = 0.471
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 7790字符, 196行
+   预览: #!/usr/bin/env python3
+"""
+A short script that performs a few steepest-ascent steps for maximising t...
+❌ 结果: FAIL (功能错误)
+📈 当前Pass@1: 0/1 = 0.000
+----------------------------------------
+📊 ChrF得分: 0.416
+🔍 API分析: 参考API=29, 生成API=41
+   参考APIs: ['show', 'TruncateToCylinderProcessor', 'initialise']...
+   生成APIs: ['title', 'clone', 'show']...
+📊 API Recall得分: 13/29 = 0.448
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 7381字符, 199行
+   预览: #!/usr/bin/env python3
+"""
+Stage-II coil optimization with finite-build coils in simsopt....
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.371
+🔍 API分析: 参考API=42, 生成API=38
+   参考APIs: ['makedirs', 'QuadraticPenalty', 'Current']...
+   生成APIs: ['sin', 'displace', 'array']...
+📊 API Recall得分: 19/42 = 0.452
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4784字符, 128行
+   预览: #!/usr/bin/env python3
+"""
+Minimal dd4hep simulation setup in Python....
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.363
+🔍 API分析: 参考API=26, 生成API=20
+   参考APIs: ['detectorDescription', 'execute', 'run']...
+   生成APIs: ['run', 'getLogger', 'Geant4']...
+📊 API Recall得分: 8/26 = 0.308
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 3030字符, 71行
+   预览: import os
+import random
+import numpy as np...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.559
+🔍 API分析: 参考API=21, 生成API=26
+   参考APIs: ['enable_normals_output', 'part_sphere', 'set_location']...
+   生成APIs: ['enable_normals_output', 'lower', 'set_location']...
+📊 API Recall得分: 19/21 = 0.905
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 6001字符, 157行
+   预览: """
+Secure data-sharing policy with NuCypher
+----------------------------------------...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.389
+🔍 API分析: 参考API=31, 生成API=29
+   参考APIs: ['SubscriptionManagerPayment', 'as_umbral_pubkey', 'open']...
+   生成APIs: ['SubscriptionManagerPayment', 'open', 'getLogger']...
+📊 API Recall得分: 14/31 = 0.452
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 3574字符, 113行
+   预览: # Import everything from bitcoinlib.encoding
+from bitcoinlib.encoding import *
+...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.293
+🔍 API分析: 参考API=15, 生成API=15
+   参考APIs: ['print', 'to_hexstring', 'pubkeyhash_to_addr']...
+   生成APIs: ['print', 'change_base', 'pubkeyhash_to_addr']...
+📊 API Recall得分: 13/15 = 0.867
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 11612字符, 239行
+   预览: """
+Training and evaluation on the CLEAR benchmark with Avalanche
+"""...
+❌ 结果: FAIL (功能错误)
+📈 当前Pass@1: 0/1 = 0.000
+----------------------------------------
+📊 ChrF得分: 0.218
+🔍 API分析: 参考API=52, 生成API=0
+   参考APIs: ['open', 'write', 'CLEAR']...
+   生成APIs: []
+📊 API Recall得分: 0/52 = 0.000
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 9529字符, 180行
+   预览: #!/usr/bin/env python3
+"""
+Render a textured .obj scene with BlenderProc....
+❌ 结果: FAIL (功能错误)
+📈 当前Pass@1: 0/1 = 0.000
+----------------------------------------
+📊 ChrF得分: 0.247
+🔍 API分析: 参考API=27, 生成API=0
+   参考APIs: ['enable_normals_output', 'extract_floor', 'scene_coverage_score']...
+   生成APIs: []
+📊 API Recall得分: 0/27 = 0.000
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 2942字符, 89行
+   预览: """
+Example module that demonstrates how to apply a set of PSyclone
+transformations to a PSy object ...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.324
+🔍 API分析: 参考API=16, 生成API=7
+   参考APIs: ['walk', 'Dynamo0p3ColourTrans', 'kernels']...
+   生成APIs: ['AsyncHaloExchangeTrans', 'print', 'walk']...
+📊 API Recall得分: 2/16 = 0.125
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4099字符, 128行
+   预览: #!/usr/bin/env python3
+"""
+seed-emulator ransomware + Tor + DNS emulation...
+❌ 结果: FAIL (功能错误)
+📈 当前Pass@1: 0/1 = 0.000
+----------------------------------------
+📊 ChrF得分: 0.288
+🔍 API分析: 参考API=39, 生成API=34
+   参考APIs: ['supportTor', 'addBinding', 'RansomwareClientService']...
+   生成APIs: ['installExit', 'addLayer', 'makeEmulatorBaseWith10StubASAndHosts']...
+📊 API Recall得分: 11/39 = 0.282
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4638字符, 127行
+   预览: #!/usr/bin/env python3
+"""
+Adaptive refinement loop for a simplified friction problem on a half-edge...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.420
+🔍 API分析: 参考API=31, 生成API=36
+   参考APIs: ['show', 'init_mesh', 'open']...
+   生成APIs: ['sin', 'show', 'makedirs']...
+📊 API Recall得分: 14/31 = 0.452
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 6601字符, 201行
+   预览: """
+Bokeh server application: interactive population visualizer
+------------------------------------...
+❌ 结果: FAIL (功能错误)
+📈 当前Pass@1: 0/1 = 0.000
+----------------------------------------
+📊 ChrF得分: 0.412
+🔍 API分析: 参考API=41, 生成API=33
+   参考APIs: ['Legend', 'open', 'write']...
+   生成APIs: ['circle', 'open', 'write']...
+📊 API Recall得分: 15/41 = 0.366
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 5395字符, 182行
+   预览: #!/usr/bin/env python3
+"""
+Binary-classification pipeline with FATE’s HeteroNN...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.615
+🔍 API分析: 参考API=35, 生成API=41
+   参考APIs: ['component_param', 'add_component', 'ReLU']...
+   生成APIs: ['component_param', 'exists', 'add_component']...
+📊 API Recall得分: 29/35 = 0.829
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4445字符, 148行
+   预览: # manim_scenes.py
+# Run with:  manim -pql manim_scenes.py AllScenes
+...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.517
+🔍 API分析: 参考API=45, 生成API=36
+   参考APIs: ['Write', 'next_to', 'exp']...
+   生成APIs: ['Write', 'next_to', 'set_stroke']...
+📊 API Recall得分: 28/45 = 0.622
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 5037字符, 123行
+   预览: """
+PyAEDT example: HFSS 3D Layout workflow
+---------------------------------------...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.337
+🔍 API分析: 参考API=18, 生成API=17
+   参考APIs: ['print', 'download_aedb', 'makedirs']...
+   生成APIs: ['mkdtemp', 'print', 'close_project']...
+📊 API Recall得分: 9/18 = 0.500
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 3537字符, 93行
+   预览: #!/usr/bin/env python
+"""
+Periodic Hartree-Fock and MP2 calculations with PySCF...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.309
+🔍 API分析: 参考API=25, 生成API=22
+   参考APIs: ['run', 'GMP2', 'conj']...
+   生成APIs: ['run', 'GMP2', 'GHF']...
+📊 API Recall得分: 15/25 = 0.600
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 5744字符, 156行
+   预览: from typing import Optional
+import torch
+from torch.optim import Adam...
+❌ 结果: FAIL (功能错误)
+📈 当前Pass@1: 0/1 = 0.000
+----------------------------------------
+📊 ChrF得分: 0.514
+🔍 API分析: 参考API=41, 生成API=18
+   参考APIs: ['get_job_id', 'subtract', '__init__']...
+   生成APIs: ['Adam', 'UNet', 'train_reference_model']...
+📊 API Recall得分: 8/41 = 0.195
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 5976字符, 180行
+   预览: #!/usr/bin/env python3
+"""
+Coupling matrix for singlet (SET) and triplet (TET) energy transfer...
+❌ 结果: FAIL (功能错误)
+📈 当前Pass@1: 0/1 = 0.000
+----------------------------------------
+📊 ChrF得分: 0.287
+🔍 API分析: 参考API=27, 生成API=0
+   参考APIs: ['block_loop', 'run', 'set_dm']...
+   生成APIs: []
+📊 API Recall得分: 0/27 = 0.000
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 8900字符, 290行
+   预览: """
+A convenience wrapper around NodeGraphQt that exposes a single, flat API
+for the most common gra...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.548
+🔍 API分析: 参考API=42, 生成API=47
+   参考APIs: ['show', 'output_ports', 'endMacro']...
+   生成APIs: ['remove_node', 'show', 'output_ports']...
+📊 API Recall得分: 26/42 = 0.619
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 2017字符, 67行
+   预览: #!/usr/bin/env python3
+"""
+Simple ICMPv6 ping utility using IMPACKET....
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.408
+🔍 API分析: 参考API=27, 生成API=29
+   参考APIs: ['ICMP6Decoder', 'set_traffic_class', 'socket']...
+   生成APIs: ['ICMP6Decoder', 'socket', 'get_packet']...
+📊 API Recall得分: 17/27 = 0.630
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 8119字符, 120行
+   预览: #!/usr/bin/env python3
+"""
+Example driver script for mpi-sppy that...
+❌ 结果: FAIL (功能错误)
+📈 当前Pass@1: 0/1 = 0.000
+----------------------------------------
+📊 ChrF得分: 0.271
+🔍 API分析: 参考API=37, 生成API=0
+   参考APIs: ['write_first_stage_solution', 'open', 'add_to_config']...
+   生成APIs: []
+📊 API Recall得分: 0/37 = 0.000
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 3919字符, 114行
+   预览: """
+Create a series of orthographic Basemap maps centered at 45°N, 100°W
+with coastlines, country bo...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.305
+🔍 API分析: 参考API=23, 生成API=27
+   参考APIs: ['title', 'sin', 'show']...
+   生成APIs: ['sin', 'show', 'etopo']...
+📊 API Recall得分: 17/23 = 0.739
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 3461字符, 130行
+   预览: #!/usr/bin/env python3
+"""
+strlen-histogram.py...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.406
+🔍 API分析: 参考API=26, 生成API=18
+   参考APIs: ['write', 'perf_buffer_poll', 'print_log2_hist']...
+   生成APIs: ['print', 'BPF', 'clear']...
+📊 API Recall得分: 9/26 = 0.346
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 6724字符, 194行
+   预览: #!/usr/bin/env python3
+"""
+Binary-classification pipeline with FATE's HeteroNN....
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.534
+🔍 API分析: 参考API=34, 生成API=31
+   参考APIs: ['component_param', 'add_component', 'ReLU']...
+   生成APIs: ['open', 'component_param', 'add_component']...
+📊 API Recall得分: 22/34 = 0.647
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 3961字符, 124行
+   预览: import torch
+import torch.nn as nn
+import torch.optim as optim...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.495
+🔍 API分析: 参考API=56, 生成API=50
+   参考APIs: ['get_updated_group_features', 'zero_grad', 'backbone']...
+   生成APIs: ['zero_grad', 'backbone', 'tensor']...
+📊 API Recall得分: 33/56 = 0.589
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4699字符, 133行
+   预览: import numpy as np
+import pyqtgraph as pg
+from pyqtgraph.Qt import QtCore, QtGui...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.504
+🔍 API分析: 参考API=32, 生成API=40
+   参考APIs: ['sin', 'setWindowTitle', 'getRegion']...
+   生成APIs: ['sin', 'setWindowTitle', 'addLegend']...
+📊 API Recall得分: 18/32 = 0.562
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 2203字符, 61行
+   预览: import DREAM
+from DREAM import DREAMSettings, runiface
+from DREAM.Settings.Equations import Electric...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.644
+🔍 API分析: 参考API=24, 生成API=23
+   参考APIs: ['setAdvectionInterpolationMethod', 'setMinorRadius', 'setNt']...
+   生成APIs: ['setRelativeTolerance', 'setInitializationMethod', 'setAdvectionInterpolationMethod']...
+📊 API Recall得分: 21/24 = 0.875
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 5400字符, 174行
+   预览: # ------------------------------------------------------------------
+# 1. Imports
+# ----------------...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.430
+🔍 API分析: 参考API=55, 生成API=40
+   参考APIs: ['assign_node_ordering', 'set_tensor', 'abs']...
+   生成APIs: ['assign_node_ordering', 'array', 'create_grid']...
+📊 API Recall得分: 20/55 = 0.364
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 7614字符, 212行
+   预览: """
+2-D linear-elasticity on a rectangular box with FEALPy
+-----------------------------------------...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.461
+🔍 API分析: 参考API=36, 生成API=30
+   参考APIs: ['abs', 'init_mesh', 'array']...
+   生成APIs: ['sin', 'abs', 'time']...
+📊 API Recall得分: 12/36 = 0.333
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 7209字符, 170行
+   预览: """
+Multi-stage cyclic symmetry analysis with advanced customization
+using pydpf-core (PyDPF-Core)....
+❌ 结果: FAIL (功能错误)
+📈 当前Pass@1: 0/1 = 0.000
+----------------------------------------
+📊 ChrF得分: 0.463
+🔍 API分析: 参考API=24, 生成API=19
+   参考APIs: ['base_nodes_scoping', 'cyclic_support_provider', 'num_sectors']...
+   生成APIs: ['eval', 'num_sectors', 'cyclic_expansion']...
+📊 API Recall得分: 4/24 = 0.167
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4354字符, 136行
+   预览: #!/usr/bin/env python3
+"""
+End-to-end demo: command-line driven PP-Structure (table) inference...
+❌ 结果: FAIL (功能错误)
+📈 当前Pass@1: 0/1 = 0.000
+----------------------------------------
+📊 ChrF得分: 0.422
+🔍 API分析: 参考API=24, 生成API=18
+   参考APIs: ['use_paddle_infer_backend', 'imwrite', 'build_option']...
+   生成APIs: ['print', 'makedirs', 'table_engine']...
+📊 API Recall得分: 7/24 = 0.292
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 6098字符, 168行
+   预览: """
+QM/MM force on MM particles
+---------------------------...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.309
+🔍 API分析: 参考API=45, 生成API=30
+   参考APIs: ['run', 'count_nonzero', 'time']...
+   生成APIs: ['abs', 'Grids', 'atom_coords']...
+📊 API Recall得分: 14/45 = 0.311
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4452字符, 158行
+   预览: #!/usr/bin/env python3
+"""
+A minimal, lazy-loading text editor built with urwid....
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.405
+🔍 API分析: 参考API=36, 生成API=31
+   参考APIs: ['run', 'open', 'write']...
+   生成APIs: ['run', 'TextEditor', 'open']...
+📊 API Recall得分: 15/36 = 0.417
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4079字符, 131行
+   预览: # app.py
+# Run with: shiny run --reload --debug app.py
+...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.241
+🔍 API分析: 参考API=36, 生成API=25
+   参考APIs: ['inSlider3', 'update_text', 'input_slider']...
+   生成APIs: ['control_count', 'input_slider', 'card_header']...
+📊 API Recall得分: 9/36 = 0.250
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4270字符, 123行
+   预览: #!/usr/bin/env python3
+"""
+ufo2ftml.py...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.225
+🔍 API分析: 参考API=31, 生成API=28
+   参考APIs: ['execute', 'setLang', 'startswith']...
+   生成APIs: ['open', 'write', 'add_unencoded_special']...
+📊 API Recall得分: 4/31 = 0.129
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4339字符, 116行
+   预览: """
+Combined fluid-kinetic simulation with DREAM
+– hot-tail grid + runaway grid...
+❌ 结果: FAIL (功能错误)
+📈 当前Pass@1: 0/1 = 0.000
+----------------------------------------
+📊 ChrF得分: 0.448
+🔍 API分析: 参考API=28, 生成API=18
+   参考APIs: ['linspace', 'setMinorRadius', 'setNt']...
+   生成APIs: ['print', 'setType', 'set']...
+📊 API Recall得分: 12/28 = 0.429
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 3992字符, 149行
+   预览: #!/usr/bin/env python3
+"""
+Create a Deployment, Service and Ingress in a Kubernetes cluster...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.519
+🔍 API分析: 参考API=27, 生成API=28
+   参考APIs: ['V1DeploymentSpec', 'V1Service', 'NetworkingV1beta1HTTPIngressPath']...
+   生成APIs: ['V1DeploymentSpec', 'V1Service', 'load_kube_config']...
+📊 API Recall得分: 20/27 = 0.741
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 3276字符, 94行
+   预览: """
+Full MNE-Python pipeline for SPM Faces dataset
+Contrast: faces – scrambled...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.498
+🔍 API分析: 参考API=33, 生成API=25
+   参考APIs: ['show', 'data_path', 'find_bads_eog']...
+   生成APIs: ['data_path', 'find_bads_eog', 'plot_cov']...
+📊 API Recall得分: 19/33 = 0.576
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4422字符, 112行
+   预览: """
+Multiphysics workflow: HFSS → Circuit (dynamic link) → Mechanical (thermal)
+PyAEDT 0.7.x...
+✅ 结果: PASS (功能正确)
+📈 当前Pass@1: 1/1 = 1.000
+----------------------------------------
+📊 ChrF得分: 0.309
+🔍 API分析: 参考API=26, 生成API=21
+   参考APIs: ['refresh_dynamic_link', 'create_setup', 'set_sim_option_on_hfss_subcircuit']...
+   生成APIs: ['download_file', 'create_setup', 'gettempdir']...
+📊 API Recall得分: 10/26 = 0.385
+
+🔍 开始评估 1 个样本的Pass@1...
+
+📊 样本 1/1 - Pass@1评估
+----------------------------------------
+🤖 生成代码: 4774字符, 124行
+   预览: #!/usr/bin/env python3
+"""
+Stage-II coil optimization for a W7-X-like configuration (β = 4 %)...
+❌ 结果: FAIL (功能错误)
+📈 当前Pass@1: 0/1 = 0.000
+----------------------------------------
+📊 ChrF得分: 0.321
+🔍 API分析: 参考API=41, 生成API=25
+   参考APIs: ['abs', 'QuadraticPenalty', 'Current']...
+   生成APIs: ['sin', 'QuadraticPenalty', 'coils_via_symmetries']...
+📊 API Recall得分: 12/41 = 0.293
+
+🎉 评估完成!
+📊 结果汇总:
+任务: lca_library_based_code_generation_full
+  alias: lca_library_based_code_generation_full
+  pass_at_1,create_test: 0.7400
+  pass_at_1_stderr,create_test: 0.0359
+  chrf_metric,create_test: 0.4142
+  chrf_metric_stderr,create_test: 0.0085
+  api_recall_metric,create_test: 0.4537
+  api_recall_metric_stderr,create_test: 0.0178
+xiaoyunting@MacBook-Pro lm-evaluation-harness % 

@@ -1,0 +1,139 @@
+{
+  "results": {
+    "lca_library_based_code_generation_full": {
+      "alias": "lca_library_based_code_generation_full",
+      "pass_at_1,create_test": 0.6666666666666666,
+      "pass_at_1_stderr,create_test": 0.33333333333333337,
+      "chrf_metric,create_test": 0.4278813072441853,
+      "chrf_metric_stderr,create_test": 0.02103191722186961,
+      "api_recall_metric,create_test": 0.5856060606060606,
+      "api_recall_metric_stderr,create_test": 0.1313230862582408
+    }
+  },
+  "group_subtasks": {
+    "lca_library_based_code_generation_full": []
+  },
+  "configs": {
+    "lca_library_based_code_generation_full": {
+      "task": "lca_library_based_code_generation_full",
+      "dataset_path": "json",
+      "dataset_kwargs": {
+        "data_files": "lm_eval/tasks/long_code_arena/library_based_code_generation/full_dataset.jsonl"
+      },
+      "test_split": "train",
+      "doc_to_text": "Instruction: {{instruction}}\n\nGenerate Python code:",
+      "doc_to_target": "{{reference}}",
+      "unsafe_code": true,
+      "description": "",
+      "target_delimiter": " ",
+      "fewshot_delimiter": "\n\n",
+      "num_fewshot": 0,
+      "metric_list": [
+        {
+          "metric": "def pass_at_1(references: List[str], predictions: List[List[str]]) -> float:\n    \"\"\"\n    Calculate pass@1 metric for code generation.\n    \n    Args:\n        references: List of reference code strings\n        predictions: List of lists of predicted code strings\n        \n    Returns:\n        pass@1 score (fraction of correctly functioning predictions)\n    \"\"\"\n    if len(references) != len(predictions):\n        raise ValueError(\"Number of references and predictions must match\")\n    \n    total = len(references)\n    passed = 0\n    \n    for ref, pred_list in zip(references, predictions):\n        if not pred_list:\n            continue\n            \n        pred = pred_list[0]  # Take first prediction for pass@1\n        \n        if is_functionally_correct(ref, pred):\n            passed += 1\n    \n    return passed / total if total > 0 else 0.0\n",
+          "aggregation": "mean",
+          "higher_is_better": true
+        },
+        {
+          "metric": "def chrf_metric(items: List[Any]) -> float:\n    \"\"\"\n    ChrF metric function for lm-eval framework.\n    \n    Args:\n        items: List containing [reference, prediction] pair\n        \n    Returns:\n        ChrF score for this single sample\n    \"\"\"\n    if len(items) != 2:\n        return 0.0\n    \n    reference, prediction = items\n    \n    # Handle prediction being a list or string\n    if isinstance(prediction, list):\n        if not prediction:\n            return 0.0\n        prediction = prediction[0]  # Take first prediction\n    \n    cleaned_pred = extract_code_from_response(prediction)\n    return chrf_score(cleaned_pred, reference)\n",
+          "aggregation": "mean",
+          "higher_is_better": true
+        },
+        {
+          "metric": "def api_recall_metric(items: List[Any]) -> float:\n    \"\"\"\n    API recall metric function for lm-eval framework.\n    This function is called with a list containing [reference, prediction] for each sample.\n    We need to get the document info another way.\n    \n    Args:\n        items: List containing [reference, prediction] pair\n        \n    Returns:\n        API recall score for this single sample\n    \"\"\"\n    if len(items) != 2:\n        return 0.0\n    \n    reference, prediction = items\n    \n    # Handle prediction being a list or string\n    if isinstance(prediction, list):\n        if not prediction:\n            return 0.0\n        prediction = prediction[0]  # Take first prediction\n    \n    # For now, extract APIs from the reference code itself\n    # This is a simplified approach since we don't have direct access to unique_apis\n    try:\n        cleaned_pred = extract_code_from_response(prediction)\n        ref_parsed = ParsedFile(reference)\n        pred_parsed = ParsedFile(cleaned_pred)\n        \n        # Use reference APIs as the target\n        ref_apis = ref_parsed.called_functions\n        pred_apis = pred_parsed.called_functions\n        \n        if not ref_apis:\n            return 1.0  # If no APIs to check, consider it perfect\n        \n        overlap = len(ref_apis & pred_apis)\n        return overlap / len(ref_apis)\n        \n    except Exception:\n        return 0.0\n",
+          "aggregation": "mean",
+          "higher_is_better": true
+        }
+      ],
+      "output_type": "generate_until",
+      "generation_kwargs": {
+        "until": [
+          "\n\n\n\n",
+          "# End of code"
+        ],
+        "max_gen_toks": 2048,
+        "do_sample": true,
+        "temperature": 0.1
+      },
+      "repeats": 1,
+      "filter_list": [
+        {
+          "name": "create_test",
+          "filter": [
+            {
+              "function": "custom",
+              "filter_fn": "<function build_predictions_enhanced at 0x30f9bb1f0>"
+            }
+          ]
+        }
+      ],
+      "should_decontaminate": false,
+      "metadata": {
+        "version": 1.0,
+        "description": "Library-based code generation task from Long Code Arena benchmark (Full dataset with optimized parameters)",
+        "paper_title": "Long Code Arena: a Set of Benchmarks for Long-Context Code Models",
+        "paper_url": "https://arxiv.org/abs/2406.11612",
+        "authors": "Egor Bogomolov, Aleksandra Eliseeva, et al.",
+        "model": "kimi-k2-instruct",
+        "base_url": "https://qianfan.baidubce.com/v2/chat/completions",
+        "num_concurrent": 1,
+        "max_retries": 10,
+        "tokenized_requests": false
+      }
+    }
+  },
+  "versions": {
+    "lca_library_based_code_generation_full": 1.0
+  },
+  "n-shot": {
+    "lca_library_based_code_generation_full": 0
+  },
+  "higher_is_better": {
+    "lca_library_based_code_generation_full": {
+      "pass_at_1": true,
+      "chrf_metric": true,
+      "api_recall_metric": true
+    }
+  },
+  "n-samples": {
+    "lca_library_based_code_generation_full": {
+      "original": 150,
+      "effective": 3
+    }
+  },
+  "config": {
+    "model": "local-chat-completions",
+    "model_args": "model=kimi-k2-instruct,base_url=https://qianfan.baidubce.com/v2/chat/completions,num_concurrent=1,max_retries=10,tokenized_requests=False",
+    "batch_size": "1",
+    "batch_sizes": [],
+    "device": null,
+    "use_cache": null,
+    "limit": 3.0,
+    "bootstrap_iters": 100000,
+    "gen_kwargs": null,
+    "random_seed": 0,
+    "numpy_seed": 1234,
+    "torch_seed": 1234,
+    "fewshot_seed": 1234
+  },
+  "git_hash": "84aa9f95",
+  "date": 1757050190.187083,
+  "pretty_env_info": "PyTorch version: 2.8.0\nIs debug build: False\nCUDA used to build PyTorch: None\nROCM used to build PyTorch: N/A\n\nOS: macOS 15.6.1 (arm64)\nGCC version: Could not collect\nClang version: 17.0.0 (clang-1700.0.13.5)\nCMake version: Could not collect\nLibc version: N/A\n\nPython version: 3.9.6 (default, Apr 30 2025, 02:07:17)  [Clang 17.0.0 (clang-1700.0.13.5)] (64-bit runtime)\nPython platform: macOS-15.6.1-arm64-arm-64bit\nIs CUDA available: False\nCUDA runtime version: No CUDA\nCUDA_MODULE_LOADING set to: N/A\nGPU models and configuration: No CUDA\nNvidia driver version: No CUDA\ncuDNN version: No CUDA\nHIP runtime version: N/A\nMIOpen runtime version: N/A\nIs XNNPACK available: True\n\nCPU:\nApple M4\n\nVersions of relevant libraries:\n[pip3] numpy==1.24.2\n[pip3] torch==2.8.0\n[conda] Could not collect",
+  "transformers_version": "4.55.4",
+  "lm_eval_version": "0.4.9.1",
+  "upper_git_hash": null,
+  "task_hashes": {
+    "lca_library_based_code_generation_full": "1fc5d2729bc8f45a92eebd0d8a4c696bc5ce98badd56e1e4b4719de4f328fe4c"
+  },
+  "model_source": "local-chat-completions",
+  "model_name": "kimi-k2-instruct",
+  "model_name_sanitized": "kimi-k2-instruct",
+  "system_instruction": null,
+  "system_instruction_sha": null,
+  "fewshot_as_multiturn": false,
+  "chat_template": "",
+  "chat_template_sha": null,
+  "start_time": 2.559151083,
+  "end_time": 196.54688425,
+  "total_evaluation_time_seconds": "193.98773316700002"
+}

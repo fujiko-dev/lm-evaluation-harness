@@ -1,0 +1,39 @@
+task: lca_library_based_code_generation_verbose
+dataset_path: json
+dataset_kwargs:
+  data_files: lm_eval/tasks/long_code_arena/library_based_code_generation/real_sample_data.json
+unsafe_code: true
+output_type: generate_until
+test_split: train
+doc_to_text: "Instruction: {{instruction}}\n\nGenerate Python code:"
+doc_to_target: "{{reference}}"
+metric_list:
+  - metric: !function utils.pass_at_1
+    aggregation: mean
+    higher_is_better: true
+  - metric: !function utils.chrf_metric
+    aggregation: mean
+    higher_is_better: true
+  - metric: !function utils.api_recall_metric
+    aggregation: mean
+    higher_is_better: true
+generation_kwargs:
+  until:
+    - "\n\n\n\n"      # 避免过早截断
+    - "# End of code"  # 明确结束标记
+  max_gen_toks: 2048   # 充足的生成长度
+  do_sample: true      # 启用采样
+  temperature: 0.1     # 平衡准确性和创造性
+repeats: 1
+num_fewshot: 0
+filter_list:
+  - name: "create_test"
+    filter:
+      - function: "custom"
+        filter_fn: !function utils.build_predictions_enhanced_verbose
+metadata:
+  version: 1.0
+  description: "Library-based code generation task with verbose logging for progress tracking"
+  paper_title: "Long Code Arena: a Set of Benchmarks for Long-Context Code Models"
+  paper_url: "https://arxiv.org/abs/2406.11612"
+  authors: "Egor Bogomolov, Aleksandra Eliseeva, et al."

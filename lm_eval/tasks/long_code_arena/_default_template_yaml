@@ -1,0 +1,32 @@
+group: long_code_arena
+dataset_path: null
+task: null
+test_split: test
+output_type: generate_until
+num_fewshot: 0
+unsafe_code: true
+doc_to_text: "{{instruction}}"
+doc_to_target: "{{reference}}"
+metric_list:
+  - metric: !function utils.pass_at_1
+    aggregation: mean
+    higher_is_better: true
+generation_kwargs:
+  until:
+    - "\n\n\n"
+    - "\n# "
+    - "\nclass"
+    - "\ndef"
+  max_gen_toks: 1024
+  do_sample: false
+  temperature: 0.0
+repeats: 1
+filter_list:
+  - name: "create_test"
+    filter:
+      - function: "custom"
+        filter_fn: !function utils.build_predictions
+metadata:
+  version: 1.0
+
+

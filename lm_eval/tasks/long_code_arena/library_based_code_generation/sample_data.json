@@ -1,0 +1,37 @@
+[
+  {
+    "instruction": "Create a function that uses pandas to read a CSV file and return the number of rows",
+    "reference": "import pandas as pd\n\ndef count_rows_in_csv(filename):\n    df = pd.read_csv(filename)\n    return len(df)",
+    "repo_full_name": "sample/pandas-example",
+    "libraries": ["pandas"],
+    "difficulty": "easy"
+  },
+  {
+    "instruction": "Write a function using NumPy to calculate the mean of a 2D array along axis 0",
+    "reference": "import numpy as np\n\ndef calculate_mean_axis0(arr):\n    return np.mean(arr, axis=0)",
+    "repo_full_name": "sample/numpy-example",
+    "libraries": ["numpy"],
+    "difficulty": "medium"
+  },
+  {
+    "instruction": "Create a function using matplotlib to create a simple line plot with given x and y data",
+    "reference": "import matplotlib.pyplot as plt\n\ndef create_line_plot(x, y):\n    plt.figure()\n    plt.plot(x, y)\n    plt.show()",
+    "repo_full_name": "sample/matplotlib-example",
+    "libraries": ["matplotlib"],
+    "difficulty": "medium"
+  },
+  {
+    "instruction": "Write a function that uses scikit-learn to create and train a simple linear regression model",
+    "reference": "from sklearn.linear_model import LinearRegression\n\ndef train_linear_regression(X, y):\n    model = LinearRegression()\n    model.fit(X, y)\n    return model",
+    "repo_full_name": "sample/sklearn-example",
+    "libraries": ["scikit-learn"],
+    "difficulty": "medium"
+  },
+  {
+    "instruction": "Create a function using requests library to fetch data from a URL and return the JSON response",
+    "reference": "import requests\n\ndef fetch_json_data(url):\n    response = requests.get(url)\n    response.raise_for_status()\n    return response.json()",
+    "repo_full_name": "sample/requests-example",
+    "libraries": ["requests"],
+    "difficulty": "easy"
+  }
+]

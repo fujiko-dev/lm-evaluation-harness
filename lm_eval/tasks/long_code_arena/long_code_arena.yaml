@@ -1,0 +1,9 @@
+group: long_code_arena
+task:
+  - lca_library_based_code_generation
+metadata:
+  version: 1.0
+  description: "Long Code Arena benchmark suite for long-context code models"
+  paper_title: "Long Code Arena: a Set of Benchmarks for Long-Context Code Models"
+  paper_url: "https://arxiv.org/abs/2406.11612"
+  authors: "Egor Bogomolov, Aleksandra Eliseeva, et al."
