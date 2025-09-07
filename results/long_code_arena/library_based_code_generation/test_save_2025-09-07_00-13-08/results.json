@@ -1,0 +1,213 @@
+{
+  "results": {
+    "lca_library_based_code_generation_custom": {
+      "alias": "lca_library_based_code_generation_custom",
+      "pass_at_1,create_test": 1.0,
+      "pass_at_1_stderr,create_test": 0.0
+    }
+  },
+  "group_subtasks": {
+    "lca_library_based_code_generation_custom": []
+  },
+  "configs": {
+    "lca_library_based_code_generation_custom": {
+      "task": "lca_library_based_code_generation_custom",
+      "dataset_path": "json",
+      "dataset_kwargs": {
+        "data_files": "lm_eval/tasks/long_code_arena/library_based_code_generation/sample_data.json"
+      },
+      "test_split": "train",
+      "doc_to_text": "Instruction: {{instruction}}\n\nGenerate Python code:",
+      "doc_to_target": "{{reference}}",
+      "unsafe_code": true,
+      "description": "",
+      "target_delimiter": " ",
+      "fewshot_delimiter": "\n\n",
+      "num_fewshot": 0,
+      "metric_list": [
+        {
+          "metric": "def pass_at_1(references: List[str], predictions: List[List[str]]) -> float:\n    \"\"\"\n    Calculate pass@1 metric for code generation.\n    \n    Args:\n        references: List of reference code strings\n        predictions: List of lists of predicted code strings\n        \n    Returns:\n        pass@1 score (fraction of correctly functioning predictions)\n    \"\"\"\n    if len(references) != len(predictions):\n        raise ValueError(\"Number of references and predictions must match\")\n    \n    total = len(references)\n    passed = 0\n    \n    print(f\"\\n🔍 开始评估 {total} 个样本的Pass@1...\")\n    \n    for i, (ref, pred_list) in enumerate(zip(references, predictions)):\n        sample_num = i + 1\n        print(f\"\\n📊 样本 {sample_num}/{total} - Pass@1评估\")\n        print(\"-\" * 40)\n        \n        if not pred_list:\n            print(\"❌ 没有预测结果\")\n            continue\n            \n        pred = pred_list[0]  # Take first prediction for pass@1\n        \n        # 显示预测代码的简短信息\n        pred_lines = len(pred.split('\\n'))\n        pred_chars = len(pred)\n        print(f\"🤖 生成代码: {pred_chars}字符, {pred_lines}行\")\n        \n        # 显示代码的前几行\n        code_preview = '\\n'.join(pred.split('\\n')[:3])\n        print(f\"   预览: {code_preview[:100]}...\")\n        \n        is_correct = is_functionally_correct(ref, pred)\n        if is_correct:\n            passed += 1\n            print(f\"✅ 结果: PASS (功能正确)\")\n        else:\n            print(f\"❌ 结果: FAIL (功能错误)\")\n        \n        current_rate = passed / sample_num\n        print(f\"📈 当前Pass@1: {passed}/{sample_num} = {current_rate:.3f}\")\n        print(\"-\" * 40)\n    \n    return passed / total if total > 0 else 0.0\n",
+          "aggregation": "mean",
+          "higher_is_better": true
+        }
+      ],
+      "output_type": "generate_until",
+      "generation_kwargs": {
+        "until": [
+          "\n\n\n\n",
+          "# End of code"
+        ],
+        "max_gen_toks": 2048,
+        "do_sample": true,
+        "temperature": 0.1
+      },
+      "repeats": 1,
+      "filter_list": [
+        {
+          "name": "create_test",
+          "filter": [
+            {
+              "function": "custom",
+              "filter_fn": "<function build_predictions at 0x32fee5550>"
+            }
+          ]
+        }
+      ],
+      "should_decontaminate": false,
+      "metadata": {
+        "version": 1.2,
+        "description": "Library-based code generation task with adjusted generation parameters",
+        "paper_title": "Long Code Arena: a Set of Benchmarks for Long-Context Code Models",
+        "paper_url": "https://arxiv.org/abs/2406.11612",
+        "authors": "Egor Bogomolov, Aleksandra Eliseeva, et al.",
+        "model": "kimi-k2-instruct",
+        "base_url": "https://qianfan.baidubce.com/v2/chat/completions",
+        "num_concurrent": 3,
+        "max_retries": 3,
+        "tokenized_requests": false
+      }
+    }
+  },
+  "versions": {
+    "lca_library_based_code_generation_custom": 1.2
+  },
+  "n-shot": {
+    "lca_library_based_code_generation_custom": 0
+  },
+  "higher_is_better": {
+    "lca_library_based_code_generation_custom": {
+      "pass_at_1": true
+    }
+  },
+  "n-samples": {
+    "lca_library_based_code_generation_custom": {
+      "original": 5,
+      "effective": 2
+    }
+  },
+  "samples": {
+    "lca_library_based_code_generation_custom": [
+      {
+        "doc_id": 0,
+        "doc": {
+          "instruction": "Create a function that uses pandas to read a CSV file and return the number of rows",
+          "reference": "import pandas as pd\n\ndef count_rows_in_csv(filename):\n    df = pd.read_csv(filename)\n    return len(df)",
+          "repo_full_name": "sample/pandas-example",
+          "libraries": [
+            "pandas"
+          ],
+          "difficulty": "easy"
+        },
+        "target": "import pandas as pd\n\ndef count_rows_in_csv(filename):\n    df = pd.read_csv(filename)\n    return len(df)",
+        "arguments": [
+          [
+            [
+              "[{\"role\": \"user\", \"content\": \"Instruction: Create a function that uses pandas to read a CSV file and return the number of rows\\n\\nGenerate Python code:\", \"type\": \"text\"}]"
+            ],
+            {
+              "until": [
+                "\n\n\n\n",
+                "# End of code"
+              ],
+              "max_gen_toks": 2048,
+              "do_sample": true,
+              "temperature": 0.1
+            }
+          ]
+        ],
+        "resps": [
+          [
+            "```python\nimport pandas as pd\n\ndef count_csv_rows(file_path: str) -> int:\n    \"\"\"\n    Read a CSV file and return the number of rows.\n\n    Parameters\n    ----------\n    file_path : str\n        Path to the CSV file.\n\n    Returns\n    -------\n    int\n        Number of rows in the CSV file (excluding the header).\n    \"\"\"\n    df = pd.read_csv(file_path)\n    return len(df)\n```"
+          ]
+        ],
+        "filtered_resps": [
+          [
+            "import pandas as pd\n\ndef count_csv_rows(file_path: str) -> int:\n    \"\"\"\n    Read a CSV file and return the number of rows.\n\n    Parameters\n    ----------\n    file_path : str\n        Path to the CSV file.\n\n    Returns\n    -------\n    int\n        Number of rows in the CSV file (excluding the header).\n    \"\"\"\n    df = pd.read_csv(file_path)\n    return len(df)"
+          ]
+        ],
+        "filter": "create_test",
+        "metrics": [
+          "pass_at_1"
+        ],
+        "doc_hash": "1b53d945e5271969d3392b719fae5eb8f8ce812af969eaf254b1754e6729ac4a",
+        "prompt_hash": "8dfc7b921694c81b1ea0c178b65c684ab0b72e39ff9eb3ccccdd4670fd70fe66",
+        "target_hash": "d62885c5e193e607edd48ae5ca7e88d213384e09f04757000e442e0d80066f08",
+        "pass_at_1": 1.0
+      },
+      {
+        "doc_id": 1,
+        "doc": {
+          "instruction": "Write a function using NumPy to calculate the mean of a 2D array along axis 0",
+          "reference": "import numpy as np\n\ndef calculate_mean_axis0(arr):\n    return np.mean(arr, axis=0)",
+          "repo_full_name": "sample/numpy-example",
+          "libraries": [
+            "numpy"
+          ],
+          "difficulty": "medium"
+        },
+        "target": "import numpy as np\n\ndef calculate_mean_axis0(arr):\n    return np.mean(arr, axis=0)",
+        "arguments": [
+          [
+            [
+              "[{\"role\": \"user\", \"content\": \"Instruction: Write a function using NumPy to calculate the mean of a 2D array along axis 0\\n\\nGenerate Python code:\", \"type\": \"text\"}]"
+            ],
+            {
+              "until": [
+                "\n\n\n\n",
+                "# End of code"
+              ],
+              "max_gen_toks": 2048,
+              "do_sample": true,
+              "temperature": 0.1
+            }
+          ]
+        ],
+        "resps": [
+          [
+            "```python\nimport numpy as np\n\ndef mean_along_axis0(arr):\n    \"\"\"\n    Compute the mean of a 2-D NumPy array along axis 0 (column-wise).\n\n    Parameters\n    ----------\n    arr : numpy.ndarray\n        A 2-D array whose column means are desired.\n\n    Returns\n    -------\n    numpy.ndarray\n        A 1-D array containing the mean of each column.\n    \"\"\"\n    if not isinstance(arr, np.ndarray):\n        raise TypeError(\"Input must be a NumPy ndarray.\")\n    if arr.ndim != 2:\n        raise ValueError(\"Input array must be 2-D.\")\n\n    return np.mean(arr, axis=0)\n\n\n# Example usage\nif __name__ == \"__main__\":\n    a = np.array([[1, 2, 3],\n                  [4, 5, 6]])\n    print(mean_along_axis0(a))  # Output: [2.5 3.5 4.5]\n```"
+          ]
+        ],
+        "filtered_resps": [
+          [
+            "import numpy as np\n\ndef mean_along_axis0(arr):\n    \"\"\"\n    Compute the mean of a 2-D NumPy array along axis 0 (column-wise).\n\n    Parameters\n    ----------\n    arr : numpy.ndarray\n        A 2-D array whose column means are desired.\n\n    Returns\n    -------\n    numpy.ndarray\n        A 1-D array containing the mean of each column.\n    \"\"\"\n    if not isinstance(arr, np.ndarray):\n        raise TypeError(\"Input must be a NumPy ndarray.\")\n    if arr.ndim != 2:\n        raise ValueError(\"Input array must be 2-D.\")\n\n    return np.mean(arr, axis=0)\n\n\n# Example usage\nif __name__ == \"__main__\":\n    a = np.array([[1, 2, 3],\n                  [4, 5, 6]])\n    print(mean_along_axis0(a))  # Output: [2.5 3.5 4.5]"
+          ]
+        ],
+        "filter": "create_test",
+        "metrics": [
+          "pass_at_1"
+        ],
+        "doc_hash": "5a10fa6d047581bd542ec6fe57dc116a915f7383c81edfa19cc18fd8844cbba5",
+        "prompt_hash": "b2d91bca63054ab59303c65e7b089e183e0d61d810d880693f0725dc7772ebfd",
+        "target_hash": "7ccb6b3698b20a87aa833d0cc5aa59c58dcf2dfb922832857addb28fbc5a5d2e",
+        "pass_at_1": 1.0
+      }
+    ]
+  },
+  "config": {
+    "model": "RealtimePrintModel",
+    "model_args": {
+      "model": "kimi-k2-instruct",
+      "base_url": "https://qianfan.baidubce.com/v2/chat/completions",
+      "num_concurrent": 3,
+      "max_retries": 3,
+      "tokenized_requests": false
+    },
+    "batch_size": 3,
+    "batch_sizes": [],
+    "device": null,
+    "use_cache": null,
+    "limit": 2,
+    "bootstrap_iters": 100000,
+    "gen_kwargs": null,
+    "random_seed": 0,
+    "numpy_seed": 1234,
+    "torch_seed": 1234,
+    "fewshot_seed": 1234
+  },
+  "git_hash": "50d73463",
+  "date": 1757175188.65731,
+  "pretty_env_info": "PyTorch version: 2.8.0\nIs debug build: False\nCUDA used to build PyTorch: None\nROCM used to build PyTorch: N/A\n\nOS: macOS 15.6.1 (arm64)\nGCC version: Could not collect\nClang version: 17.0.0 (clang-1700.0.13.5)\nCMake version: Could not collect\nLibc version: N/A\n\nPython version: 3.9.6 (default, Apr 30 2025, 02:07:17)  [Clang 17.0.0 (clang-1700.0.13.5)] (64-bit runtime)\nPython platform: macOS-15.6.1-arm64-arm-64bit\nIs CUDA available: False\nCUDA runtime version: No CUDA\nCUDA_MODULE_LOADING set to: N/A\nGPU models and configuration: No CUDA\nNvidia driver version: No CUDA\ncuDNN version: No CUDA\nHIP runtime version: N/A\nMIOpen runtime version: N/A\nIs XNNPACK available: True\n\nCPU:\nApple M4\n\nVersions of relevant libraries:\n[pip3] numpy==1.24.2\n[pip3] torch==2.8.0\n[conda] Could not collect",
+  "transformers_version": "4.55.4",
+  "lm_eval_version": "0.4.9.1",
+  "upper_git_hash": null
+}

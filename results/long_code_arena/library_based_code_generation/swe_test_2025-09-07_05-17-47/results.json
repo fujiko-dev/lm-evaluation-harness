@@ -1,0 +1,264 @@
+{
+  "results": {
+    "lca_library_based_code_generation_custom": {
+      "alias": "lca_library_based_code_generation_custom",
+      "pass_at_1,create_test": 1.0,
+      "pass_at_1_stderr,create_test": 0.0
+    }
+  },
+  "group_subtasks": {
+    "lca_library_based_code_generation_custom": []
+  },
+  "configs": {
+    "lca_library_based_code_generation_custom": {
+      "task": "lca_library_based_code_generation_custom",
+      "dataset_path": "json",
+      "dataset_kwargs": {
+        "data_files": "lm_eval/tasks/long_code_arena/library_based_code_generation/sample_data.json"
+      },
+      "test_split": "train",
+      "doc_to_text": "Instruction: {{instruction}}\n\nGenerate Python code:",
+      "doc_to_target": "{{reference}}",
+      "unsafe_code": true,
+      "description": "",
+      "target_delimiter": " ",
+      "fewshot_delimiter": "\n\n",
+      "num_fewshot": 0,
+      "metric_list": [
+        {
+          "metric": "def pass_at_1(references: List[str], predictions: List[List[str]]) -> float:\n    \"\"\"\n    Calculate pass@1 metric for code generation.\n    \n    Args:\n        references: List of reference code strings\n        predictions: List of lists of predicted code strings\n        \n    Returns:\n        pass@1 score (fraction of correctly functioning predictions)\n    \"\"\"\n    if len(references) != len(predictions):\n        raise ValueError(\"Number of references and predictions must match\")\n    \n    total = len(references)\n    passed = 0\n    \n    print(f\"\\n🔍 开始评估 {total} 个样本的Pass@1...\")\n    \n    for i, (ref, pred_list) in enumerate(zip(references, predictions)):\n        sample_num = i + 1\n        print(f\"\\n📊 样本 {sample_num}/{total} - Pass@1评估\")\n        print(\"-\" * 40)\n        \n        if not pred_list:\n            print(\"❌ 没有预测结果\")\n            continue\n            \n        pred = pred_list[0]  # Take first prediction for pass@1\n        \n        # 显示预测代码的简短信息\n        pred_lines = len(pred.split('\\n'))\n        pred_chars = len(pred)\n        print(f\"🤖 生成代码: {pred_chars}字符, {pred_lines}行\")\n        \n        # 显示代码的前几行\n        code_preview = '\\n'.join(pred.split('\\n')[:3])\n        print(f\"   预览: {code_preview[:100]}...\")\n        \n        is_correct = is_functionally_correct(ref, pred)\n        if is_correct:\n            passed += 1\n            print(f\"✅ 结果: PASS (功能正确)\")\n        else:\n            print(f\"❌ 结果: FAIL (功能错误)\")\n        \n        current_rate = passed / sample_num\n        print(f\"📈 当前Pass@1: {passed}/{sample_num} = {current_rate:.3f}\")\n        print(\"-\" * 40)\n    \n    return passed / total if total > 0 else 0.0\n",
+          "aggregation": "mean",
+          "higher_is_better": true
+        }
+      ],
+      "output_type": "generate_until",
+      "generation_kwargs": {
+        "until": [
+          "\n\n\n\n",
+          "# End of code"
+        ],
+        "max_gen_toks": 2048,
+        "do_sample": true,
+        "temperature": 0.1
+      },
+      "repeats": 1,
+      "filter_list": [
+        {
+          "name": "create_test",
+          "filter": [
+            {
+              "function": "custom",
+              "filter_fn": "<function build_predictions at 0x3295ab8b0>"
+            }
+          ]
+        }
+      ],
+      "should_decontaminate": false,
+      "metadata": {
+        "version": 1.2,
+        "description": "Library-based code generation task with adjusted generation parameters",
+        "paper_title": "Long Code Arena: a Set of Benchmarks for Long-Context Code Models",
+        "paper_url": "https://arxiv.org/abs/2406.11612",
+        "authors": "Egor Bogomolov, Aleksandra Eliseeva, et al.",
+        "model": "doubao-seed-1-6-250615",
+        "base_url": "http://api.dbh.baidu-int.com/v1/chat/completions",
+        "num_concurrent": 4,
+        "max_retries": 10,
+        "tokenized_requests": false,
+        "stop": "<|endoftext|>",
+        "timeout": 120
+      }
+    }
+  },
+  "versions": {
+    "lca_library_based_code_generation_custom": 1.2
+  },
+  "n-shot": {
+    "lca_library_based_code_generation_custom": 0
+  },
+  "higher_is_better": {
+    "lca_library_based_code_generation_custom": {
+      "pass_at_1": true
+    }
+  },
+  "n-samples": {
+    "lca_library_based_code_generation_custom": {
+      "original": 5,
+      "effective": 3
+    }
+  },
+  "samples": {
+    "lca_library_based_code_generation_custom": [
+      {
+        "doc_id": 0,
+        "doc": {
+          "instruction": "Create a function that uses pandas to read a CSV file and return the number of rows",
+          "reference": "import pandas as pd\n\ndef count_rows_in_csv(filename):\n    df = pd.read_csv(filename)\n    return len(df)",
+          "repo_full_name": "sample/pandas-example",
+          "libraries": [
+            "pandas"
+          ],
+          "difficulty": "easy"
+        },
+        "target": "import pandas as pd\n\ndef count_rows_in_csv(filename):\n    df = pd.read_csv(filename)\n    return len(df)",
+        "arguments": [
+          [
+            [
+              "[{\"role\": \"user\", \"content\": \"Instruction: Create a function that uses pandas to read a CSV file and return the number of rows\\n\\nGenerate Python code:\", \"type\": \"text\"}]"
+            ],
+            {
+              "until": [
+                "\n\n\n\n",
+                "# End of code"
+              ],
+              "max_gen_toks": 2048,
+              "do_sample": true,
+              "temperature": 0.1
+            }
+          ]
+        ],
+        "resps": [
+          [
+            "To solve this problem, we need to create a function that reads a CSV file using pandas and returns the number of rows in the CSV file. \n\n### Approach\nThe approach to solve this problem involves the following steps:\n1. **Import pandas**: Pandas is a powerful data manipulation library in Python that provides easy-to-use data structures and data analysis tools. We will use pandas to read the CSV file.\n2. **Define the function**: The function will take a file path as input, which specifies the location of the CSV file.\n3. **Read the CSV file**: Using pandas' `read_csv` function, we will read the CSV file into a DataFrame. A DataFrame is a 2-dimensional tabular data structure with labeled axes (rows and columns).\n4. **Return the number of rows**: The DataFrame object has a `shape` attribute which returns a tuple representing the dimensions of the DataFrame. The first element of this tuple is the number of rows, and the second element is the number of columns. Thus, `df.shape[0]` gives the number of rows.\n\n### Solution Code\n\n```python\nimport pandas as pd\n\ndef count_csv_rows(csv_file):\n    df = pd.read_csv(csv_file)\n    return df.shape[0]\n```\n\n### Explanation\n- **Import pandas**: We start by importing the pandas library, which is necessary for reading the CSV file.\n- **Function definition**: The function `count_csv_rows` is defined to take a single parameter `csv_file`, which is the path to the CSV file.\n- **Reading the CSV file**: The `pd.read_csv(csv_file)` function reads the CSV file located at the specified path and returns a DataFrame.\n- **Getting the number of rows**: The `shape` attribute of the DataFrame returns a tuple `(number_of_rows, number_of_columns)`. By accessing the first element of this tuple (`df.shape[0]`), we obtain the number of rows in the DataFrame, which corresponds to the number of rows in the CSV file (excluding the header row if it exists, as `read_csv` by default treats the first row as the header).\n\nThis approach efficiently reads the CSV file and retrieves the number of rows using pandas' built-in functionalities, ensuring simplicity and reliability."
+          ]
+        ],
+        "filtered_resps": [
+          [
+            "import pandas as pd\n\ndef count_csv_rows(csv_file):\n    df = pd.read_csv(csv_file)\n    return df.shape[0]"
+          ]
+        ],
+        "filter": "create_test",
+        "metrics": [
+          "pass_at_1"
+        ],
+        "doc_hash": "1b53d945e5271969d3392b719fae5eb8f8ce812af969eaf254b1754e6729ac4a",
+        "prompt_hash": "8dfc7b921694c81b1ea0c178b65c684ab0b72e39ff9eb3ccccdd4670fd70fe66",
+        "target_hash": "d62885c5e193e607edd48ae5ca7e88d213384e09f04757000e442e0d80066f08",
+        "pass_at_1": 1.0
+      },
+      {
+        "doc_id": 1,
+        "doc": {
+          "instruction": "Write a function using NumPy to calculate the mean of a 2D array along axis 0",
+          "reference": "import numpy as np\n\ndef calculate_mean_axis0(arr):\n    return np.mean(arr, axis=0)",
+          "repo_full_name": "sample/numpy-example",
+          "libraries": [
+            "numpy"
+          ],
+          "difficulty": "medium"
+        },
+        "target": "import numpy as np\n\ndef calculate_mean_axis0(arr):\n    return np.mean(arr, axis=0)",
+        "arguments": [
+          [
+            [
+              "[{\"role\": \"user\", \"content\": \"Instruction: Write a function using NumPy to calculate the mean of a 2D array along axis 0\\n\\nGenerate Python code:\", \"type\": \"text\"}]"
+            ],
+            {
+              "until": [
+                "\n\n\n\n",
+                "# End of code"
+              ],
+              "max_gen_toks": 2048,
+              "do_sample": true,
+              "temperature": 0.1
+            }
+          ]
+        ],
+        "resps": [
+          [
+            "To solve this problem, we need to write a function using NumPy that calculates the mean of a 2D array along axis 0. In NumPy, axis 0 refers to the vertical axis, meaning we will compute the mean of each column in the 2D array.\n\n\n### Approach\nThe approach to solve this problem involves the following steps:\n1. **Import NumPy**: NumPy provides a convenient function `mean` to compute the mean of an array.\n2. **Define the Function**: Create a function that takes a 2D NumPy array as input.\n3. **Compute Mean Along Axis 0**: Use NumPy's `mean` function with the `axis` parameter set to 0 to compute the mean of each column in the 2D array.\n\n\n### Solution Code\n```python\nimport numpy as np\n\ndef calculate_mean_axis0(arr):\n    return np.mean(arr, axis=0)\n```\n\n\n### Explanation\n- **Import NumPy**: The `numpy` library is imported as `np` to use its array manipulation functions.\n- **Function Definition**: The function `calculate_mean_axis0` is defined to take a single parameter `arr`, which is expected to be a 2D NumPy array.\n- **Mean Calculation**: The `np.mean(arr, axis=0)` function call computes the mean of the input array `arr` along axis 0. Here, `axis=0` specifies that the mean should be calculated vertically (i.e., for each column). For example, given a 2D array `[[1, 2], [3, 4]]`, the mean along axis 0 would be `[2.0, 3.0]`, which is the mean of the first column `[1, 3]` and the second column `[2, 4]` respectively.\n\nThis approach efficiently computes the required mean using NumPy's optimized functions, ensuring both simplicity and performance."
+          ]
+        ],
+        "filtered_resps": [
+          [
+            "import numpy as np\n\ndef calculate_mean_axis0(arr):\n    return np.mean(arr, axis=0)"
+          ]
+        ],
+        "filter": "create_test",
+        "metrics": [
+          "pass_at_1"
+        ],
+        "doc_hash": "5a10fa6d047581bd542ec6fe57dc116a915f7383c81edfa19cc18fd8844cbba5",
+        "prompt_hash": "b2d91bca63054ab59303c65e7b089e183e0d61d810d880693f0725dc7772ebfd",
+        "target_hash": "7ccb6b3698b20a87aa833d0cc5aa59c58dcf2dfb922832857addb28fbc5a5d2e",
+        "pass_at_1": 1.0
+      },
+      {
+        "doc_id": 2,
+        "doc": {
+          "instruction": "Create a function using matplotlib to create a simple line plot with given x and y data",
+          "reference": "import matplotlib.pyplot as plt\n\ndef create_line_plot(x, y):\n    plt.figure()\n    plt.plot(x, y)\n    plt.show()",
+          "repo_full_name": "sample/matplotlib-example",
+          "libraries": [
+            "matplotlib"
+          ],
+          "difficulty": "medium"
+        },
+        "target": "import matplotlib.pyplot as plt\n\ndef create_line_plot(x, y):\n    plt.figure()\n    plt.plot(x, y)\n    plt.show()",
+        "arguments": [
+          [
+            [
+              "[{\"role\": \"user\", \"content\": \"Instruction: Create a function using matplotlib to create a simple line plot with given x and y data\\n\\nGenerate Python code:\", \"type\": \"text\"}]"
+            ],
+            {
+              "until": [
+                "\n\n\n\n",
+                "# End of code"
+              ],
+              "max_gen_toks": 2048,
+              "do_sample": true,
+              "temperature": 0.1
+            }
+          ]
+        ],
+        "resps": [
+          [
+            "To solve this problem, we need to create a Python function using the matplotlib library that generates a simple line plot from given x and y data. The function will include basic plot elements such as axis labels and a title to make the plot informative.\n\n\n### Approach\nThe approach involves the following steps:\n1. **Import Matplotlib**: We use the matplotlib.pyplot module, which provides a MATLAB-like interface for creating plots.\n2. **Define the Function**: The function `plot_line` will take two parameters, `x` and `y`, which represent the data points for the x-axis and y-axis respectively.\n3. **Create the Line Plot**: Using `plt.plot(x, y)`, we generate the line plot from the provided data.\n4. **Add Labels and Title**: To make the plot clear, we add labels to the x-axis and y-axis, and a title to the plot.\n5. **Display the Plot**: Finally, we use `plt.show()` to display the generated plot.\n\n\n### Solution Code\n```python\nimport matplotlib.pyplot as plt\n\ndef plot_line(x, y):\n    \"\"\"\n    Creates a simple line plot using matplotlib with given x and y data.\n\n    Parameters:\n    x (array-like): The data points for the x-axis.\n    y (array-like): The data points for the y-axis.\n    \"\"\"\n    # Create the line plot\n    plt.plot(x, y)\n    \n    # Add labels and title\n    plt.xlabel('X-axis')\n    plt.ylabel('Y-axis')\n    plt.title('Simple Line Plot')\n    \n    # Display the plot\n    plt.show()\n\n# Example usage:\nif __name__ == \"__main__\":\n    # Sample data\n    x_data = [1, 2, 3, 4, 5]\n    y_data = [2, 4, 6, 8, 10]\n    \n    # Call the function to plot the data\n    plot_line(x_data, y_data)\n```\n\n\n### Explanation\n- **Importing Matplotlib**: The `matplotlib.pyplot` module is imported as `plt` to simplify the syntax for creating plots.\n- **Function Definition**: The `plot_line` function is defined to accept two parameters, `x` and `y`, which are array-like structures (e.g., lists or numpy arrays) containing the data points.\n- **Plotting the Data**: The `plt.plot(x, y)` function generates the line plot by connecting the points specified by `x` and `y`.\n- **Adding Labels and Title**: `plt.xlabel` and `plt.ylabel` set the labels for the x-axis and y-axis, respectively. `plt.title` sets the title of the plot, making it easier to understand the plot's purpose.\n- **Displaying the Plot**: `plt.show()` renders the plot in a separate window, allowing the user to view and interact with it.\n\n**Example Usage**: The sample data `x_data = [1, 2, 3, 4, 5]` and `y_data = [2, 4, 6, 8, 10]` is used to demonstrate the function. When `plot_line(x_data, y_data)` is called, it generates a line plot showing a linear relationship between x and y values."
+          ]
+        ],
+        "filtered_resps": [
+          [
+            "import matplotlib.pyplot as plt\n\ndef plot_line(x, y):\n    \"\"\"\n    Creates a simple line plot using matplotlib with given x and y data.\n\n    Parameters:\n    x (array-like): The data points for the x-axis.\n    y (array-like): The data points for the y-axis.\n    \"\"\"\n    # Create the line plot\n    plt.plot(x, y)\n    \n    # Add labels and title\n    plt.xlabel('X-axis')\n    plt.ylabel('Y-axis')\n    plt.title('Simple Line Plot')\n    \n    # Display the plot\n    plt.show()\n\n# Example usage:\nif __name__ == \"__main__\":\n    # Sample data\n    x_data = [1, 2, 3, 4, 5]\n    y_data = [2, 4, 6, 8, 10]\n    \n    # Call the function to plot the data\n    plot_line(x_data, y_data)"
+          ]
+        ],
+        "filter": "create_test",
+        "metrics": [
+          "pass_at_1"
+        ],
+        "doc_hash": "e35cc650737044d24c8d1f83d83778c37f7fb8908db0f0998b85c1cd956b6f36",
+        "prompt_hash": "e5a98675defff230956843717115610ec966cffe640762d7d61470d89be3f293",
+        "target_hash": "2b644d656c8d4d8b943a6e23e24395760e8b8846947fbb57ac157e4674b27984",
+        "pass_at_1": 1.0
+      }
+    ]
+  },
+  "config": {
+    "model": "RealtimePrintModel",
+    "model_args": {
+      "model": "doubao-seed-1-6-250615",
+      "base_url": "http://api.dbh.baidu-int.com/v1/chat/completions",
+      "num_concurrent": 4,
+      "max_retries": 10,
+      "tokenized_requests": false,
+      "stop": "<|endoftext|>",
+      "timeout": 120
+    },
+    "batch_size": 2,
+    "batch_sizes": [],
+    "device": null,
+    "use_cache": null,
+    "limit": 3,
+    "bootstrap_iters": 100000,
+    "gen_kwargs": null,
+    "random_seed": 0,
+    "numpy_seed": 1234,
+    "torch_seed": 1234,
+    "fewshot_seed": 1234
+  },
+  "git_hash": "50d73463",
+  "date": 1757193467.536587,
+  "pretty_env_info": "PyTorch version: 2.8.0\nIs debug build: False\nCUDA used to build PyTorch: None\nROCM used to build PyTorch: N/A\n\nOS: macOS 15.6.1 (arm64)\nGCC version: Could not collect\nClang version: 17.0.0 (clang-1700.0.13.5)\nCMake version: Could not collect\nLibc version: N/A\n\nPython version: 3.9.6 (default, Apr 30 2025, 02:07:17)  [Clang 17.0.0 (clang-1700.0.13.5)] (64-bit runtime)\nPython platform: macOS-15.6.1-arm64-arm-64bit\nIs CUDA available: False\nCUDA runtime version: No CUDA\nCUDA_MODULE_LOADING set to: N/A\nGPU models and configuration: No CUDA\nNvidia driver version: No CUDA\ncuDNN version: No CUDA\nHIP runtime version: N/A\nMIOpen runtime version: N/A\nIs XNNPACK available: True\n\nCPU:\nApple M4\n\nVersions of relevant libraries:\n[pip3] numpy==1.24.2\n[pip3] torch==2.8.0\n[conda] Could not collect",
+  "transformers_version": "4.55.4",
+  "lm_eval_version": "0.4.9.1",
+  "upper_git_hash": null
+}
