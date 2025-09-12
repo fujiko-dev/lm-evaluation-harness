@@ -47,8 +47,9 @@ std::vector<std::string> clean_ngram(std::string const &input,
     if (is_whitespace(*iter) || gram_lengths.back() > 10) {
 
       // Skip all whitespace
-      while (++iter != input.end() && is_whitespace(*iter))
+      while (++iter != input.end() && is_whitespace(*iter)) {
         ;
+      }
       iter--;
 
       if (started_gram) {
@@ -130,8 +131,9 @@ clean_ngram_with_indices(std::string const &input, std::string const &ignore,
     if (is_whitespace(ch) || gram_lengths.back() > 10) {
 
       // Skip all whitespace
-      while (++i < input.length() && is_whitespace(input[i]))
+      while (++i < input.length() && is_whitespace(input[i])) {
         ;
+      }
       i--;
 
       if (started_gram) {
