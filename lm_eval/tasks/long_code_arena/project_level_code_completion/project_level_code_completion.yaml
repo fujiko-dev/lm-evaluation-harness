@@ -1,0 +1,39 @@
+task: lca_project_level_code_completion
+class: lm_eval.tasks.long_code_arena.project_level_code_completion.lca_project_level_code_completion_task:LCAProjectLevelCodeCompletionTask
+description: |
+  Project Level Code Completion task from Long Code Arena benchmark.
+  Given project context and code files, complete the next line(s) of code
+  based on the surrounding context and project structure.
+
+config:
+  dataset_path: "${LCA_PLCC_DATASET_PATH:/Users/xiaoyunting/Documents/ModelDev/working_path/datasets/long_code_arena/datasets/lca_project_level_code_completion}"
+  context_size: "small_context"
+  split: "test"
+  batch_size: 1
+  max_context_length: 8000
+  include_metadata: true
+  max_completion_length: 200
+
+tag:
+  - long_code_arena
+  - project_level_code_completion
+  - code_completion
+  - project_context
+
+metric_list:
+  - metric: exact_match
+    aggregation: mean
+    higher_is_better: true
+  - metric: edit_distance
+    aggregation: mean
+    higher_is_better: false
+  - metric: bleu_score
+    aggregation: mean
+    higher_is_better: true
+
+output_type: generate_until
+generation_kwargs:
+  until:
+    - "\n"
+  max_gen_toks: 200
+  temperature: 0.1

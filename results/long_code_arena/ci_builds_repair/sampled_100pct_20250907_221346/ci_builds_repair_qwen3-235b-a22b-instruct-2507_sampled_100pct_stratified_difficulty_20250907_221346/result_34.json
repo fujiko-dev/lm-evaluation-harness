@@ -1,0 +1,46 @@
+{
+  "timestamp": "2025-09-07T22:20:32.026726",
+  "sample_info": {
+    "index": 11,
+    "original_index": 11,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 34,
+  "repo_owner": "skypilot-org",
+  "repo_name": "skypilot",
+  "difficulty": 0,
+  "generation_time": 24.986279010772705,
+  "prediction": "### 1. **Analysis of the Failure Cause**\n\nThe CI workflow failed during the **\"Running yapf\"** step with the `--diff` flag, which checks for any unformatted Python code. The exit code `1` indicates that `yapf` detected formatting differences that would be applied if formatting were run.\n\nFrom the log:\n```diff\n--- ./sky/data/storage.py\t(original)\n+++ ./sky/data/storage.py\t(reformatted)\n@@ -819,7 +819,7 @@\n         source = override_args.get('source', metadata.source)\n         name = override_args.get('name', metadata.storage_name)\n         # If the source is a list, it consists of local paths\n-        if not isinstance(source, list): \n+        if not isinstance(source, list):\n             if data_utils.is_cloud_store_url(source):\n                 name = None\n```\n\nThe **only change** yapf wants to make is removing a **trailing whitespace** after the `if not isinstance(source, list):` line.\n\nThis means the file `sky/data/storage.py` contains a line with an unnecessary trailing space at the end, which violates the code style enforced by `yapf`. Since the workflow uses `--diff` mode, it does not auto-fix but instead fails the build to signal that code needs reformatting.\n\n---\n\n### 2. **Specific Changes Needed to Fix the Issue**\n\n- **Fix the trailing whitespace** in `sky/data/storage.py` at line 819 (or near that region).\n- Alternatively, ensure all files are pre-formatted using `yapf` before pushing, but since this is a CI failure, the fix must be in the code.\n\nNo changes to the workflow YAML are needed — the configuration is correct. The issue is purely a code formatting one.\n\n---\n\n### 3. **Modified Code / Fix**\n\n#### ✅ Fix: Remove trailing whitespace\n\n**File:** `sky/data/storage.py`  \n**Line:** ~819\n\n**Before:**\n```python\n        if not isinstance(source, list): \n```\n\n**After:**\n```python\n        if not isinstance(source, list):\n```\n\n> (Notice: the space after the colon and before the newline is removed.)\n\n---\n\n### ✅ Recommended Fix Commit\n\nYou can apply this fix directly via a commit:\n\n```bash\n# Locally, navigate to the repo and edit the file\ngit checkout -b fix/format-trailing-space\n\n# Edit sky/data/storage.py to remove the trailing space on that line\n# Then commit\ngit add sky/data/storage.py\ngit commit -m \"Fix trailing whitespace in storage.py to pass yapf\"\ngit push origin fix/format-trailing-space\n```\n\nThen open a PR or push to `master` if allowed.\n\n---\n\n### 🔁 Optional: Prevent Future Issues\n\nTo avoid such issues, consider adding a pre-commit hook:\n\n#### Example `.pre-commit-config.yaml` (if not already present):\n```yaml\nrepos:\n  - repo: https://github.com/google/yapf\n    rev: v0.32.0\n    hooks:\n      - id: yapf\n        types: [python]\n```\n\nBut this is optional and not required to fix the current failure.\n\n---\n\n### ✅ Summary\n\n- **Root Cause:** Trailing whitespace in `sky/data/storage.py` triggers `yapf --diff` failure.\n- **Fix:** Remove the trailing space after `if not isinstance(source, list):`.\n- **No workflow changes needed** — the CI config is correct.\n\nOnce the whitespace is removed, the `yapf --diff` step will pass, and the workflow will succeed.",
+  "evaluation": {
+    "success": true,
+    "score": 0.5432784250703093,
+    "explanation": "Similarity: 0.239, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.23879737511718224,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "sky/data/storage.py": [
+          "--- ./sky/data/storage.py\t(original)\n+++ ./sky/data/storage.py\t(reformatted)\n@@ -819,7 +819,7 @@\n         source = override_args.get('source', metadata.source)\n         name = override_args.get('name', metadata.storage_name)\n         # If the source is a list, it consists of local paths\n-        if not isinstance(source, list): \n+        if not isinstance(source, list):\n             if data_utils.is_cloud_store_url(source):\n                 name = None",
+          "if not isinstance(source, list):",
+          "if not isinstance(source, list):",
+          "# Locally, navigate to the repo and edit the file\ngit checkout -b fix/format-trailing-space\n\n# Edit sky/data/storage.py to remove the trailing space on that line\n# Then commit\ngit add sky/data/storage.py\ngit commit -m \"Fix trailing whitespace in storage.py to pass yapf\"\ngit push origin fix/format-trailing-space",
+          "repos:\n  - repo: https://github.com/google/yapf\n    rev: v0.32.0\n    hooks:\n      - id: yapf\n        types: [python]"
+        ],
+        ".pre-commit-config.yaml": [
+          "--- ./sky/data/storage.py\t(original)\n+++ ./sky/data/storage.py\t(reformatted)\n@@ -819,7 +819,7 @@\n         source = override_args.get('source', metadata.source)\n         name = override_args.get('name', metadata.storage_name)\n         # If the source is a list, it consists of local paths\n-        if not isinstance(source, list): \n+        if not isinstance(source, list):\n             if data_utils.is_cloud_store_url(source):\n                 name = None",
+          "if not isinstance(source, list):",
+          "if not isinstance(source, list):",
+          "# Locally, navigate to the repo and edit the file\ngit checkout -b fix/format-trailing-space\n\n# Edit sky/data/storage.py to remove the trailing space on that line\n# Then commit\ngit add sky/data/storage.py\ngit commit -m \"Fix trailing whitespace in storage.py to pass yapf\"\ngit push origin fix/format-trailing-space",
+          "repos:\n  - repo: https://github.com/google/yapf\n    rev: v0.32.0\n    hooks:\n      - id: yapf\n        types: [python]"
+        ]
+      },
+      "target_changes": {
+        "sky/backends/cloud_vm_ray_backend.py": "index 8a93b58c..08bc7ffb 100644\n--- a/sky/backends/cloud_vm_ray_backend.py\n+++ b/sky/backends/cloud_vm_ray_backend.py\n@@ -4557,14 +4557,15 @@ class CloudVmRayBackend(backends.Backend['CloudVmRayResourceHandle']):\n         end = time.time()\n         logger.debug(f'File mount sync took {end - start} seconds.')\n \n-    def _execute_storage_mounts(self, handle: CloudVmRayResourceHandle,\n-                                storage_mounts: Dict[Path, storage_lib.Storage],\n-                                mount_mode: storage_utils.StorageMode):\n+    def _execute_storage_mounts(\n+            self, handle: CloudVmRayResourceHandle,\n+            storage_mounts: Optional[Dict[Path, storage_lib.Storage]],\n+            mount_mode: storage_utils.StorageMode):\n         \"\"\"Executes storage mounts: installing mounting tools and mounting.\"\"\"\n         # Handle cases where `storage_mounts` is None. This occurs when users\n         # initiate a 'sky start' command from a Skypilot version that predates\n         # the introduction of the `storage_mounts_metadata` feature.\n-        if not storage_mounts:\n+        if storage_mounts is None:\n             return\n \n         # Process only mount mode objects here. COPY mode objects have been\n@@ -4674,7 +4675,7 @@ class CloudVmRayBackend(backends.Backend['CloudVmRayResourceHandle']):\n \n     def _has_csync(self, cluster_name: str) -> bool:\n         \"\"\"Chekcs if there are CSYNC mode storages within the cluster.\"\"\"\n-        storage_mounts = self._get_storage_mounts_metadata(cluster_name)\n+        storage_mounts = self.get_storage_mounts_metadata(cluster_name)\n         if storage_mounts is not None:\n             for _, storage_obj in storage_mounts.items():\n                 if storage_obj.mode == storage_utils.StorageMode.CSYNC:",
+        "sky/data/sky_csync.py": "index c0d521ff..c6c3f981 100644\n--- a/sky/data/sky_csync.py\n+++ b/sky/data/sky_csync.py\n@@ -251,7 +251,7 @@ def csync(source: str, storetype: str, destination: str, num_threads: int,\n     \"\"\"Runs daemon to sync the source to the bucket every INTERVAL seconds.\n \n     Creates an entry of pid of the sync process in local database while sync\n-    command is runninng and removes it when completed.\n+    command is running and removes it when completed.\n \n     Args:\n         source (str): The local path to the directory that you want to sync.",
+        "sky/data/storage.py": "index dea9b906..3f7c205f 100644\n--- a/sky/data/storage.py\n+++ b/sky/data/storage.py\n@@ -819,7 +819,7 @@ class Storage(object):\n         source = override_args.get('source', metadata.source)\n         name = override_args.get('name', metadata.storage_name)\n         # If the source is a list, it consists of local paths\n-        if not isinstance(source, list): \n+        if not isinstance(source, list):\n             if data_utils.is_cloud_store_url(source):\n                 name = None\n \n"
+      },
+      "difficulty": 0
+    }
+  }
+}

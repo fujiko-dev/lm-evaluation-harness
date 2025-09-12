@@ -1,0 +1,9 @@
+Model: qwen3-coder-30b-a22b-instruct-2507
+Error: 'evaluation_summary'
+
+Traceback (most recent call last):
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/tasks/long_code_arena/bug_localization/run_multi_model_evaluation.py", line 348, in run_single_model_evaluation
+    print_model_report(summary, model_key)
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/tasks/long_code_arena/bug_localization/run_multi_model_evaluation.py", line 418, in print_model_report
+    eval_summary = summary['evaluation_summary']
+KeyError: 'evaluation_summary'

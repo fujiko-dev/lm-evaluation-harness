@@ -1,0 +1,12 @@
+{
+  "model": "openai-chat-completions",
+  "context_size": "small_context",
+  "split": "test",
+  "timestamp": "2025-09-11T19:54:31.693870",
+  "lca_project_level_code_completion_metrics": {
+    "exact_match": 0.0,
+    "edit_distance": 0.7657488315383052,
+    "bleu_score": 0.12385214077988964
+  },
+  "total_samples": 3
+}

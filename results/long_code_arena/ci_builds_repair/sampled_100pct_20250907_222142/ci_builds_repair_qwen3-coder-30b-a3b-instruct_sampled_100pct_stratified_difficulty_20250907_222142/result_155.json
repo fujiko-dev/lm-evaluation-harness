@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-09-07T22:31:07.007270",
+  "sample_info": {
+    "index": 54,
+    "original_index": 54,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 155,
+  "repo_owner": "mindsdb",
+  "repo_name": "mindsdb",
+  "difficulty": 1,
+  "generation_time": 6.669217109680176,
+  "prediction": "Looking at the CI failure logs, I can see the root cause of the problem:\n\n## Analysis of the Failure Cause\n\nThe workflow is failing during the `check_requirements` step with the following error:\n```\nNone:None: DEP002 'sentence-transformers' defined as a dependency but not used in the codebase\n```\n\nThis is coming from the `deptry` tool which is checking that all dependencies in requirements files are actually used in the codebase. The `sentence-transformers` package is listed as a dependency in `mindsdb/integrations/handlers/rag_handler/requirements.txt` but is not being imported or used anywhere in the codebase.\n\n## Specific Changes Needed\n\nThe issue is that `sentence-transformers` is declared as a dependency in the RAG handler's requirements file but isn't actually used. There are two possible solutions:\n\n1. **Remove the unused dependency** from the requirements file\n2. **Add actual usage** of the dependency in the codebase\n\nSince this appears to be a legitimate unused dependency (the RAG handler might not be fully implemented or enabled), the best approach is to remove it from the requirements file.\n\n## Modified Code/Configuration\n\n**File: `mindsdb/integrations/handlers/rag_handler/requirements.txt`**\n\nThe file likely contains:\n```\nsentence-transformers\n```\n\nShould be changed to remove this line entirely, or if there are other dependencies, just remove the `sentence-transformers` line.\n\nHowever, since I don't have access to the exact content of this file, here's what needs to be done:\n\n1. Open `mindsdb/integrations/handlers/rag_handler/requirements.txt`\n2. Remove the line containing `sentence-transformers` \n3. Save the file\n\nAlternatively, if you want to keep the file structure but make it clear that this dependency is intentionally excluded, you could add a comment explaining why it's not used.\n\n**Note**: If this dependency is actually needed for the RAG handler to function properly, then the codebase would need to be updated to actually use it rather than removing the dependency.\n\nThe fix should be applied to the commit that introduced this issue (e5b5fcb646e6fa9cab60fb4fff930888149b88fe) by modifying the requirements file accordingly.",
+  "evaluation": {
+    "success": false,
+    "score": 0.2,
+    "explanation": "Similarity: 0.000, Key fixes: 0.500",
+    "details": {
+      "similarity_score": 0.0,
+      "key_fixes_score": 0.5,
+      "predicted_changes": {
+        "mindsdb/integrations/handlers/rag_handler/requirements.txt": [
+          "None:None: DEP002 'sentence-transformers' defined as a dependency but not used in the codebase",
+          "sentence-transformers"
+        ]
+      },
+      "target_changes": {
+        "tests/scripts/check_requirements.py": "index f15f826df8..5d74b7956b 100644\n--- a/tests/scripts/check_requirements.py\n+++ b/tests/scripts/check_requirements.py\n@@ -46,7 +46,8 @@ MAIN_RULE_IGNORES = {\n # THe following packages need exceptions because they are optional deps of some other packages. e.g. langchain CAN use openai\n # (pysqlite3 is imported in an unusual way in the chromadb handler and needs to be excluded too)\n # pypdf and openpyxl are optional deps of langchain, that are used for the file handler\n-OPTIONAL_HANDLER_DEPS = [\"pysqlite3\", \"torch\", \"openai\", \"tiktoken\", \"wikipedia\", \"anthropic\", \"pypdf\", \"openpyxl\"]\n+OPTIONAL_HANDLER_DEPS = [\"pysqlite3\", \"torch\", \"openai\", \"tiktoken\", \"wikipedia\", \"anthropic\", \"pypdf\", \"openpyxl\",\n+                         \"sentence-transformers\"]\n \n # List of rules we can ignore for specific packages\n # Here we ignore any packages in the main requirements.txt for \"listed but not used\" errors, because they will be used for the core code but not necessarily in a given handler\n"
+      },
+      "difficulty": 1
+    }
+  }
+}

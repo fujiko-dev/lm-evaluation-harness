@@ -1,0 +1,50 @@
+{
+  "timestamp": "2025-09-07T22:33:15.961247",
+  "sample_info": {
+    "index": 65,
+    "original_index": 65,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 189,
+  "repo_owner": "openvinotoolkit",
+  "repo_name": "open_model_zoo",
+  "difficulty": 0,
+  "generation_time": 6.451696872711182,
+  "prediction": "## 1. Analysis of the Failure Cause\n\nThe CI workflow is failing during the pylint step with the error:\n```\nC0303: Trailing whitespace (trailing-whitespace)\n```\n\nThis indicates that there's trailing whitespace on line 805 of the file `openvino/tools/accuracy_checker/evaluators/model_evaluator.py`. The pylint tool is configured to enforce strict code style rules and fails when it encounters trailing whitespace, which is considered a code style violation.\n\nLooking at the error message, pylint is running with the `--rcfile=.pylintrc` configuration, which means it's using the project's custom pylint configuration that includes the `trailing-whitespace` check.\n\n## 2. Specific Changes Needed\n\nThe fix requires removing trailing whitespace from line 805 of the `model_evaluator.py` file. This is a simple text editing task where we need to identify and remove any extra spaces or tabs at the end of that line.\n\n## 3. Modified Code/Configuration\n\nSince this is a code style issue rather than a configuration problem, I'll show what needs to be fixed in the source file:\n\n**File: `openvino/tools/accuracy_checker/evaluators/model_evaluator.py`**\n**Line 805**: Remove trailing whitespace\n\nHowever, since I don't have direct access to modify files in the repository, here's what the fix would look like:\n\n```python\n# Before (line 805 had trailing whitespace):\n# ... some code ...\n# line 805: some_function_call()    # <- This line has trailing spaces/tabs after the closing parenthesis\n\n# After (line 805 with trailing whitespace removed):\n# ... some code ...\n# line 805: some_function_call()    # <- No trailing whitespace\n```\n\n**Alternative Solution - Update PyLint Configuration**\n\nIf the trailing whitespace is legitimate and shouldn't be enforced, we could modify the `.pylintrc` file to disable this specific check:\n\n```ini\n# In .pylintrc file, under [MESSAGES CONTROL] section:\n# Disable trailing whitespace check\ndisable=trailing-whitespace\n```\n\nBut based on the error being a hard failure, the most appropriate fix is to remove the actual trailing whitespace in the source code file.\n\n**Note**: Since I cannot directly modify the repository files, the actual fix would require someone with write access to edit line 805 of `openvino/tools/accuracy_checker/evaluators/model_evaluator.py` to remove any trailing whitespace characters at the end of that line.\n\nThe workflow configuration itself is correct - the issue is purely in the source code that violates the linting rules.",
+  "evaluation": {
+    "success": true,
+    "score": 0.5526263048016702,
+    "explanation": "Similarity: 0.421, Key fixes: 0.750",
+    "details": {
+      "similarity_score": 0.42104384133611694,
+      "key_fixes_score": 0.75,
+      "predicted_changes": {
+        "openvino/tools/accuracy_checker/evaluators/model_evaluator.py": [
+          "C0303: Trailing whitespace (trailing-whitespace)",
+          "# Before (line 805 had trailing whitespace):\n# ... some code ...\n# line 805: some_function_call()    # <- This line has trailing spaces/tabs after the closing parenthesis\n\n# After (line 805 with trailing whitespace removed):\n# ... some code ...\n# line 805: some_function_call()    # <- No trailing whitespace",
+          "# In .pylintrc file, under [MESSAGES CONTROL] section:\n# Disable trailing whitespace check\ndisable=trailing-whitespace"
+        ],
+        "=.pylintrc": [
+          "C0303: Trailing whitespace (trailing-whitespace)",
+          "# Before (line 805 had trailing whitespace):\n# ... some code ...\n# line 805: some_function_call()    # <- This line has trailing spaces/tabs after the closing parenthesis\n\n# After (line 805 with trailing whitespace removed):\n# ... some code ...\n# line 805: some_function_call()    # <- No trailing whitespace",
+          "# In .pylintrc file, under [MESSAGES CONTROL] section:\n# Disable trailing whitespace check\ndisable=trailing-whitespace"
+        ],
+        "--rcfile=.pylintrc": [
+          "C0303: Trailing whitespace (trailing-whitespace)",
+          "# Before (line 805 had trailing whitespace):\n# ... some code ...\n# line 805: some_function_call()    # <- This line has trailing spaces/tabs after the closing parenthesis\n\n# After (line 805 with trailing whitespace removed):\n# ... some code ...\n# line 805: some_function_call()    # <- No trailing whitespace",
+          "# In .pylintrc file, under [MESSAGES CONTROL] section:\n# Disable trailing whitespace check\ndisable=trailing-whitespace"
+        ],
+        "model_evaluator.py": [
+          "C0303: Trailing whitespace (trailing-whitespace)",
+          "# Before (line 805 had trailing whitespace):\n# ... some code ...\n# line 805: some_function_call()    # <- This line has trailing spaces/tabs after the closing parenthesis\n\n# After (line 805 with trailing whitespace removed):\n# ... some code ...\n# line 805: some_function_call()    # <- No trailing whitespace",
+          "# In .pylintrc file, under [MESSAGES CONTROL] section:\n# Disable trailing whitespace check\ndisable=trailing-whitespace"
+        ]
+      },
+      "target_changes": {
+        "tools/accuracy_checker/openvino/tools/accuracy_checker/evaluators/model_evaluator.py": "index adb41abf5..5a310a979 100644\n--- a/tools/accuracy_checker/openvino/tools/accuracy_checker/evaluators/model_evaluator.py\n+++ b/tools/accuracy_checker/openvino/tools/accuracy_checker/evaluators/model_evaluator.py\n@@ -802,5 +802,4 @@ def get_config_metrics(config):\n                 # first subset_metrics or matching subsample_size\n                 metrics = item.get('metrics')\n                 break\n-    \n     return config.get('metrics',[]) if (metrics is None) else metrics\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

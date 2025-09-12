@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-09-07T22:29:37.517845",
+  "sample_info": {
+    "index": 14,
+    "original_index": 14,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 37,
+  "repo_owner": "skypilot-org",
+  "repo_name": "skypilot",
+  "difficulty": 0,
+  "generation_time": 18.2351176738739,
+  "prediction": "# Analysis and Solution for Failing GitHub Actions Workflow\n\n## Analysis of the Failure Cause\n\nThe workflow is failing in the \"Running yapf\" step because yapf has identified formatting issues in `sky/resources.py`. Specifically, the error shows that yapf wants to reformat a conditional expression (ternary operator) to put the `if`/`else` on the same line.\n\nThe key points from the error:\n1. The exit code is 1, which means yapf found formatting differences\n2. The diff shows yapf wants to change:\n   ```python\n   size_comp = ('larger than' if image_size > self.disk_size\n               else 'equal to')\n   ```\n   to:\n   ```python\n   size_comp = ('larger than'\n               if image_size > self.disk_size else 'equal to')\n   ```\n\n## Solution\n\nThere are two approaches we could take:\n\n### Option 1: Modify the yapf command to automatically apply changes\nWe could modify the workflow to have yapf automatically apply the formatting changes rather than just checking. However, this might not be desired as it would change the code without explicit approval.\n\n### Option 2: Fix the formatting in the source file directly\nThe better approach is to manually update the source file to match yapf's expected formatting.\n\n## Specific Changes Needed\n\n1. Modify `sky/resources.py` to match yapf's formatting style for ternary operators:\n\n```python\n# Current version (causes yapf to fail)\nsize_comp = ('larger than' if image_size > self.disk_size\n             else 'equal to')\n\n# Should be changed to:\nsize_comp = ('larger than'\n             if image_size > self.disk_size else 'equal to')\n```\n\n## Modified Code\n\nHere's the specific change needed in `sky/resources.py`:\n\n```python\n            if image_size >= self.disk_size:\n                with ux_utils.print_exception_no_traceback():\n                    size_comp = ('larger than'\n                                if image_size > self.disk_size else 'equal to')\n                    raise ValueError(\n                        f'Image {image_id!r} is {image_size}GB, which is '\n                        f'{size_comp} the specified disk_size: '\n```\n\nThis change:\n1. Places the 'if' part on a new line\n2. Puts the 'else' clause on the same line as the condition\n3. Maintains the same indent level as before\n4. Preserves all the functionality while just changing the formatting\n\nAfter making this change, the yapf formatting check should pass in the CI workflow without any modifications needed to the workflow file itself.\n\nThe alternative would be to modify the workflow to use `--in-place` with yapf to automatically apply changes, but since formatting checks typically verify code style rather than modify it, the manual fix approach is likely preferred.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6685014006136022,
+    "explanation": "Similarity: 0.448, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.4475023343560036,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "sky/resources.py": [
+          "size_comp = ('larger than' if image_size > self.disk_size\n               else 'equal to')\n   ```\n   to:\n   ```python\n   size_comp = ('larger than'\n               if image_size > self.disk_size else 'equal to')\n   ```\n\n## Solution\n\nThere are two approaches we could take:\n\n### Option 1: Modify the yapf command to automatically apply changes\nWe could modify the workflow to have yapf automatically apply the formatting changes rather than just checking. However, this might not be desired as it would change the code without explicit approval.\n\n### Option 2: Fix the formatting in the source file directly\nThe better approach is to manually update the source file to match yapf's expected formatting.\n\n## Specific Changes Needed\n\n1. Modify `sky/resources.py` to match yapf's formatting style for ternary operators:",
+          "## Modified Code\n\nHere's the specific change needed in `sky/resources.py`:"
+        ]
+      },
+      "target_changes": {
+        "sky/resources.py": "index b965401b..01cb9cce 100644\n--- a/sky/resources.py\n+++ b/sky/resources.py\n@@ -836,8 +836,8 @@ class Resources:\n             image_size = self.cloud.get_image_size(image_id, region)\n             if image_size >= self.disk_size:\n                 with ux_utils.print_exception_no_traceback():\n-                    size_comp = ('larger than' if image_size > self.disk_size\n-                                 else 'equal to')\n+                    size_comp = ('larger than'\n+                                 if image_size > self.disk_size else 'equal to')\n                     raise ValueError(\n                         f'Image {image_id!r} is {image_size}GB, which is '\n                         f'{size_comp} the specified disk_size: '\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

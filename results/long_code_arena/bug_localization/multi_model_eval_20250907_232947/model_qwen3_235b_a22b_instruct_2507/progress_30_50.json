@@ -1,0 +1,20 @@
+{
+  "timestamp": "2025-09-07T23:30:41.735398",
+  "model_key": "qwen3-235b-a22b-instruct-2507",
+  "progress": {
+    "current_sample": 30,
+    "total_samples": 50,
+    "completion_rate": 0.6
+  },
+  "statistics": {
+    "total_processed": 30,
+    "successful": 30,
+    "failed": 0,
+    "success_rate": 1.0
+  },
+  "current_metrics": {
+    "avg_f1_score": 0.5325356125356123,
+    "avg_precision": 0.6047619047619048,
+    "avg_recall": 0.5472222222222223
+  }
+}

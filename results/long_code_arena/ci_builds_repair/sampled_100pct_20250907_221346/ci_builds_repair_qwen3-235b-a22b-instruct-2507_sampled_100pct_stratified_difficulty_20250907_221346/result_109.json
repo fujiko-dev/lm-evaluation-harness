@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-09-07T22:34:04.691800",
+  "sample_info": {
+    "index": 41,
+    "original_index": 41,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 109,
+  "repo_owner": "encode",
+  "repo_name": "httpx",
+  "difficulty": 0,
+  "generation_time": 24.07337999343872,
+  "prediction": "### ✅ **1. Analysis of the Failure Cause**\n\nThe CI workflow is failing during the **\"Run linting checks\"** step across all Python versions (3.8 to 3.11). The actual error comes from the `ruff check` command:\n\n```\nhttpx/__init__.py:1:1: I001 [*] Import block is un-sorted or un-formatted\nFound 1 error.\n[*] 1 fixable with the `--fix` option.\n```\n\n- **Error Code**: `I001` from [Ruff](https://docs.astral.sh/ruff/rules/import-not-sorted/) indicates that import statements are not sorted alphabetically.\n- The issue is in `httpx/__init__.py`, where the import block violates the sorting rule enforced by Ruff.\n- Although Ruff reports it's fixable with `--fix`, the `scripts/check` script runs `ruff check` in \"check-only\" mode (no auto-fix), so it fails the CI as expected for linting enforcement.\n\nThis change likely slipped in after the last successful commit (`88f2ab747c4630e1c8c4454974e4a6e29757e55a`) and was not caught locally, possibly due to different linting configurations or skipped pre-commit hooks.\n\n> 🔍 **Root Cause**: Unsorted imports in `httpx/__init__.py` are causing `ruff check` to fail during CI linting.\n\n---\n\n### ✅ **2. Specific Changes Needed to Fix the Issue**\n\nWe need to:\n1. **Sort the imports** in `httpx/__init__.py` to satisfy `ruff`'s `I001` rule.\n2. Optionally, ensure that developers can catch this early via pre-commit or local `scripts/check`.\n\nSince the error is consistent across all Python versions and only one file is affected, fixing the import order in `httpx/__init__.py` will resolve the failure.\n\n---\n\n### ✅ **3. Modified Code / Fix**\n\n#### 📄 File: `httpx/__init__.py`\n\nBefore (example – inferred from error):\n```python\nfrom .api import get, options, head, post, put, patch, delete, request\nfrom .client import Client, AsyncClient\nfrom . import models\nfrom .config import CertTypes, TimeoutTypes, VerifyTypes\nfrom .exceptions import (\n    HTTPStatusError,\n    RequestError,\n    # ... other exceptions\n)\n```\n\n> Note: The exact order may vary, but `from . import models` appears **after** other relative imports, which breaks alphabetical order.\n\nRuff sorts imports by:\n- Grouping: standard library, third-party, first-party\n- Within groups: alphabetical order\n- Relative imports like `from .api` and `from . import models` are considered first-party and must be sorted accordingly.\n\nThe line `from . import models` should come **before** `from .api import ...` because:\n- `. import models` → module name is `models`\n- `.api` → module name is `api`\n- Alphabetically: `api` < `models`, so `from .api` should come **after** `from . import models`\n\n❌ **Wrong order**:\n```python\nfrom .api import ...\nfrom . import models  # This should come *before* .api\n```\n\n✅ **Correct order**:\n```python\nfrom . import models\nfrom .api import get, options, head, post, put, patch, delete, request\nfrom .client import Client, AsyncClient\nfrom .config import CertTypes, TimeoutTypes, VerifyTypes\nfrom .exceptions import (\n    ...\n)\n```\n\nBut wait — actually, in Python relative import sorting:\n- `from . import X` comes **before** `from .X import Y`\n- So `from . import models` < `from .api import ...` ✅\n\nThus, if `from .api` appears before `from . import models`, that’s **incorrect**.\n\n---\n\n### ✅ **Corrected `httpx/__init__.py` (partial)**\n\n```python\nfrom . import models\nfrom .api import get, options, head, post, put, patch, delete, request\nfrom .client import Client, AsyncClient\nfrom .config import CertTypes, TimeoutTypes, VerifyTypes\nfrom .exceptions import (\n    CloseError,\n    ConnectError,\n    ConnectTimeout,\n    CookieConflict,\n    DecodingError,\n    HTTPError,\n    HTTPStatusError,\n    InvalidURL,\n    LocalProtocolError,\n    NetworkError,\n    PoolTimeout,\n    ProtocolError,\n    ProxyError,\n    ReadError,\n    ReadTimeout,\n    RemoteProtocolError,\n    RequestError,\n    RequestNotReady,\n    TooManyRedirects,\n    TransportError,\n    WriteError,\n   ",
+  "evaluation": {
+    "success": true,
+    "score": 0.5789827463781008,
+    "explanation": "Similarity: 0.489, Key fixes: 0.714",
+    "details": {
+      "similarity_score": 0.4887807677730251,
+      "key_fixes_score": 0.7142857142857143,
+      "predicted_changes": {
+        "httpx/__init__.py": [
+          "httpx/__init__.py:1:1: I001 [*] Import block is un-sorted or un-formatted\nFound 1 error.\n[*] 1 fixable with the `--fix` option.",
+          "from .api import get, options, head, post, put, patch, delete, request\nfrom .client import Client, AsyncClient\nfrom . import models\nfrom .config import CertTypes, TimeoutTypes, VerifyTypes\nfrom .exceptions import (\n    HTTPStatusError,\n    RequestError,\n    # ... other exceptions\n)",
+          "from .api import ...\nfrom . import models  # This should come *before* .api",
+          "from . import models\nfrom .api import get, options, head, post, put, patch, delete, request\nfrom .client import Client, AsyncClient\nfrom .config import CertTypes, TimeoutTypes, VerifyTypes\nfrom .exceptions import (\n    ...\n)"
+        ]
+      },
+      "target_changes": {
+        "httpx/__init__.py": "index bfb1867..23b9f31 100644\n--- a/httpx/__init__.py\n+++ b/httpx/__init__.py\n@@ -2,7 +2,7 @@ from .__version__ import __description__, __title__, __version__\n from ._api import delete, get, head, options, patch, post, put, request, stream\n from ._auth import Auth, BasicAuth, DigestAuth, NetRCAuth\n from ._client import USE_CLIENT_DEFAULT, AsyncClient, Client\n-from ._config import Limits, Proxy, Timeout, SSLContext\n+from ._config import Limits, Proxy, SSLContext, Timeout\n from ._content import ByteStream\n from ._exceptions import (\n     CloseError,\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

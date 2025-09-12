@@ -1,0 +1,7 @@
+{
+  "hash": "c27d31c06520c3df4c820ea10d5d16316f4d88cb",
+  "repo": "cupy/cupy",
+  "input_length": 29661,
+  "target": "Support CUDA stream on memory pool\n\nNow, memory pool will have an arena (bins) for each stream\nto avoid concurrent streams touch the same memory block",
+  "input_preview": "Write a commit message for a given diff. Start with a heading that serves as a summary of the whole diff: a single sentence in an imperative form, no more than 50 characters long. If you have details to add, do it after a blank line. Do your best to be specific, do not use 'refactor' unless you are absolutely sure that this change is ONLY a refactoring. Your goal is to communicate what the change does without having to look at the source code. Do not go into low-level details like all the change..."
+}

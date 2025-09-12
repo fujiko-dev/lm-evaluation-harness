@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-09-07T22:37:49.094623",
+  "sample_info": {
+    "index": 31,
+    "original_index": 31,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 85,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 21.45548915863037,
+  "prediction": "## Analysis of the Failure Cause\n\nThe CI workflow is failing because the `flake8` pre-commit hook is detecting a line that exceeds the maximum allowed length of 88 characters. Specifically, in the file `import_export/resources.py` at line 1360, there's a line with 101 characters, which violates the E501 rule (line too long).\n\n## Specific Changes Needed\n\nThe fix requires shortening the line in `import_export/resources.py` at line 1360 to be within the 88-character limit. Since we don't have the exact content of that line, we need to identify and fix the long line.\n\n## Modified Code/Configuration\n\nSince the issue is in the source code rather than the workflow configuration, we need to fix the line that's too long. Based on the error message, we need to edit `import_export/resources.py` at line 1360.\n\nHere's the likely fix needed (assuming it's a typical long line issue):\n\n```python\n# Before (line 1360):\n# This is likely a long line that needs to be split or shortened\nsome_very_long_variable_name = some_very_long_function_call_with_many_arguments(arg1, arg2, arg3, arg4, arg5)\n\n# After:\nsome_very_long_variable_name = some_very_long_function_call_with_many_arguments(\n    arg1, arg2, arg3, arg4, arg5\n)\n```\n\nHowever, since we don't have the exact content, here's a general approach to fix this:\n\n1. **Option 1: Fix the source code** (recommended)\n   - Edit `import_export/resources.py` line 1360\n   - Split the long line into multiple lines or shorten it to fit within 88 characters\n\n2. **Option 2: Update flake8 configuration** (if the line cannot be shortened)\n   - Update `.pre-commit-config.yaml` to increase the line length limit\n   - Or update the flake8 configuration in setup.cfg, tox.ini, or .flake8\n\nSince the workflow configuration itself is correct and the issue is with the code formatting, the workflow file doesn't need changes. The fix should be applied to the source code.\n\n**Note**: The actual fix would require viewing the specific line 1360 in `import_export/resources.py` and applying appropriate formatting (such as breaking the line, using shorter variable names, or restructuring the code) to ensure it complies with the 88-character limit enforced by flake8.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6547604817127565,
+    "explanation": "Similarity: 0.425, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.4246008028545941,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "import_export/resources.py": [
+          "# Before (line 1360):\n# This is likely a long line that needs to be split or shortened\nsome_very_long_variable_name = some_very_long_function_call_with_many_arguments(arg1, arg2, arg3, arg4, arg5)\n\n# After:\nsome_very_long_variable_name = some_very_long_function_call_with_many_arguments(\n    arg1, arg2, arg3, arg4, arg5\n)"
+        ],
+        ".pre-commit-config.yaml": [
+          "# Before (line 1360):\n# This is likely a long line that needs to be split or shortened\nsome_very_long_variable_name = some_very_long_function_call_with_many_arguments(arg1, arg2, arg3, arg4, arg5)\n\n# After:\nsome_very_long_variable_name = some_very_long_function_call_with_many_arguments(\n    arg1, arg2, arg3, arg4, arg5\n)"
+        ]
+      },
+      "target_changes": {
+        "import_export/resources.py": "index 7d7ad475..99c3fe91 100644\n--- a/import_export/resources.py\n+++ b/import_export/resources.py\n@@ -1357,7 +1357,8 @@ class ModelDeclarativeMetaclass(DeclarativeMetaclass):\n                     continue\n \n                 if f.name in declared_fields:\n-                    # If model field is declared in `ModelResource`, remove it from `declared_fields`\n+                    # If model field is declared in `ModelResource`,\n+                    # remove it from `declared_fields`\n                     # to keep exact order of model fields\n                     field = declared_fields.pop(f.name)\n                 else:\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "timestamp": "2025-09-07T22:33:06.228513",
+  "sample_info": {
+    "index": 39,
+    "original_index": 39,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 107,
+  "repo_owner": "encode",
+  "repo_name": "httpx",
+  "difficulty": 2,
+  "generation_time": 27.327221870422363,
+  "prediction": "# CI Workflow Failure Analysis and Fix\n\n## 1. Analysis of the Failure Cause\n\nThe CI workflow is failing during the \"Run linting checks\" step due to **mypy type checking errors** in `httpx/_client.py`. The errors are consistent across Python 3.10, 3.11, and 3.12:\n\n```\nhttpx/_client.py:1456: error: Unexpected keyword argument \"verify\" for \"AsyncHTTPTransport\"  [call-arg]\nhttpx/_client.py:1456: error: Unexpected keyword argument \"cert\" for \"AsyncHTTPTransport\"  [call-arg]\nhttpx/_client.py:1458: error: Name \"verify\" is not defined  [name-defined]\nhttpx/_client.py:1459: error: Name \"cert\" is not defined  [name-defined]\n```\n\nThe root cause is that the code is trying to pass `verify` and `cert` parameters to `AsyncHTTPTransport`, but these parameters are not defined in the `AsyncHTTPTransport` class interface (defined in `httpx/_transports/default.py` at line 260). Additionally, the variables `verify` and `cert` are being referenced on lines 1458-1459 but appear to be undefined in the current scope.\n\nThis suggests a recent change in the transport layer API where `verify` and `cert` parameters were either removed from `AsyncHTTPTransport` or need to be handled differently.\n\n## 2. Specific Changes Needed\n\nThe fix requires modifying `httpx/_client.py` to:\n1. Remove the `verify` and `cert` keyword arguments when instantiating `AsyncHTTPTransport`\n2. Ensure any references to `verify` and `cert` variables are properly scoped or remove them if they're no longer needed\n\nSince the error occurs at line 1456, we need to update the `AsyncClient` initialization code to properly handle SSL/TLS configuration.\n\n## 3. Modified Code\n\n```python\n# File: httpx/_client.py\n# Line ~1456 - Fix the AsyncHTTPTransport instantiation\n\n# Find the section where AsyncHTTPTransport is instantiated (around line 1456)\n# and modify it to remove the verify and cert parameters\n\n# BEFORE (problematic code):\n# transport = AsyncHTTPTransport(\n#     verify=verify,\n#     cert=cert,\n#     http2=http2,\n#     limits=limits,\n#     trust_env=trust_env,\n# )\n\n# AFTER (fixed code):\ntransport = AsyncHTTPTransport(\n    http2=http2,\n    limits=limits,\n    trust_env=trust_env,\n)\n\n# Additionally, if there are references to 'verify' and 'cert' variables\n# on lines 1458-1459, they should be removed or properly defined.\n# These variables should be handled at a higher level or through a different\n# configuration mechanism, not directly passed to the transport.\n```\n\nAlternatively, if the transport class has been updated to accept SSL configuration through a different parameter (like an SSL context), the code might need to be:\n\n```python\n# If SSL configuration is now handled through a different mechanism\nssl_context = create_ssl_context(verify=verify, cert=cert)  # assuming such a function exists\n\ntransport = AsyncHTTPTransport(\n    ssl_context=ssl_context,\n    http2=http2,\n    limits=limits,\n    trust_env=trust_env,\n)\n```\n\nHowever, based on the error message indicating that `verify` and `cert` are unexpected arguments and also undefined names, the most likely fix is to simply remove these parameters from both the function call and any subsequent references to these variables.\n\nThe exact implementation depends on how the SSL configuration should now be handled in the updated codebase, but the immediate fix is to align the `AsyncClient` code with the current `AsyncHTTPTransport` interface.",
+  "evaluation": {
+    "success": true,
+    "score": 0.5369714778360515,
+    "explanation": "Similarity: 0.478, Key fixes: 0.625",
+    "details": {
+      "similarity_score": 0.47828579639341906,
+      "key_fixes_score": 0.625,
+      "predicted_changes": {
+        "httpx/_client.py": [
+          "httpx/_client.py:1456: error: Unexpected keyword argument \"verify\" for \"AsyncHTTPTransport\"  [call-arg]\nhttpx/_client.py:1456: error: Unexpected keyword argument \"cert\" for \"AsyncHTTPTransport\"  [call-arg]\nhttpx/_client.py:1458: error: Name \"verify\" is not defined  [name-defined]\nhttpx/_client.py:1459: error: Name \"cert\" is not defined  [name-defined]",
+          "# File: httpx/_client.py\n# Line ~1456 - Fix the AsyncHTTPTransport instantiation\n\n# Find the section where AsyncHTTPTransport is instantiated (around line 1456)\n# and modify it to remove the verify and cert parameters\n\n# BEFORE (problematic code):\n# transport = AsyncHTTPTransport(\n#     verify=verify,\n#     cert=cert,\n#     http2=http2,\n#     limits=limits,\n#     trust_env=trust_env,\n# )\n\n# AFTER (fixed code):\ntransport = AsyncHTTPTransport(\n    http2=http2,\n    limits=limits,\n    trust_env=trust_env,\n)\n\n# Additionally, if there are references to 'verify' and 'cert' variables\n# on lines 1458-1459, they should be removed or properly defined.\n# These variables should be handled at a higher level or through a different\n# configuration mechanism, not directly passed to the transport.",
+          "# If SSL configuration is now handled through a different mechanism\nssl_context = create_ssl_context(verify=verify, cert=cert)  # assuming such a function exists\n\ntransport = AsyncHTTPTransport(\n    ssl_context=ssl_context,\n    http2=http2,\n    limits=limits,\n    trust_env=trust_env,\n)"
+        ],
+        "httpx/_transports/default.py": [
+          "httpx/_client.py:1456: error: Unexpected keyword argument \"verify\" for \"AsyncHTTPTransport\"  [call-arg]\nhttpx/_client.py:1456: error: Unexpected keyword argument \"cert\" for \"AsyncHTTPTransport\"  [call-arg]\nhttpx/_client.py:1458: error: Name \"verify\" is not defined  [name-defined]\nhttpx/_client.py:1459: error: Name \"cert\" is not defined  [name-defined]",
+          "# File: httpx/_client.py\n# Line ~1456 - Fix the AsyncHTTPTransport instantiation\n\n# Find the section where AsyncHTTPTransport is instantiated (around line 1456)\n# and modify it to remove the verify and cert parameters\n\n# BEFORE (problematic code):\n# transport = AsyncHTTPTransport(\n#     verify=verify,\n#     cert=cert,\n#     http2=http2,\n#     limits=limits,\n#     trust_env=trust_env,\n# )\n\n# AFTER (fixed code):\ntransport = AsyncHTTPTransport(\n    http2=http2,\n    limits=limits,\n    trust_env=trust_env,\n)\n\n# Additionally, if there are references to 'verify' and 'cert' variables\n# on lines 1458-1459, they should be removed or properly defined.\n# These variables should be handled at a higher level or through a different\n# configuration mechanism, not directly passed to the transport.",
+          "# If SSL configuration is now handled through a different mechanism\nssl_context = create_ssl_context(verify=verify, cert=cert)  # assuming such a function exists\n\ntransport = AsyncHTTPTransport(\n    ssl_context=ssl_context,\n    http2=http2,\n    limits=limits,\n    trust_env=trust_env,\n)"
+        ]
+      },
+      "target_changes": {
+        "httpx/_client.py": "index e5cff5d..4dd2d07 100644\n--- a/httpx/_client.py\n+++ b/httpx/_client.py\n@@ -1455,8 +1455,6 @@ class AsyncClient(BaseClient):\n     ) -> AsyncBaseTransport:\n         return AsyncHTTPTransport(\n             ssl_context=ssl_context,\n-            verify=verify,\n-            cert=cert,\n             http1=http1,\n             http2=http2,\n             limits=limits,\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "timestamp": "2025-09-07T22:26:43.633956",
+  "sample_info": {
+    "index": 24,
+    "original_index": 24,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 57,
+  "repo_owner": "hacs",
+  "repo_name": "integration",
+  "difficulty": 2,
+  "generation_time": 33.8931839466095,
+  "prediction": "### ✅ **1. Analysis of the Failure Cause**\n\nThe CI workflow **fails during the `pyupgrade` and `black` pre-commit hooks**, with the following key error:\n\n```\n- files were modified by this hook\nRewriting tests/common.py\n```\n\nThis indicates that:\n- The `pyupgrade` and `black` hooks **modified files** during execution.\n- However, the workflow runs in a **read-only checkout** environment by default.\n- Since the changes aren't committed back, the pre-commit hook detects that it would alter files and **fails the build** (as expected in CI).\n- This is **not a configuration or installation issue**, but rather a **code style/linting violation** in the repository: the code is not up to date with `pyupgrade` or `black` formatting rules.\n\n🔍 Specifically:\n- `pyupgrade` upgraded syntax in `tests/common.py` (e.g., f-strings, Python 3.11+ syntax).\n- `black` reformatted code to meet its opinionated style.\n- These changes were **not present in the current commit**, so pre-commit applied them automatically and failed because files were changed during CI.\n\n💡 **Root Cause**:  \nThe code in commit `5b9b7a0f0f73cc0257f1b41b4904dc9056e9baa1` does **not satisfy** the `pyupgrade` and `black` formatting rules defined in the pre-commit config. The CI correctly enforces that all files must already be formatted.\n\nThe **success** in a later commit (`04d2ec72235a322abe7140afa8cbbd65fa35090a`) suggests that formatting was fixed in that commit — likely by running `pre-commit run --all-files` locally and committing the changes.\n\n---\n\n### ✅ **2. Specific Changes Needed to Fix the Issue**\n\nTo fix this:\n1. **Run the pre-commit hooks locally** (or in a script) to format the code.\n2. **Commit the formatted code** so that CI finds no changes needed.\n3. Alternatively, **ensure developers run `pre-commit install`** to catch this before pushing.\n\nBut since we're fixing the **workflow behavior**, and not the code itself (we can't modify the commit), the **real goal is to make CI fail fast and clearly** when formatting is off — which it already does.\n\nHowever, the **current workflow setup is correct** — it's working as intended. The failure is **not in the workflow YAML**, but in the **code state** at that commit.\n\nBut wait: there's a **misconfiguration in the workflow** that makes this harder to debug and fix.\n\n🔍 **Problem in Workflow Design**:\n- The `matrix` job is incorrectly structured: `matrix` is under `jobs.matrix`, but it should be under `jobs.matrix.strategy`.\n- Right now, the job is named `matrix`, and it runs **all checks in a single job**, but with a matrix strategy that isn't properly scoped.\n- This is a **YAML structure bug**.\n\nLet’s look closely:\n\n```yaml\njobs:\n  matrix:\n    runs-on: ubuntu-latest\n    services:\n      ...\n    name: Run ${{ matrix.check }}\n    strategy:\n      matrix:\n        check: [...]\n```\n\nThis defines a **single job named `matrix`** that uses a matrix strategy — that’s fine.\n\nBut the **naming is confusing**, and more importantly, **the services (pypi_wayback) are duplicated** in both jobs. That’s acceptable, but not ideal.\n\nHowever, the **real issue** is that the **failure is expected and correct** — the code just needs formatting.\n\nBut since the **workflow ran and failed properly**, and the **only issue is unformatted code**, the fix is **not in the workflow**, but in **applying formatting**.\n\nBut we are asked to **fix the failing CI workflow** — so if we cannot change the code (commit), we must consider whether the workflow can auto-correct.\n\nHowever, **in CI, you should not auto-commit** unless explicitly designed (e.g., via a bot).\n\nSo the **correct fix** is to:\n- Ensure the code is formatted **before** CI runs.\n- But if we must **fix the workflow**, we can improve clarity and correctness of the job structure.\n\nWait — there's a **subtle bug** in the workflow: the `matrix` job runs `pre-commit` with `--hook-stage manual`, which is unusual.\n\n🔍 Why `--hook-stage manual`?\n\nIn pre-commit, `--hook-stage manual` means the hook is not run during `pre-commit run` unless explicitly named. But in CI, we want to run formatting checks, so this is acceptable if intentional.\n\nBut more commonly, we use `--all-files",
+  "evaluation": {
+    "success": true,
+    "score": 0.6471462457337884,
+    "explanation": "Similarity: 0.412, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.41191040955631403,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "tests/common.py": [
+          "- files were modified by this hook\nRewriting tests/common.py",
+          "jobs:\n  matrix:\n    runs-on: ubuntu-latest\n    services:\n      ...\n    name: Run ${{ matrix.check }}\n    strategy:\n      matrix:\n        check: [...]"
+        ],
+        "jobs.matrix": [
+          "- files were modified by this hook\nRewriting tests/common.py",
+          "jobs:\n  matrix:\n    runs-on: ubuntu-latest\n    services:\n      ...\n    name: Run ${{ matrix.check }}\n    strategy:\n      matrix:\n        check: [...]"
+        ],
+        "jobs.matrix.strategy": [
+          "- files were modified by this hook\nRewriting tests/common.py",
+          "jobs:\n  matrix:\n    runs-on: ubuntu-latest\n    services:\n      ...\n    name: Run ${{ matrix.check }}\n    strategy:\n      matrix:\n        check: [...]"
+        ]
+      },
+      "target_changes": {
+        "tests/common.py": "index 190a2fba..ea30646a 100644\n--- a/tests/common.py\n+++ b/tests/common.py\n@@ -13,7 +13,13 @@ from unittest.mock import AsyncMock, Mock, patch\n from aiohttp import ClientSession, ClientWebSocketResponse\n from aiohttp.typedefs import StrOrURL\n from awesomeversion import AwesomeVersion\n-from homeassistant import auth, bootstrap, config_entries, core as ha, config as ha_config\n+from homeassistant import (\n+    auth,\n+    bootstrap,\n+    config as ha_config,\n+    config_entries,\n+    core as ha,\n+)\n from homeassistant.auth import auth_store, models as auth_models\n from homeassistant.const import (\n     EVENT_HOMEASSISTANT_CLOSE,\n@@ -49,13 +55,13 @@ TOKEN = \"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\"\n INSTANCES = []\n REQUEST_CONTEXT: ContextVar[pytest.FixtureRequest] = ContextVar(\"request_context\", default=None)\n \n-IGNORED_BASE_FILES = set([\n-        \"/config/automations.yaml\",\n-        \"/config/configuration.yaml\",\n-        \"/config/scenes.yaml\",\n-        \"/config/scripts.yaml\",\n-        \"/config/secrets.yaml\",\n-    ])\n+IGNORED_BASE_FILES = {\n+    \"/config/automations.yaml\",\n+    \"/config/configuration.yaml\",\n+    \"/config/scenes.yaml\",\n+    \"/config/scripts.yaml\",\n+    \"/config/secrets.yaml\",\n+}\n \n \n def safe_json_dumps(data: dict | list) -> str:\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

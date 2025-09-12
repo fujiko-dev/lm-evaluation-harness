@@ -1,0 +1,41 @@
+{
+  "timestamp": "2025-09-07T22:28:29.890664",
+  "sample_info": {
+    "index": 11,
+    "original_index": 11,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 34,
+  "repo_owner": "skypilot-org",
+  "repo_name": "skypilot",
+  "difficulty": 0,
+  "generation_time": 15.19175910949707,
+  "prediction": "# Analysis and Solution for Failing GitHub Actions Workflow\n\n## 1. Failure Analysis\n\nThe workflow fails during the \"Running yapf\" step with exit code 1. From the logs, we can see that:\n- yapf detected formatting differences in `sky/data/storage.py`\n- Specifically, it modified line 819 to remove extra whitespace after `if not isinstance(source, list):`\n- The workflow fails because the `--diff` flag shows differences and the `--check` mode (implied by `--diff`) enforces a non-zero exit code when formatting changes are needed\n\nThis is not actually a bug - it's working as intended. The workflow is failing because some files need reformatting according to yapf's style rules.\n\n## 2. Solution Approach\n\nWe have two options to fix this:\n\n1. **Modify the CI workflow** to auto-format the code instead of just checking formatting (not recommended as it could hide actual formatting issues)\n\n2. **Run yapf locally** and commit the formatting changes (recommended solution)\n\nSince the workflow is correctly identifying formatting issues, we should go with option 2.\n\n## 3. Specific Changes Needed\n\nTo fix this permanently:\n1. Run `yapf -i --recursive ./` locally to apply formatting changes\n2. Commit the changes to `sky/data/storage.py`\n\nThe formatting change needed is minimal - just removing trailing whitespace as shown in the diff.\n\nHere's the modified code for `sky/data/storage.py` at line 819:\n\n```python\n        # If the source is a list, it consists of local paths\n        if not isinstance(source, list):\n```\n\nThis removes the extra whitespace at the end of the line that yapf is complaining about.\n\n## Additional Recommendations\n\n1. Consider adding a `.style.yapf` or `pyproject.toml` file to document your formatting configuration if not already present\n2. Make sure all contributors run formatting checks before pushing commits\n3. Consider setting up pre-commit hooks to automatically run formatters\n\nThe workflow itself doesn't need modification as it's functioning correctly by catching formatting issues. The issue is with the code formatting, not the CI configuration.",
+  "evaluation": {
+    "success": true,
+    "score": 0.5208521844415296,
+    "explanation": "Similarity: 0.201, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.20142030740254935,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "sky/data/storage.py": [
+          "# If the source is a list, it consists of local paths\n        if not isinstance(source, list):"
+        ],
+        ".style.yapf": [
+          "# If the source is a list, it consists of local paths\n        if not isinstance(source, list):"
+        ],
+        "pyproject.toml": [
+          "# If the source is a list, it consists of local paths\n        if not isinstance(source, list):"
+        ]
+      },
+      "target_changes": {
+        "sky/backends/cloud_vm_ray_backend.py": "index 8a93b58c..08bc7ffb 100644\n--- a/sky/backends/cloud_vm_ray_backend.py\n+++ b/sky/backends/cloud_vm_ray_backend.py\n@@ -4557,14 +4557,15 @@ class CloudVmRayBackend(backends.Backend['CloudVmRayResourceHandle']):\n         end = time.time()\n         logger.debug(f'File mount sync took {end - start} seconds.')\n \n-    def _execute_storage_mounts(self, handle: CloudVmRayResourceHandle,\n-                                storage_mounts: Dict[Path, storage_lib.Storage],\n-                                mount_mode: storage_utils.StorageMode):\n+    def _execute_storage_mounts(\n+            self, handle: CloudVmRayResourceHandle,\n+            storage_mounts: Optional[Dict[Path, storage_lib.Storage]],\n+            mount_mode: storage_utils.StorageMode):\n         \"\"\"Executes storage mounts: installing mounting tools and mounting.\"\"\"\n         # Handle cases where `storage_mounts` is None. This occurs when users\n         # initiate a 'sky start' command from a Skypilot version that predates\n         # the introduction of the `storage_mounts_metadata` feature.\n-        if not storage_mounts:\n+        if storage_mounts is None:\n             return\n \n         # Process only mount mode objects here. COPY mode objects have been\n@@ -4674,7 +4675,7 @@ class CloudVmRayBackend(backends.Backend['CloudVmRayResourceHandle']):\n \n     def _has_csync(self, cluster_name: str) -> bool:\n         \"\"\"Chekcs if there are CSYNC mode storages within the cluster.\"\"\"\n-        storage_mounts = self._get_storage_mounts_metadata(cluster_name)\n+        storage_mounts = self.get_storage_mounts_metadata(cluster_name)\n         if storage_mounts is not None:\n             for _, storage_obj in storage_mounts.items():\n                 if storage_obj.mode == storage_utils.StorageMode.CSYNC:",
+        "sky/data/sky_csync.py": "index c0d521ff..c6c3f981 100644\n--- a/sky/data/sky_csync.py\n+++ b/sky/data/sky_csync.py\n@@ -251,7 +251,7 @@ def csync(source: str, storetype: str, destination: str, num_threads: int,\n     \"\"\"Runs daemon to sync the source to the bucket every INTERVAL seconds.\n \n     Creates an entry of pid of the sync process in local database while sync\n-    command is runninng and removes it when completed.\n+    command is running and removes it when completed.\n \n     Args:\n         source (str): The local path to the directory that you want to sync.",
+        "sky/data/storage.py": "index dea9b906..3f7c205f 100644\n--- a/sky/data/storage.py\n+++ b/sky/data/storage.py\n@@ -819,7 +819,7 @@ class Storage(object):\n         source = override_args.get('source', metadata.source)\n         name = override_args.get('name', metadata.storage_name)\n         # If the source is a list, it consists of local paths\n-        if not isinstance(source, list): \n+        if not isinstance(source, list):\n             if data_utils.is_cloud_store_url(source):\n                 name = None\n \n"
+      },
+      "difficulty": 0
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "timestamp": "2025-09-07T22:25:02.123497",
+  "sample_info": {
+    "index": 19,
+    "original_index": 19,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 43,
+  "repo_owner": "beetbox",
+  "repo_name": "beets",
+  "difficulty": 2,
+  "generation_time": 8.71666407585144,
+  "prediction": "Looking at the CI failure logs, I can identify the root cause and provide the necessary fixes.\n\n## 1. Analysis of the Failure Cause\n\nThe failure occurs during the code formatting check where `isort` and `black` are run in check mode. The key error message is:\n```\nwould reformat /home/runner/work/beets/beets/beetsplug/listenbrainz.py\nOh no! 💥 💔 💥\n1 file would be reformatted, 186 files would be left unchanged.\n```\n\nThis indicates that the `listenbrainz.py` file has formatting issues that need to be fixed. The tool detected that it would reformat this file but since it's running in `--check` mode, it fails instead of automatically fixing the formatting.\n\n## 2. Specific Changes Needed\n\nThe fix requires updating the `listenbrainz.py` file to comply with the code formatting standards enforced by `isort` and `black`. Based on the error, this file needs to have its imports sorted and formatting corrected.\n\n## 3. Modified Code/Configuration\n\nSince we're dealing with a formatting issue in a specific Python file, here's what needs to be done:\n\n**File to modify:** `beetsplug/listenbrainz.py`\n\nThe fix involves running the formatting tools locally or manually correcting the import order and formatting. However, since I don't have access to the actual file content, I'll provide the approach to fix it:\n\n1. **Run the formatting tools locally:**\n```bash\n# Install dependencies\npip install black isort\n\n# Fix the file\nisort beetsplug/listenbrainz.py\nblack beetsplug/listenbrainz.py\n```\n\n2. **Or if you want to see what's wrong, run the check first:**\n```bash\nisort beetsplug/listenbrainz.py --check-only\nblack beetsplug/listenbrainz.py --check\n```\n\n3. **If you want to make the CI pass immediately, you could also modify the workflow to allow auto-formatting:**\n\nHowever, looking more carefully at the workflow, there's actually an issue with how the environment variables are set. The workflow should ensure proper environment setup for the formatting tools.\n\n**Modified workflow configuration** (if needed):\n```yaml\nname: formatting_check\nrun-name: Check code formatting\non: [push, pull_request]\njobs:\n  formatting_check:\n    runs-on: ubuntu-latest\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    steps:\n      - name: Install dependencies\n        uses: actions/checkout@v3\n\n      - name: Run formatting check\n        uses: paolorechia/pox@v1.0.1\n        with:\n          tox_env: \"format_check\"\n        env:\n          PIP_INDEX_URL: http://localhost:8629/2023-12-22\n          UV_INDEX_URL: http://localhost:8629/2023-12-22\n```\n\nBut the real fix is to address the formatting in the `listenbrainz.py` file itself. Since I cannot see the exact content, the most practical solution is to run:\n\n```bash\n# In the repository root\nisort beetsplug/listenbrainz.py\nblack beetsplug/listenbrainz.py\n```\n\nThis will correct the import ordering and formatting issues that are causing the CI to fail.\n\n**Note:** The actual fix requires modifying the `beetsplug/listenbrainz.py` file to ensure its imports are properly sorted according to `isort` rules and its code follows `black` formatting conventions. The specific changes depend on the current state of that file's imports and structure.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6528187666180634,
+    "explanation": "Similarity: 0.421, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.42136461103010553,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "listenbrainz.py": [
+          "would reformat /home/runner/work/beets/beets/beetsplug/listenbrainz.py\nOh no! 💥 💔 💥\n1 file would be reformatted, 186 files would be left unchanged.",
+          "# Install dependencies\npip install black isort\n\n# Fix the file\nisort beetsplug/listenbrainz.py\nblack beetsplug/listenbrainz.py",
+          "isort beetsplug/listenbrainz.py --check-only\nblack beetsplug/listenbrainz.py --check",
+          "name: formatting_check\nrun-name: Check code formatting\non: [push, pull_request]\njobs:\n  formatting_check:\n    runs-on: ubuntu-latest\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    steps:\n      - name: Install dependencies\n        uses: actions/checkout@v3\n\n      - name: Run formatting check\n        uses: paolorechia/pox@v1.0.1\n        with:\n          tox_env: \"format_check\"\n        env:\n          PIP_INDEX_URL: http://localhost:8629/2023-12-22\n          UV_INDEX_URL: http://localhost:8629/2023-12-22",
+          "# In the repository root\nisort beetsplug/listenbrainz.py\nblack beetsplug/listenbrainz.py"
+        ],
+        "beetsplug/listenbrainz.py": [
+          "would reformat /home/runner/work/beets/beets/beetsplug/listenbrainz.py\nOh no! 💥 💔 💥\n1 file would be reformatted, 186 files would be left unchanged.",
+          "# Install dependencies\npip install black isort\n\n# Fix the file\nisort beetsplug/listenbrainz.py\nblack beetsplug/listenbrainz.py",
+          "isort beetsplug/listenbrainz.py --check-only\nblack beetsplug/listenbrainz.py --check",
+          "name: formatting_check\nrun-name: Check code formatting\non: [push, pull_request]\njobs:\n  formatting_check:\n    runs-on: ubuntu-latest\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    steps:\n      - name: Install dependencies\n        uses: actions/checkout@v3\n\n      - name: Run formatting check\n        uses: paolorechia/pox@v1.0.1\n        with:\n          tox_env: \"format_check\"\n        env:\n          PIP_INDEX_URL: http://localhost:8629/2023-12-22\n          UV_INDEX_URL: http://localhost:8629/2023-12-22",
+          "# In the repository root\nisort beetsplug/listenbrainz.py\nblack beetsplug/listenbrainz.py"
+        ]
+      },
+      "target_changes": {
+        "beetsplug/listenbrainz.py": "index 11ef71597..3127237ee 100644\n--- a/beetsplug/listenbrainz.py\n+++ b/beetsplug/listenbrainz.py\n@@ -150,6 +150,7 @@ class ListenBrainzPlugin(BeetsPlugin):\n     def get_listenbrainz_playlists(self):\n         \"\"\"Returns a list of playlists created by ListenBrainz.\"\"\"\n         import re\n+\n         resp = self.get_playlists_createdfor(self.username)\n         playlists = resp.get(\"playlists\")\n         listenbrainz_playlists = []\n@@ -158,7 +159,9 @@ class ListenBrainzPlugin(BeetsPlugin):\n             playlist_info = playlist.get(\"playlist\")\n             if playlist_info.get(\"creator\") == \"listenbrainz\":\n                 title = playlist_info.get(\"title\")\n-                match = re.search(r\"(Missed Recordings of \\d{4}|Discoveries of \\d{4})\", title)\n+                match = re.search(\n+                    r\"(Missed Recordings of \\d{4}|Discoveries of \\d{4})\", title\n+                )\n                 if \"Exploration\" in title:\n                     playlist_type = \"Exploration\"\n                 elif \"Jams\" in title:\n@@ -178,7 +181,7 @@ class ListenBrainzPlugin(BeetsPlugin):\n                 id = identifier.split(\"/\")[-1]\n                 if playlist_type in [\"Jams\", \"Exploration\"]:\n                     listenbrainz_playlists.append(\n-                    {\"type\": playlist_type, \"date\": date, \"identifier\": id}\n+                        {\"type\": playlist_type, \"date\": date, \"identifier\": id}\n                     )\n         return listenbrainz_playlists\n \n"
+      },
+      "difficulty": 2
+    }
+  }
+}

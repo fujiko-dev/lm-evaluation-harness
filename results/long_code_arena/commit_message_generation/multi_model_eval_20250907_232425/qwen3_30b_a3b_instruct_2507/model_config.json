@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-30b-a3b-instruct-2507",
+  "display_name": "Qwen3-30B",
+  "api_provider": "qianfan",
+  "base_url": "https://qianfan.baidubce.com/v2/chat/completions",
+  "task": "lca_commit_message_generation",
+  "total_samples": 163,
+  "evaluated_samples": 5,
+  "timestamp": "2025-09-07T23:24:41.039759",
+  "model_config": {
+    "name": "qwen3-30b-a3b-instruct-2507",
+    "display_name": "Qwen3-30B",
+    "max_tokens": 256,
+    "temperature": 0.8
+  }
+}

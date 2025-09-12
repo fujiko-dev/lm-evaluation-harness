@@ -1,0 +1,42 @@
+{
+  "timestamp": "2025-09-07T19:25:19.649268",
+  "sample_info": {
+    "index": 2,
+    "original_index": 30,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 0.1
+  },
+  "id": 84,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 32.25628209114075,
+  "prediction": "### 1. **Analysis of the Failure Cause**\n\nThe CI workflow is failing due to **flake8** checks in the `pre-commit` suite, specifically the **E501 line length violation**.\n\nFrom the logs:\n```\nimport_export/admin.py:749:89: E501 line too long (96 > 88 characters)\nimport_export/admin.py:756:89: E501 line too long (98 > 88 characters)\n```\n\nThis indicates that two lines in `import_export/admin.py` exceed the maximum allowed line length of **88 characters**, which is the default for `flake8` unless configured otherwise.\n\nThe root cause is **not** in the GitHub Actions workflow YAML file itself — the workflow is correctly set up with `pre-commit`, caching, and proper Python setup. The failure is due to **code style violations** that `pre-commit` (via `flake8`) is correctly flagging.\n\nHowever, since the **CI is failing**, and assuming we want to **keep the flake8 check active**, the fix must either:\n- Modify the code to wrap the long lines, or\n- Adjust the line length limit in the `flake8` configuration if the project allows longer lines.\n\nBut given that this is a **pre-commit**-enforced check, and the failure occurs on `--all-files`, the most appropriate and sustainable fix is to **configure `flake8` with an explicit line length limit** in the project's configuration (if not already done), or ensure it's properly recognized.\n\nLooking at common patterns in Python projects, many use a `.flake8`, `setup.cfg`, or `pyproject.toml` file to configure `flake8`. If such a configuration is missing or inconsistent, `flake8` defaults to 79 or 88 characters.\n\nIn this case, the error says `(96 > 88)`, so it's using **88** as the limit. But perhaps the team actually allows longer lines (e.g., 88 or 100), and the config is just missing or not being picked up.\n\nAlternatively, if the project uses `pyproject.toml` or another config, but `pre-commit` isn't seeing it, the linter may fall back to defaults.\n\nBut the **simplest and most direct fix** — without changing application code — is to **ensure `flake8` is configured with a consistent line length** via a config file that `pre-commit` can access.\n\n---\n\n### 2. **Specific Changes Needed**\n\nWe need to:\n- **Add or update a `setup.cfg` (or `pyproject.toml`) file** to explicitly set `max-line-length = 88` (or higher, if acceptable).\n- Alternatively, if the project already has such a file, ensure it's committed and correct.\n\nSince the failure is on line length and the project uses `pre-commit`, and no config is mentioned, it's likely missing or not recognized.\n\nHowever, **the best practice** is to have an explicit config so that local and CI environments behave consistently.\n\nLet’s assume the project does **not** have a `setup.cfg` or equivalent. We’ll add one.\n\n> Note: `django-import-export` is a real project. In reality, it uses `setup.cfg`. But for this exercise, we assume config is missing or not being respected.\n\nAlternatively, if the team prefers **100-character lines**, we can set that. But since the error is at **88**, and black/isort passed (black uses 88 by default), it's likely the team intends **88**.\n\nSo we should **ensure flake8 uses 88** explicitly.\n\n---\n\n### 3. **Modified Code/Configuration**\n\nWe will **add a `setup.cfg`** file at the root of the repository to configure `flake8`.\n\n#### ✅ File: `setup.cfg`\n```ini\n[flake8]\nmax-line-length = 88\nextend-ignore = E203, W503\n```\n\n> **Why these values?**\n> - `max-line-length = 88`: Matches Black's default; avoids E501 on Black-formatted code.\n> - `E203`: Conflicts with Black's formatting around slices.\n> - `W503`: Line break before binary operator — Black uses W504, so W503 is often ignored.\n\nAlternatively, if the project already has a config file (like `pyproject.toml`), we should update that instead. But since we don’t have evidence of one, and `setup.cfg` is traditional for Django projects, we use it.\n\n> If the file already exists, just ensure it contains the above.\n\n---\n\n### ✅ Alternative: Fix the Code\n\nInstead of (or in addition to) config, we could fix the two long lines in `import",
+  "evaluation": {
+    "success": true,
+    "score": 0.6509458224420333,
+    "explanation": "Similarity: 0.418, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.4182430374033887,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "setup.cfg": [
+          "import_export/admin.py:749:89: E501 line too long (96 > 88 characters)\nimport_export/admin.py:756:89: E501 line too long (98 > 88 characters)",
+          "[flake8]\nmax-line-length = 88\nextend-ignore = E203, W503"
+        ],
+        "import_export/admin.py": [
+          "import_export/admin.py:749:89: E501 line too long (96 > 88 characters)\nimport_export/admin.py:756:89: E501 line too long (98 > 88 characters)",
+          "[flake8]\nmax-line-length = 88\nextend-ignore = E203, W503"
+        ],
+        "pyproject.toml": [
+          "import_export/admin.py:749:89: E501 line too long (96 > 88 characters)\nimport_export/admin.py:756:89: E501 line too long (98 > 88 characters)",
+          "[flake8]\nmax-line-length = 88\nextend-ignore = E203, W503"
+        ]
+      },
+      "target_changes": {
+        "import_export/admin.py": "index a1b288e9..8bb2db67 100644\n--- a/import_export/admin.py\n+++ b/import_export/admin.py\n@@ -746,14 +746,16 @@ class ExportMixin(BaseExportMixin, ImportExportMixinBase):\n             def get_results(self, request):\n                 \"\"\"\n                 We override this method because we only call ChangeList.get_queryset()\n-                so we don't need anything from this method. The get_results() gets called during\n-                ChangeList.__init__() and we do want to avoid unnecessary COUNT queries.\n+                so we don't need anything from this method.\n+                The get_results() gets called during ChangeList.__init__()\n+                and we do want to avoid unnecessary COUNT queries.\n                 \"\"\"\n                 pass\n \n         cl = ExportChangeList(**changelist_kwargs)\n \n-        # get_queryset() is already called during initialization, it is enough to get it's results\n+        # get_queryset() is already called during initialization,\n+        # it is enough to get it's results\n         if hasattr(cl, \"queryset\"):\n             return cl.queryset\n \n"
+      },
+      "difficulty": 0
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-09-07T22:25:04.932897",
+  "sample_info": {
+    "index": 4,
+    "original_index": 4,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 23,
+  "repo_owner": "tornadoweb",
+  "repo_name": "tornado",
+  "difficulty": 3,
+  "generation_time": 30.610060930252075,
+  "prediction": "Based on the failure logs and workflow definition, here's my analysis and suggested solution:\n\n1. **Failure Analysis**:\n   - The primary error occurs in `test_no_match` function in `iostream_test.py` where an expected SSL certificate warning log message isn't being captured\n   - There are also numerous unclosed socket warnings (ResourceWarning), though these aren't the direct cause of the test failure\n   - The test expects a specific warning log (\"alert bad certificate\") that isn't being emitted in the Windows environment\n   - This appears to be a Windows-specific SSL certificate verification behavior difference\n\n2. **Root Cause**:\n   - The SSL certificate verification behavior differs between Linux and Windows\n   - On Windows, the SSL handshake may be failing with a different error message or not producing the expected warning\n   - The test is too strict in expecting an exact log message that may vary by platform\n\n3. **Solution**:\n   - We should modify the test to be more flexible about the SSL warning message on Windows\n   - Add a platform-specific check to accept alternative warning messages on Windows\n   - Here's the proposed change to the test file:\n\n```python\n# tornado/test/iostream_test.py modification\ndef test_no_match(self):\n    with ExpectLog(gen_log, \".*(bad certificate|certificate verify failed)\", level=logging.WARNING):\n        self.start_tls(self.client_stream, dict(cert_reqs=ssl.CERT_REQUIRED))\n        # The server side of this test is written with twisted's APIs\n        # and the matching cert is verified there; here we just need\n        # to verify that client-side verification is working.\n        with self.assertRaises(ssl.SSLError):\n            self.stop()\n```\n\nAlternatively, we could modify the Windows test command to be more lenient if we can't modify the test file directly. Here's the workflow change:\n\n```yaml\n# Change in .github/workflows/test.yml for test_win job\n- name: Run test suite\n  run: py -m tornado.test --fail-if-logs=false\n  env:\n    EXPECT_LOG_STRICT: \"0\"  # Make log expectations less strict on Windows\n```\n\n4. **Recommended Approach**:\n   The first solution (modifying the test file) is preferable as it properly handles the platform difference in SSL behavior. The second solution is more of a workaround if you can't modify the test file.\n\nIf modifying the test file isn't an option, another alternative would be to skip this specific test on Windows by modifying the test command:\n\n```yaml\n- name: Run test suite\n  run: py -m tornado.test --fail-if-logs=false --exclude=test_no_match\n```\n\nHowever, the first solution provides the most robust fix by properly handling the platform differences in SSL behavior rather than skipping or relaxing the test requirements entirely.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6001188729874776,
+    "explanation": "Similarity: 0.500, Key fixes: 0.750",
+    "details": {
+      "similarity_score": 0.500198121645796,
+      "key_fixes_score": 0.75,
+      "predicted_changes": {
+        "iostream_test.py": [
+          "# tornado/test/iostream_test.py modification\ndef test_no_match(self):\n    with ExpectLog(gen_log, \".*(bad certificate|certificate verify failed)\", level=logging.WARNING):\n        self.start_tls(self.client_stream, dict(cert_reqs=ssl.CERT_REQUIRED))\n        # The server side of this test is written with twisted's APIs\n        # and the matching cert is verified there; here we just need\n        # to verify that client-side verification is working.\n        with self.assertRaises(ssl.SSLError):\n            self.stop()",
+          "# Change in .github/workflows/test.yml for test_win job\n- name: Run test suite\n  run: py -m tornado.test --fail-if-logs=false\n  env:\n    EXPECT_LOG_STRICT: \"0\"  # Make log expectations less strict on Windows",
+          "- name: Run test suite\n  run: py -m tornado.test --fail-if-logs=false --exclude=test_no_match"
+        ]
+      },
+      "target_changes": {
+        "tornado/test/iostream_test.py": "index 02318db3..02fcd3e1 100644\n--- a/tornado/test/iostream_test.py\n+++ b/tornado/test/iostream_test.py\n@@ -1197,7 +1197,12 @@ class TestIOStreamCheckHostname(AsyncTestCase):\n     @gen_test\n     async def test_no_match(self):\n         stream = SSLIOStream(socket.socket(), ssl_options=self.client_ssl_ctx)\n-        with ExpectLog(gen_log, \".*alert bad certificate\", level=logging.WARNING):\n+        with ExpectLog(\n+            gen_log,\n+            \".*alert bad certificate\",\n+            level=logging.WARNING,\n+            required=platform.system() != \"Windows\",\n+        ):\n             with self.assertRaises(ssl.SSLCertVerificationError):\n                 with ExpectLog(\n                     gen_log,\n@@ -1210,7 +1215,9 @@ class TestIOStreamCheckHostname(AsyncTestCase):\n                     )\n             # The server logs a warning while cleaning up the failed connection.\n             # Unfortunately there's no good hook to wait for this logging.\n-            await asyncio.sleep(1 if platform.system() == \"Windows\" else 0.1)\n+            # It doesn't seem to happen on windows; I'm not sure why.\n+            if platform.system() != \"Windows\":\n+                await asyncio.sleep(0.1)\n \n     @gen_test\n     async def test_check_disabled(self):\n"
+      },
+      "difficulty": 3
+    }
+  }
+}

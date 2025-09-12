@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-09-07T22:41:25.238698",
+  "sample_info": {
+    "index": 39,
+    "original_index": 39,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 107,
+  "repo_owner": "encode",
+  "repo_name": "httpx",
+  "difficulty": 2,
+  "generation_time": 34.3468759059906,
+  "prediction": "## Analysis of the Failure Cause\n\nThe CI workflow is failing during the \"Run linting checks\" step due to mypy type checking errors. The errors are:\n\n1. `httpx/_client.py:1456: error: Unexpected keyword argument \"verify\" for \"AsyncHTTPTransport\"`\n2. `httpx/_client.py:1458: error: Name \"verify\" is not defined`\n3. `httpx/_client.py:1459: error: Name \"cert\" is not defined`\n4. `httpx/_client.py:1456: error: Unexpected keyword argument \"cert\" for \"AsyncHTTPTransport\"`\n\nThese errors indicate that in `httpx/_client.py` at line 1456, there's a call to `AsyncHTTPTransport` with keyword arguments `verify` and `cert`, but these arguments are not defined in the `AsyncHTTPTransport` constructor signature (as noted in `httpx/_transports/default.py:260`).\n\nAdditionally, the variables `verify` and `cert` are being used without being defined in the local scope.\n\n## Specific Changes Needed\n\nThe issue is in `httpx/_client.py` where `AsyncHTTPTransport` is being instantiated with incorrect arguments. Based on the error pattern, it appears that the code is trying to pass SSL configuration parameters (`verify` and `cert`) to `AsyncHTTPTransport`, but these parameters don't exist in the constructor.\n\nLooking at the error and the typical pattern in HTTP clients, these parameters should likely be passed to the underlying SSL context or connection pool, not directly to the transport.\n\n## Modified Code\n\nThe fix involves updating the `AsyncHTTPTransport` instantiation in `httpx/_client.py` to remove the invalid `verify` and `cert` keyword arguments, and ensure these variables are properly defined if they're needed elsewhere.\n\nHere's the likely fix needed in `httpx/_client.py` around line 1456:\n\n```python\n# Before (causing the error):\n# transport = AsyncHTTPTransport(\n#     verify=verify,\n#     cert=cert,\n#     ...\n# )\n\n# After (corrected):\ntransport = AsyncHTTPTransport(\n    # Remove verify and cert from here\n    # These should be handled by the SSL context or connection configuration\n    ...\n)\n```\n\nHowever, since we need to see the actual context, here's a more targeted fix based on common patterns in HTTP client libraries:\n\n```python\n# In httpx/_client.py around line 1456\n# The issue is likely in the AsyncClient initialization or transport creation\n\n# Instead of:\n# self._transport = AsyncHTTPTransport(\n#     verify=verify,\n#     cert=cert,\n#     ...\n# )\n\n# It should be:\nssl_context = create_ssl_context(verify=verify, cert=cert)\nself._transport = AsyncHTTPTransport(\n    ssl_context=ssl_context,\n    ...\n)\n```\n\nOr, if `verify` and `cert` are meant to be instance variables:\n\n```python\n# Ensure verify and cert are defined before use\nverify = self._verify\ncert = self._cert\n# Then use them appropriately, not as direct arguments to AsyncHTTPTransport\n```\n\nSince I cannot see the exact code, the most likely fix is to remove the `verify` and `cert` keyword arguments from the `AsyncHTTPTransport` constructor call and handle SSL configuration through the proper SSL context parameter or other appropriate mechanism.\n\nThe exact fix would be:\n\n```python\n# In httpx/_client.py line 1456\n# Change from:\ntransport = AsyncHTTPTransport(\n    verify=verify,\n    cert=cert,\n    # other args...\n)\n\n# To:\ntransport = AsyncHTTPTransport(\n    # other valid args...\n)\n```\n\nAnd ensure that `verify` and `cert` variables are properly defined in the scope where they're actually needed (likely for SSL context creation).",
+  "evaluation": {
+    "success": true,
+    "score": 0.5218974358974359,
+    "explanation": "Similarity: 0.453, Key fixes: 0.625",
+    "details": {
+      "similarity_score": 0.45316239316239315,
+      "key_fixes_score": 0.625,
+      "predicted_changes": {
+        "httpx/_client.py": [
+          "# Before (causing the error):\n# transport = AsyncHTTPTransport(\n#     verify=verify,\n#     cert=cert,\n#     ...\n# )\n\n# After (corrected):\ntransport = AsyncHTTPTransport(\n    # Remove verify and cert from here\n    # These should be handled by the SSL context or connection configuration\n    ...\n)",
+          "# In httpx/_client.py around line 1456\n# The issue is likely in the AsyncClient initialization or transport creation\n\n# Instead of:\n# self._transport = AsyncHTTPTransport(\n#     verify=verify,\n#     cert=cert,\n#     ...\n# )\n\n# It should be:\nssl_context = create_ssl_context(verify=verify, cert=cert)\nself._transport = AsyncHTTPTransport(\n    ssl_context=ssl_context,\n    ...\n)",
+          "# Ensure verify and cert are defined before use\nverify = self._verify\ncert = self._cert\n# Then use them appropriately, not as direct arguments to AsyncHTTPTransport",
+          "# In httpx/_client.py line 1456\n# Change from:\ntransport = AsyncHTTPTransport(\n    verify=verify,\n    cert=cert,\n    # other args...\n)\n\n# To:\ntransport = AsyncHTTPTransport(\n    # other valid args...\n)"
+        ]
+      },
+      "target_changes": {
+        "httpx/_client.py": "index e5cff5d..4dd2d07 100644\n--- a/httpx/_client.py\n+++ b/httpx/_client.py\n@@ -1455,8 +1455,6 @@ class AsyncClient(BaseClient):\n     ) -> AsyncBaseTransport:\n         return AsyncHTTPTransport(\n             ssl_context=ssl_context,\n-            verify=verify,\n-            cert=cert,\n             http1=http1,\n             http2=http2,\n             limits=limits,\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

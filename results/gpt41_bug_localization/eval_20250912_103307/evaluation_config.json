@@ -1,0 +1,35 @@
+{
+  "dataset_path": "/Users/xiaoyunting/Documents/ModelDev/working_path/datasets/long_code_arena/datasets/lca_bug_localization",
+  "repos_path": "/Users/xiaoyunting/Documents/ModelDev/working_path/datasets/long_code_arena/datasets/lca_bug_localization/repos",
+  "output_dir": "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/results/gpt41_bug_localization",
+  "language": "py",
+  "split": "test",
+  "max_context_files": 50,
+  "batch_size": 1,
+  "limit": 5,
+  "model_name": "openai-chat-completions",
+  "model_params": {
+    "model": "gpt-4.1",
+    "base_url": "http://211.23.3.237:27544/v1/chat/completions",
+    "temperature": 0.8,
+    "top_p": 0.5,
+    "max_tokens": 8192,
+    "max_retries": 10,
+    "timeout": 120,
+    "apply_chat_template": true
+  },
+  "qianfan_params": {
+    "model": "qwen3-235b-a22b-instruct-2507",
+    "base_url": "https://qianfan.baidubce.com/v2/chat/completions",
+    "api_key": null,
+    "max_tokens": 1024,
+    "temperature": 0.1,
+    "num_concurrent": 5,
+    "max_retries": 10,
+    "timeout": 120,
+    "stop": "<|endoftext|>",
+    "apply_chat_template": true
+  },
+  "evaluation_duration": 6.049475193023682,
+  "timestamp": "2025-09-12T10:33:31.264490"
+}

@@ -1,0 +1,44 @@
+{
+  "timestamp": "2025-09-07T22:25:39.949488",
+  "sample_info": {
+    "index": 24,
+    "original_index": 24,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 57,
+  "repo_owner": "hacs",
+  "repo_name": "integration",
+  "difficulty": 2,
+  "generation_time": 11.047553777694702,
+  "prediction": "# Analysis of the Failure Cause\n\nThe CI workflow is failing due to two pre-commit hooks (`pyupgrade` and `black`) modifying files during execution, which causes the job to fail because the changes are not committed to the repository.\n\nLooking at the logs:\n- `pyupgrade` modified `tests/common.py`\n- `black` also modified files (though not specified which ones)\n\nThe root cause is that **pre-commit hooks are configured to modify files in-place**, but the CI workflow does not allow uncommitted changes. In a CI environment, it's common to run pre-commit hooks in a \"check-only\" mode (i.e., fail if files need formatting) rather than automatically rewriting them.\n\nAdditionally, the workflow uses `--hook-stage manual`, which is not the standard way to run pre-commit hooks in CI. The `manual` stage is typically used for interactive use, not CI.\n\n## Solution\n\nWe need to:\n1. Change the pre-commit hook behavior to **not modify files** in CI (i.e., fail if formatting is needed, but don't rewrite)\n2. Use the correct hook stage (`commit` or `push`) instead of `manual`\n3. Ensure the workflow doesn't fail due to uncommitted changes\n\n## Specific Changes Needed\n\n### 1. Fix the `matrix` job to use `--files` instead of `--all-files` and avoid modifying files\n\nThe `--all-files` flag causes pre-commit to modify files, which is not safe in CI. We should use `--files` to only check specific files, and ensure hooks don't modify them.\n\n### 2. Update the `pre-commit run` command to use `--no-verify` and `--files` with proper configuration\n\n### 3. Fix the `lint-json` job to properly use `jq` and handle the environment\n\n### 4. Add a step to check for uncommitted changes after pre-commit runs\n\n---\n\n## ✅ Modified Workflow File\n\n```yaml\nname: Lint\n\non:\n  pull_request:\n    branches:\n      - main\n  push:\n    branches:\n      - main\n\nconcurrency:\n  group: lint-${{ github.ref }}\n  cancel-in-progress: true\n\njobs:\n  matrix:\n    runs-on: ubuntu-latest\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    name: Run ${{ matrix.check }}\n    strategy:\n      matrix:\n        check:\n          - pyupgrade\n          - black\n          - codespell\n          - check-executables-have-shebangs\n          - check-json\n          - requirements-txt-fixer\n          - check-ast\n          - mixed-line-ending\n    steps:\n      - name: 📥 Checkout the repository\n        uses: actions/checkout@v4.1.1\n        with:\n          fetch-depth: 0  # Ensure full history for pre-commit\n\n      - name: 🛠️ Set up Python\n        uses: actions/setup-python@v4.7.1\n        id: python\n        with:\n          python-version: \"3.11\"\n\n      - name: 📦 Install pre-commit\n        run: |\n          scripts/install/pip_packages pre-commit\n          pre-commit install-hooks --config .github/pre-commit-config.yaml\n\n      - name: 🏃 Run the check (${{ matrix.check }})\n        run: |\n          # Use --files to avoid modifying files in CI\n          # Use --hook-stage commit instead of manual\n          pre-commit run --hook-stage commit ${{ matrix.check }} --files --config .github/pre-commit-config.yaml\n        # Don't fail on exit code 1 if we're just checking\n        # But we want to fail if there are issues\n        # So we keep the default behavior: fail on non-zero exit\n\n      # Optional: Check for uncommitted changes after pre-commit\n      - name: 🧹 Check for uncommitted changes\n        run: |\n          if git diff --quiet; then\n            echo \"No uncommitted changes.\"\n          else\n            echo \"Uncommitted changes detected after pre-commit!\"\n            git diff\n            exit 1\n          fi\n\n  lint-json:\n    runs-on: ubuntu-latest\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    name: With JQ\n    steps:\n      - name: 📥 Checkout the repository\n        uses: actions/checkout@v4.1.1\n        with:\n          fetch-depth: 0\n\n      - name: 🏃 Run validation\n        run: |\n          jq -r -e -c . tests/fixtures/*.json\n        env:\n          PIP_INDEX_URL: http://localhost:86",
+  "evaluation": {
+    "success": true,
+    "score": 0.6447881530234472,
+    "explanation": "Similarity: 0.408, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.4079802550390786,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "tures/*.json": [
+          "### 1. Fix the `matrix` job to use `--files` instead of `--all-files` and avoid modifying files",
+          "### 3. Fix the `lint-json` job to properly use `jq` and handle the environment",
+          "- requirements-txt-fixer",
+          "# So we keep the default behavior: fail on non-zero exit",
+          "jq -r -e -c . tests/fixtures/*.json"
+        ],
+        "tests/common.py": [
+          "### 1. Fix the `matrix` job to use `--files` instead of `--all-files` and avoid modifying files",
+          "### 3. Fix the `lint-json` job to properly use `jq` and handle the environment",
+          "- requirements-txt-fixer",
+          "# So we keep the default behavior: fail on non-zero exit",
+          "jq -r -e -c . tests/fixtures/*.json"
+        ]
+      },
+      "target_changes": {
+        "tests/common.py": "index 190a2fba..ea30646a 100644\n--- a/tests/common.py\n+++ b/tests/common.py\n@@ -13,7 +13,13 @@ from unittest.mock import AsyncMock, Mock, patch\n from aiohttp import ClientSession, ClientWebSocketResponse\n from aiohttp.typedefs import StrOrURL\n from awesomeversion import AwesomeVersion\n-from homeassistant import auth, bootstrap, config_entries, core as ha, config as ha_config\n+from homeassistant import (\n+    auth,\n+    bootstrap,\n+    config as ha_config,\n+    config_entries,\n+    core as ha,\n+)\n from homeassistant.auth import auth_store, models as auth_models\n from homeassistant.const import (\n     EVENT_HOMEASSISTANT_CLOSE,\n@@ -49,13 +55,13 @@ TOKEN = \"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\"\n INSTANCES = []\n REQUEST_CONTEXT: ContextVar[pytest.FixtureRequest] = ContextVar(\"request_context\", default=None)\n \n-IGNORED_BASE_FILES = set([\n-        \"/config/automations.yaml\",\n-        \"/config/configuration.yaml\",\n-        \"/config/scenes.yaml\",\n-        \"/config/scripts.yaml\",\n-        \"/config/secrets.yaml\",\n-    ])\n+IGNORED_BASE_FILES = {\n+    \"/config/automations.yaml\",\n+    \"/config/configuration.yaml\",\n+    \"/config/scenes.yaml\",\n+    \"/config/scripts.yaml\",\n+    \"/config/secrets.yaml\",\n+}\n \n \n def safe_json_dumps(data: dict | list) -> str:\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

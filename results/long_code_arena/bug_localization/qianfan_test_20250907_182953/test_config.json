@@ -1,0 +1,8 @@
+{
+  "model_name": "openai-chat-completions",
+  "model_args": "model=qwen3-235b-a22b-instruct-2507,base_url=https://qianfan.baidubce.com/v2/chat/completions,num_concurrent=5,max_retries=10,tokenized_requests=False,stop=<|endoftext|>,timeout=120",
+  "task": "lca_bug_localization_py",
+  "limit": 3,
+  "timestamp": "2025-09-07T18:29:53.260203",
+  "description": "Small test with Qianfan API"
+}

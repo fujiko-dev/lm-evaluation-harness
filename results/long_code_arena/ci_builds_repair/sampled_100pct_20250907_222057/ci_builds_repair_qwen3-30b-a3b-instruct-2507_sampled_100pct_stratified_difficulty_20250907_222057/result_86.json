@@ -1,0 +1,57 @@
+{
+  "timestamp": "2025-09-07T22:27:32.127607",
+  "sample_info": {
+    "index": 32,
+    "original_index": 32,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 86,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 8.948928117752075,
+  "prediction": "### 1. **Analysis of the Failure Cause**\n\nThe CI workflow is failing due to a **`flake8`** linting error in the file:\n\n```\ntests/core/tests/test_resources/test_resources.py:4:1: F401 'copy.deepcopy' imported but unused\n```\n\n#### Breakdown:\n- The `flake8` linter is configured in the `pre-commit` hooks.\n- It detected that `copy.deepcopy` was imported but **not used** anywhere in the file.\n- This is a **valid and intentional** flake8 rule (`F401`): \"imported but unused\".\n- The error is **not** due to the workflow configuration, but due to **code in the repository** that violates the linting policy.\n\n#### Why did it start failing?\n- The **commit `c359d794dd0e4baf40be48d584193f88c2213f37`** introduced or modified this file in a way that added an unused import.\n- The **previous commit `857bb8b9f8df6c042d03fd331ac04c8d4bc35d8d`** passed, so the issue is **not** in the workflow itself, but in the **code change** between those two commits.\n\n> ✅ **Conclusion**: The **CI failure is not due to a misconfigured workflow**, but due to **unused import `copy.deepcopy`** in `test_resources.py`. The workflow is working correctly — it's enforcing code quality.\n\n---\n\n### 2. **Specific Changes Needed to Fix the Issue**\n\nTo fix the CI failure, you must **remove the unused import** `copy.deepcopy` from the file:\n\n```\ntests/core/tests/test_resources/test_resources.py\n```\n\n#### Steps:\n1. Open `tests/core/tests/test_resources/test_resources.py`.\n2. Find the line that imports `copy.deepcopy` (likely around line 4).\n3. Remove the import if it's not used.\n4. Commit the change.\n\n> ⚠️ **Important**: Do **not** modify the `.github/workflows/pre-commit.yml` file — it is correct and working as intended.\n\n---\n\n### 3. **Modified Code/Configuration**\n\n#### ✅ Fix: Remove unused import in `test_resources.py`\n\n**Before (failing):**\n```python\nfrom copy import deepcopy\n# ... other imports\n```\n\n**After (fixed):**\n```python\n# Removed 'deepcopy' import since it's not used\n```\n\n> If `deepcopy` is actually used later in the file, then you must **use it** (e.g., `deepcopy(some_object)`). But based on the error, it's **not used**, so removal is safe.\n\n---\n\n### ✅ Final Recommendation\n\n- **Do not change the workflow file** — it's correct.\n- **Fix the code** by removing the unused import.\n- Push the fix to a new commit (e.g., `fix: remove unused deepcopy import`).\n- The CI will then pass.\n\n---\n\n### 🔍 Bonus: How to Avoid This in the Future\n\n- Use `pre-commit` locally to catch such issues early:\n  ```bash\n  pip install pre-commit\n  pre-commit install\n  ```\n- Run `pre-commit run --all-files` before pushing.\n\n---\n\n### ✅ Summary\n\n| Item | Status |\n|------|--------|\n| Root Cause | Unused `copy.deepcopy` import in `test_resources.py` |\n| Fix | Remove unused import from `tests/core/tests/test_resources/test_resources.py` |\n| Workflow Change Needed? | ❌ No — workflow is correct |\n| Action | Commit the code fix, push, and CI will pass |\n\n> ✅ **The fix is purely a code change — no workflow modification required.**",
+  "evaluation": {
+    "success": false,
+    "score": 0.46258356643356646,
+    "explanation": "Similarity: 0.104, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.10430594405594407,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "copy.deepcopy": [
+          "tests/core/tests/test_resources/test_resources.py:4:1: F401 'copy.deepcopy' imported but unused",
+          "tests/core/tests/test_resources/test_resources.py",
+          "from copy import deepcopy\n# ... other imports",
+          "# Removed 'deepcopy' import since it's not used"
+        ],
+        "test_resources.py": [
+          "tests/core/tests/test_resources/test_resources.py:4:1: F401 'copy.deepcopy' imported but unused",
+          "tests/core/tests/test_resources/test_resources.py",
+          "from copy import deepcopy\n# ... other imports",
+          "# Removed 'deepcopy' import since it's not used"
+        ],
+        "tests/core/tests/test_resources/test_resources.py": [
+          "tests/core/tests/test_resources/test_resources.py:4:1: F401 'copy.deepcopy' imported but unused",
+          "tests/core/tests/test_resources/test_resources.py",
+          "from copy import deepcopy\n# ... other imports",
+          "# Removed 'deepcopy' import since it's not used"
+        ],
+        ".github/workflows/pre-commit.yml": [
+          "tests/core/tests/test_resources/test_resources.py:4:1: F401 'copy.deepcopy' imported but unused",
+          "tests/core/tests/test_resources/test_resources.py",
+          "from copy import deepcopy\n# ... other imports",
+          "# Removed 'deepcopy' import since it's not used"
+        ]
+      },
+      "target_changes": {
+        "docs/changelog.rst": "index 09dc80c6..d20ed2e7 100644\n--- a/docs/changelog.rst\n+++ b/docs/changelog.rst\n@@ -13,7 +13,6 @@ Please refer to :doc:`release notes<release_notes>`.\n - Import form defaults to read-only field if only one format defined (#1690)\n - Refactored :module:`~import_export.resources` into separate modules for ``declarative`` and ``options`` (#1695)\n - fix multiple inheritance not setting options (#1696)\n-- Refactored tests to remove dependencies between tests (#1703)\n \n 4.0.0-beta.1 (2023-11-16)\n --------------------------",
+        "import_export/admin.py": "index 167a4fe1..66964e4f 100644\n--- a/import_export/admin.py\n+++ b/import_export/admin.py\n@@ -207,7 +207,7 @@ class ImportMixin(BaseImportMixin, ImportExportMixinBase):\n     def generate_log_entries(self, result, request):\n         if not self.get_skip_admin_log():\n             # Add imported objects to LogEntry\n-            if django.VERSION >= (5, 0):\n+            if django.VERSION >= (6, 0):\n                 self._log_actions(result, request)\n             else:\n                 logentry_map = {",
+        "tests/core/tests/test_resources/test_resources.py": "index 82ef08bd..408317c7 100644\n--- a/tests/core/tests/test_resources/test_resources.py\n+++ b/tests/core/tests/test_resources/test_resources.py\n@@ -1092,15 +1092,8 @@ class ModelResourceTest(TestCase):\n \n     @ignore_widget_deprecation_warning\n     def test_import_data_skip_unchanged(self):\n-        class MyBookResource(resources.ModelResource):\n-            save_count = 0\n-\n-            def save_instance(self, instance, is_create, row, **kwargs):\n-                self.save_count += 1\n-\n-            class Meta:\n-                skip_unchanged = True\n-                model = Book\n+        def attempted_save(instance, new, using_transactions, real_dry_run):\n+            self.fail(\"Resource attempted to save instead of skipping\")\n \n         # Make sure we test with ManyToMany related objects\n         cat1 = Category.objects.create(name=\"Cat 1\")\n@@ -1111,15 +1104,16 @@ class ModelResourceTest(TestCase):\n \n         # Create a new resource that attempts to reimport the data currently\n         # in the database while skipping unchanged rows (i.e. all of them)\n-        resource = MyBookResource()\n+        resource = deepcopy(self.resource)\n+        resource._meta.skip_unchanged = True\n+        # Fail the test if the resource attempts to save the row\n+        resource.save_instance = attempted_save\n         result = resource.import_data(dataset, raise_errors=True)\n         self.assertFalse(result.has_errors())\n         self.assertEqual(len(result.rows), len(dataset))\n         self.assertTrue(result.rows[0].diff)\n         self.assertEqual(result.rows[0].import_type, results.RowResult.IMPORT_TYPE_SKIP)\n         self.assertEqual(result.rows[0].object_id, self.book.pk)\n-        if resource.save_count > 0:\n-            self.fail(\"Resource attempted to save instead of skipping\")\n \n         # Test that we can suppress reporting of skipped rows\n         resource._meta.report_skipped = False",
+        "tests/core/tests/test_results.py": "index 35db0268..fa2e487c 100644\n--- a/tests/core/tests/test_results.py\n+++ b/tests/core/tests/test_results.py\n@@ -56,8 +56,12 @@ class ResultTest(TestCase):\n         self.assertEqual(\"\", row_result.object_repr)\n \n     def test_add_instance_info(self):\n+        class BookWithObjectRepr(Book):\n+            def __str__(self):\n+                return self.name\n+\n         row_result = RowResult()\n-        row_result.add_instance_info(Book(pk=1, name=\"some book\"))\n+        row_result.add_instance_info(BookWithObjectRepr(pk=1, name=\"some book\"))\n         self.assertEqual(1, row_result.object_id)\n         self.assertEqual(\"some book\", row_result.object_repr)\n \n"
+      },
+      "difficulty": 0
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "model": "gpt-4.1",
+  "timestamp": "20250911_193016",
+  "summary": {
+    "total_samples": 3,
+    "successful_samples": 3,
+    "success_rate": 1.0,
+    "exact_match": 0.0,
+    "edit_distance": 31.666666666666668,
+    "normalized_edit_distance": 0.5831501831501832,
+    "bleu_score": 0.34722222222222215,
+    "character_similarity": 0.41684981684981687,
+    "api_stats": {
+      "total_samples": 3,
+      "successful_calls": 3,
+      "failed_calls": 0,
+      "timeouts": 0,
+      "errors": 0
+    }
+  },
+  "results": [
+    {
+      "sample_id": 0,
+      "repo": "ossf__fuzz-introspector",
+      "filename": "src/fuzz_introspector/data_loader.py",
+      "line_number": 75,
+      "line_type": "commited",
+      "prediction": "def add_func_to_reached_and_clone(visited_functions, function):",
+      "target": "    merged_profile_old: project_profile.MergedProjectProfile,",
+      "success": true,
+      "error": null,
+      "exact_match": 0.0,
+      "edit_distance": 54,
+      "normalized_edit_distance": 0.8571428571428571,
+      "bleu_score": 0.0,
+      "character_similarity": 0.1428571428571429
+    },
+    {
+      "sample_id": 1,
+      "repo": "ossf__fuzz-introspector",
+      "filename": "src/fuzz_introspector/datatypes/fuzzer_profile.py",
+      "line_number": 99,
+      "line_type": "common",
+      "prediction": "html_data = json.load(jf)",
+      "target": "                data = json.load(jf)",
+      "success": true,
+      "error": null,
+      "exact_match": 0.0,
+      "edit_distance": 5,
+      "normalized_edit_distance": 0.2,
+      "bleu_score": 0.6666666666666666,
+      "character_similarity": 0.8
+    },
+    {
+      "sample_id": 2,
+      "repo": "ossf__fuzz-introspector",
+      "filename": "src/fuzz_introspector/datatypes/project_profile.py",
+      "line_number": 74,
+      "line_type": "commited",
+      "prediction": "if fd.function_name in profile2.all_class_functions:",
+      "target": "                    if profile2.reaches(fd.function_name):",
+      "success": true,
+      "error": null,
+      "exact_match": 0.0,
+      "edit_distance": 36,
+      "normalized_edit_distance": 0.6923076923076923,
+      "bleu_score": 0.375,
+      "character_similarity": 0.3076923076923077
+    }
+  ],
+  "config": {
+    "base_url": "http://211.23.3.237:27544/v1/chat/completions",
+    "max_tokens": 200,
+    "temperature": 0.8,
+    "top_p": 0.5,
+    "timeout": 30,
+    "delay": 2.0
+  }
+}

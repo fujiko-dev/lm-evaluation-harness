@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-09-07T22:25:56.636447",
+  "sample_info": {
+    "index": 17,
+    "original_index": 17,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 40,
+  "repo_owner": "beetbox",
+  "repo_name": "beets",
+  "difficulty": 2,
+  "generation_time": 10.934204816818237,
+  "prediction": "Looking at the CI failure logs, I can identify the root cause and provide a solution.\n\n## Analysis of the Failure Cause\n\nThe CI workflow is failing because the code formatting check detected that one file is not properly formatted:\n\n```\nstderr: would reformat /home/runner/work/beets/beets/test/plugins/test_smartplaylist.py\nstderr: Oh no! 💥 💔 💥\n1 file would be reformatted, 184 files would be left unchanged.\n```\n\nThis means the file `test/plugins/test_smartplaylist.py` does not conform to the expected formatting standards enforced by `black` and/or `isort`. The formatting check job is designed to fail when code doesn't meet the style requirements.\n\n## Specific Changes Needed\n\nThere are two approaches to fix this issue:\n\n### Approach 1: Fix the actual formatting issue (Recommended for long-term maintenance)\nThe file `test/plugins/test_smartplaylist.py` needs to be reformatted using the same tools (black and isort) that the CI uses for checking.\n\n### Approach 2: Fix the workflow configuration issue\nThere's also a configuration problem in the workflow file - the checkout step is incorrectly named. It says \"Install dependencies\" but it should say \"Checkout code\".\n\n## Modified Code/Configuration\n\nHere's the corrected workflow file:\n\n```yaml\nname: formatting_check\nrun-name: Check code formatting\non: [push, pull_request]\njobs:\n  formatting_check:\n    runs-on: ubuntu-latest\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    steps:\n      - name: Checkout code\n        uses: actions/checkout@v3\n\n      - name: Run formatting check\n        uses: paolorechia/pox@v1.0.1\n        with:\n          tox_env: \"format_check\"\n\nenv:\n  PIP_INDEX_URL: http://localhost:8629/2023-12-15\n  UV_INDEX_URL: http://localhost:8629/2023-12-15\n```\n\n**Primary fix**: Changed the step name from \"Install dependencies\" to \"Checkout code\" for clarity and correctness.\n\nHowever, to fully resolve the CI failure, you would also need to run the following commands locally to fix the formatting issue:\n\n```bash\n# Install the formatting tools\npip install black isort\n\n# Run the formatters on the problematic file\nblack test/plugins/test_smartplaylist.py\nisort test/plugins/test_smartplaylist.py\n\n# Or run them on the entire codebase\nblack beets beetsplug test\nisort beets beetsplug test\n```\n\nThen commit and push the formatted file to resolve the CI failure.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6619428571428572,
+    "explanation": "Similarity: 0.437, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.4365714285714286,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "test/plugins/test_smartplaylist.py": [
+          "stderr: would reformat /home/runner/work/beets/beets/test/plugins/test_smartplaylist.py\nstderr: Oh no! 💥 💔 💥\n1 file would be reformatted, 184 files would be left unchanged.",
+          "name: formatting_check\nrun-name: Check code formatting\non: [push, pull_request]\njobs:\n  formatting_check:\n    runs-on: ubuntu-latest\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    steps:\n      - name: Checkout code\n        uses: actions/checkout@v3\n\n      - name: Run formatting check\n        uses: paolorechia/pox@v1.0.1\n        with:\n          tox_env: \"format_check\"\n\nenv:\n  PIP_INDEX_URL: http://localhost:8629/2023-12-15\n  UV_INDEX_URL: http://localhost:8629/2023-12-15",
+          "# Install the formatting tools\npip install black isort\n\n# Run the formatters on the problematic file\nblack test/plugins/test_smartplaylist.py\nisort test/plugins/test_smartplaylist.py\n\n# Or run them on the entire codebase\nblack beets beetsplug test\nisort beets beetsplug test"
+        ]
+      },
+      "target_changes": {
+        "test/plugins/test_smartplaylist.py": "index eecf408f1..4685e1491 100644\n--- a/test/plugins/test_smartplaylist.py\n+++ b/test/plugins/test_smartplaylist.py\n@@ -241,7 +241,6 @@ class SmartPlaylistTest(_common.TestCase):\n             + b\"http://beets:8337/files/tagada.mp3\\n\",\n         )\n \n-\n     def test_playlist_update_uri_template(self):\n         spl = SmartPlaylistPlugin()\n \n@@ -263,7 +262,8 @@ class SmartPlaylistTest(_common.TestCase):\n         spl._matched_playlists = [pl]\n \n         dir = bytestring_path(mkdtemp())\n-        config[\"smartplaylist\"][\"uri_template\"] = \"http://beets:8337/item/$id/file\"\n+        tpl = \"http://beets:8337/item/$id/file\"\n+        config[\"smartplaylist\"][\"uri_template\"] = tpl\n         config[\"smartplaylist\"][\"playlist_dir\"] = py3_path(dir)\n         try:\n             spl.update_playlists(lib)\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

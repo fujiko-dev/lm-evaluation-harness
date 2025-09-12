@@ -1,0 +1,14 @@
+{
+  "model": "openai-chat-completions",
+  "split": "test",
+  "timestamp": "2025-09-11T18:50:10.397859",
+  "lca_commit_message_generation_metrics": {
+    "bleu": 0.6159623451814173,
+    "rouge1": 9.778194709141,
+    "rouge2": 1.25,
+    "rougeL": 7.601724120905706,
+    "bert_f1": 0.0,
+    "length_ratio": 0.3214798266409987
+  },
+  "total_samples": 5
+}

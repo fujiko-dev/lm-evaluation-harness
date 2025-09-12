@@ -1,0 +1,38 @@
+{
+  "timestamp": "2025-09-07T22:48:20.667488",
+  "sample_info": {
+    "index": 56,
+    "original_index": 56,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 159,
+  "repo_owner": "mwaskom",
+  "repo_name": "seaborn",
+  "difficulty": 2,
+  "generation_time": 29.824794054031372,
+  "prediction": "From analyzing the failure logs, there are several related issues all stemming from the same root cause:\n\n1. **Root Cause**:\n   - The main error is `NameError: name 'get_layout_engine' is not defined` occurring in multiple places:\n     - In docs building (nbconvert)\n     - In linting (flake8)\n     - In tests for layout functionality\n   - This suggests the seaborn code is trying to use `get_layout_engine()` which was introduced in matplotlib 3.6, but either:\n     - The matplotlib version being used is incompatible (too old)\n     - The function isn't being imported correctly in seaborn's code\n\n2. **Evidence**:\n   - The error appears consistently across different parts of the workflow\n   - Some tests are marked with `@pytest.mark.skipif(_version_predates(mpl, \"3.6\"))` indicating version sensitivity\n   - Pandoc version warnings suggest dependency version mismatches\n\n3. **Solution**:\nWe need to:\n1. Ensure matplotlib 3.6+ is being installed\n2. Fix the import of `get_layout_engine` in seaborn's code\n\nHere are the necessary changes:\n\nFirst, modify the workflow to pin matplotlib version:\n\n```yaml\n# In the workflow file (.github/workflows/ci.yaml), modify the \"Install seaborn\" step:\n\n      - name: Install seaborn\n        run: |\n          pip install --upgrade pip\n          pip install \"matplotlib>=3.6\"  # Add this line to ensure correct version\n          pip install .[stats,docs]\n```\n\nSecond, the linting and test failures indicate seaborn's code needs to properly import `get_layout_engine` from matplotlib. We should add these imports to seaborn's `_core/plot.py`:\n\n```python\n# In seaborn/_core/plot.py, add these imports at the top:\ntry:\n    from matplotlib.figure import get_layout_engine\nexcept ImportError:\n    def get_layout_engine(fig):\n        \"\"\"Fallback for matplotlib < 3.6\"\"\"\n        return None\n```\n\nThis change:\n1. Ensures proper matplotlib version is installed\n2. Provides a fallback for older matplotlib versions\n3. Maintains backward compatibility while fixing the immediate issue\n\nThe test failures should now pass since:\n- Tests checking matplotlib version compatibility will either:\n  - Run normally with proper imports (for matplotlib ≥ 3.6)\n  - Skip properly with the version check (for older matplotlib)\n- The docs building will succeed because nbconvert will have the proper dependencies\n- Linting will pass because the undefined name will be properly defined\n\nThe changes are minimal but address the core issue across all failing parts of the workflow.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6562605042016807,
+    "explanation": "Similarity: 0.427, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.4271008403361345,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "(.github/workflows/ci.yaml": [
+          "# In the workflow file (.github/workflows/ci.yaml), modify the \"Install seaborn\" step:\n\n      - name: Install seaborn\n        run: |\n          pip install --upgrade pip\n          pip install \"matplotlib>=3.6\"  # Add this line to ensure correct version\n          pip install .[stats,docs]",
+          "# In seaborn/_core/plot.py, add these imports at the top:\ntry:\n    from matplotlib.figure import get_layout_engine\nexcept ImportError:\n    def get_layout_engine(fig):\n        \"\"\"Fallback for matplotlib < 3.6\"\"\"\n        return None"
+        ],
+        "_core/plot.py": [
+          "# In the workflow file (.github/workflows/ci.yaml), modify the \"Install seaborn\" step:\n\n      - name: Install seaborn\n        run: |\n          pip install --upgrade pip\n          pip install \"matplotlib>=3.6\"  # Add this line to ensure correct version\n          pip install .[stats,docs]",
+          "# In seaborn/_core/plot.py, add these imports at the top:\ntry:\n    from matplotlib.figure import get_layout_engine\nexcept ImportError:\n    def get_layout_engine(fig):\n        \"\"\"Fallback for matplotlib < 3.6\"\"\"\n        return None"
+        ]
+      },
+      "target_changes": {
+        "seaborn/_core/plot.py": "index af4669c6..39ccd2e0 100644\n--- a/seaborn/_core/plot.py\n+++ b/seaborn/_core/plot.py\n@@ -40,7 +40,7 @@ from seaborn._core.typing import (\n )\n from seaborn._core.exceptions import PlotSpecError\n from seaborn._core.rules import categorical_order\n-from seaborn._compat import set_layout_engine\n+from seaborn._compat import get_layout_engine, set_layout_engine\n from seaborn.rcmod import axes_style, plotting_context\n from seaborn.palettes import color_palette\n \n"
+      },
+      "difficulty": 2
+    }
+  }
+}

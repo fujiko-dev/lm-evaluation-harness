@@ -1,0 +1,33 @@
+{
+  "overall_summary": {
+    "total_models": 1,
+    "successful_models": 1,
+    "failed_models": 0,
+    "total_evaluation_time_minutes": 0.43781476815541587
+  },
+  "model_summaries": {
+    "deepseek-v3": {
+      "model_key": "deepseek-v3",
+      "evaluation_summary": {
+        "total_samples": 3,
+        "successful_samples": 3,
+        "failed_samples": 0,
+        "success_rate": 1.0
+      },
+      "performance_metrics": {
+        "avg_f1_score": 0.6666666666666666,
+        "avg_precision": 0.6666666666666666,
+        "avg_recall": 0.6666666666666666,
+        "all_correct_rate": 0.6666666666666666,
+        "at_least_one_correct_rate": 0.6666666666666666,
+        "all_incorrect_rate": 0.3333333333333333
+      },
+      "timing_statistics": {
+        "total_evaluation_time_minutes": 0.3882411162058512,
+        "avg_inference_time_seconds": 1.837027629216512,
+        "min_inference_time_seconds": 1.4436168670654297,
+        "max_inference_time_seconds": 2.31425404548645
+      }
+    }
+  }
+}

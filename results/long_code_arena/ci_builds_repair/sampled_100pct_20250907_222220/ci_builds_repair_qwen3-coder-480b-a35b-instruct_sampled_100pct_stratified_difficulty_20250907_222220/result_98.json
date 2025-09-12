@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-09-07T22:29:51.545085",
+  "sample_info": {
+    "index": 36,
+    "original_index": 36,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 98,
+  "repo_owner": "online-ml",
+  "repo_name": "river",
+  "difficulty": 2,
+  "generation_time": 10.338968753814697,
+  "prediction": "Looking at the CI failure logs, I can identify the root cause and provide a solution.\n\n## Analysis of the Failure Cause\n\nThe CI workflow is failing due to a **type annotation error** detected by `mypy`. Specifically:\n\n1. **Main Error**: In `river/anomaly/sad.py` at line 68, there's an incompatible types assignment where a `Quantile` object is being assigned to a variable expected to be of type `Mean`.\n\n2. **Additional Notes**: There are several \"unchecked\" notes about untyped functions, but these are just informational and don't cause the failure.\n\nThe core issue is a genuine type mismatch that needs to be fixed in the Python code.\n\n## Specific Changes Needed\n\nThe fix requires modifying the `river/anomaly/sad.py` file to resolve the type incompatibility at line 68.\n\n## Modified Code\n\nSince I cannot see the exact code in `river/anomaly/sad.py`, based on the error message, here's what needs to be addressed:\n\n**File: `river/anomaly/sad.py`**\n\nThe error indicates that on line 68, there's an assignment like:\n```python\nvariable: Mean = Quantile(...)  # This causes the type error\n```\n\n**Fix Options:**\n\n1. **Option 1: Change the variable type annotation**\n   ```python\n   # Change from:\n   variable: Mean = quantile_instance\n   # To:\n   variable: Quantile = quantile_instance\n   ```\n\n2. **Option 2: Ensure consistent types in the assignment**\n   ```python\n   # Change from:\n   variable: Mean = Quantile(...)\n   # To:\n   variable: Mean = Mean(...)\n   ```\n\n3. **Option 3: Use Union type if both types are valid**\n   ```python\n   from typing import Union\n   variable: Union[Mean, Quantile] = quantile_instance\n   ```\n\nWithout seeing the full context of the code, the most likely fix is **Option 1** - correcting the type annotation to match the actual assigned type.\n\n**Note**: You would need to examine the specific code in `river/anomaly/sad.py` around line 68 to determine which variable has the type mismatch and apply the appropriate fix based on the intended functionality.\n\nThe other \"unchecked\" notes about untyped functions can be addressed by either:\n- Adding the `--check-untyped-defs` flag to mypy configuration, or  \n- Adding proper type annotations to those functions\n\nBut since they're just notes and not errors, they don't need immediate fixing unless you want to improve overall type coverage.",
+  "evaluation": {
+    "success": true,
+    "score": 0.5219209160305344,
+    "explanation": "Similarity: 0.203, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.20320152671755726,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "river/anomaly/sad.py": [
+          "variable: Mean = Quantile(...)  # This causes the type error"
+        ]
+      },
+      "target_changes": {
+        "river/anomaly/sad.py": "index 959719a589..80c272c5a2 100644\n--- a/river/anomaly/sad.py\n+++ b/river/anomaly/sad.py\n@@ -5,7 +5,7 @@ from river import anomaly, stats\n __all__ = [\"StandardAbsoluteDeviation\"]\n \n \n-class StandardAbsoluteDeviation(anomaly.base.AnomalyDetector):\n+class StandardAbsoluteDeviation(anomaly.base.SupervisedAnomalyDetector):\n     r\"\"\"Standard Absolute Deviation (SAD).\n \n     SAD is the model that calculates the anomaly score by using the deviation from the mean/median, divided by the\n@@ -15,8 +15,9 @@ class StandardAbsoluteDeviation(anomaly.base.AnomalyDetector):\n     This implementation is adapted from the [implementation](https://github.com/selimfirat/pysad/blob/master/pysad/models/standard_absolute_deviation.py)\n     within PySAD (Python Streaming Anomaly Detection) [^2].\n \n-    Despite the fact that this model only works with univariate distribution, the author maintains the required input\n-    to be a dictionary (with length 1) to align with other anomaly detection algorithms implemented within `River`.\n+    As a univariate anomaly detection algorithm, this implementation is adapted to `River` in a similar way as that of\n+    the `GaussianScorer` algorithm, with the variable taken into the account at the learning phase and scoring phase\n+    under variable `y`, ignoring `x`.\n \n     Parameters\n     ----------\n@@ -40,25 +41,25 @@ class StandardAbsoluteDeviation(anomaly.base.AnomalyDetector):\n \n     >>> np.random.seed(42)\n \n-    >>> X = np.random.randn(150, 1)\n+    >>> X = np.random.randn(150)\n \n     >>> model = anomaly.StandardAbsoluteDeviation(sub_stat=\"mean\")\n \n-    >>> for x, _ in stream.iter_array(X):\n-    ...     model.learn_one(x)\n+    >>> for x in X:\n+    ...     model = model.learn_one(None, x)\n \n-    >>> model.score_one({0: 2})\n+    >>> model.score_one(None, 2)\n     2.209735291993561\n \n-    >>> model.score_one({0: 0})\n+    >>> model.score_one(None, 0)\n     0.08736408615569183\n \n-    >>> model.score_one({0: -1})\n-    0.9738215167632427\n+    >>> model.score_one(None, 1)\n+    1.1485496890746263\n \n     \"\"\"\n \n-    def __init__(self, sub_stat: str = \"mean\"):\n+    def __init__(self, sub_stat=None):\n         self.variance = stats.Var()\n         self.sub_stat = sub_stat\n \n@@ -71,18 +72,14 @@ class StandardAbsoluteDeviation(anomaly.base.AnomalyDetector):\n                 f\"Unknown subtracted statistic {self.sub_stat}, expected one of median, mean.\"\n             )\n \n-    def learn_one(self, x):\n-        assert len(x) == 1\n-        ((x_key, x_value),) = x.items()\n+    def learn_one(self, x, y):\n+        self.variance.update(y)\n+        self.subtracted_statistic_estimator.update(y)\n \n-        self.variance.update(x_value)\n-        self.subtracted_statistic_estimator.update(x_value)\n+        return self\n \n-    def score_one(self, x):\n-        assert len(x) == 1\n-        ((x_key, x_value),) = x.items()\n-\n-        score = (x_value - self.subtracted_statistic_estimator.get()) / (\n+    def score_one(self, x, y):\n+        score = (y - self.subtracted_statistic_estimator.get()) / (\n             self.variance.get() ** 0.5 + 1e-10\n         )\n ",
+        "river/test_estimators.py": "index 5cc1ab499b..18aacf32f2 100644\n--- a/river/test_estimators.py\n+++ b/river/test_estimators.py\n@@ -54,7 +54,6 @@ def iter_estimators_which_can_be_tested():\n         River2SKLBase,\n         SKL2RiverBase,\n         anomaly.LocalOutlierFactor,  # needs warm-start to work correctly\n-        anomaly.StandardAbsoluteDeviation,  # SAD only works with data points as dictionaries with length 1.\n         compose.FuncTransformer,\n         compose.Grouper,\n         compose.Pipeline,\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

@@ -1,0 +1,8 @@
+Error: simple_evaluate() got an unexpected keyword argument 'task_config_mapping'
+
+Traceback (most recent call last):
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/tasks/long_code_arena/bug_localization/run_bug_localization_eval.py", line 108, in run_evaluation
+    results = evaluator.simple_evaluate(
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/utils.py", line 456, in _wrapper
+    return fn(*args, **kwargs)
+TypeError: simple_evaluate() got an unexpected keyword argument 'task_config_mapping'

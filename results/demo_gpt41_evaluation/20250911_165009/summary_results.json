@@ -1,0 +1,11 @@
+{
+  "model": "gpt-4.1 (自定义API)",
+  "total_samples": 5,
+  "valid_samples": 5,
+  "failed_samples": 0,
+  "avg_f1_score": 0.4666666666666667,
+  "avg_precision": 0.44000000000000006,
+  "avg_recall": 0.6,
+  "all_correct_rate": 0.4,
+  "at_least_one_correct_rate": 0.6
+}

@@ -1,0 +1,57 @@
+{
+  "timestamp": "2025-09-07T22:27:23.174438",
+  "sample_info": {
+    "index": 31,
+    "original_index": 31,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 85,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 12.379665851593018,
+  "prediction": "### 1. **Analysis of the Failure Cause**\n\nThe CI workflow failed due to a **`flake8`** check failing with the following error:\n\n```\nimport_export/resources.py:1360:89: E501 line too long (101 > 88 characters)\n```\n\nThis is a **style violation** enforced by `flake8` via the `E501` rule, which enforces a maximum line length of 88 characters (the default for `flake8`).\n\n- The line in question is **101 characters long**, exceeding the 88-character limit.\n- The failure occurred during the `pre-commit` run, specifically in the `flake8` hook.\n- The `pre-commit` configuration (not shown in the workflow) is likely using `flake8` with default settings (i.e., `max-line-length=88`).\n- The workflow itself is **not misconfigured** — it's correctly running `pre-commit`, and the failure is due to **non-compliant code** in the repository.\n\n> ✅ **Important Note**: The workflow is working as intended — it's catching a real code style violation. The fix is **not** in the workflow, but in the **source code**.\n\n---\n\n### 2. **Specific Changes Needed to Fix the Issue**\n\nWe need to **refactor the long line in `import_export/resources.py`** at line 1360 to be ≤ 88 characters.\n\nSince the exact line isn't shown in the logs, we can infer it's likely a long string, function call, or complex expression. The fix is to **break the line** using Python’s implicit line continuation (via parentheses, brackets, or backslashes), or restructure the code.\n\n#### ✅ Recommended Fix: Break the line using parentheses (Pythonic and clean)\n\nExample (hypothetical):\n```python\n# Before (too long):\nresult = some_function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)\n```\n\n#### ✅ After (fixed):\n```python\nresult = some_function(\n    arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10,\n    arg11, arg12\n)\n```\n\nOr, if it's a string:\n```python\n# Before:\nmessage = \"This is a very long message that exceeds the 88-character limit and will fail flake8\"\n```\n\n#### ✅ After:\n```python\nmessage = (\n    \"This is a very long message that exceeds the 88-character limit \"\n    \"and will fail flake8\"\n)\n```\n\n> 🔍 **Action**: Open `import_export/resources.py` and go to **line 1360**. Identify the long line and refactor it to be ≤ 88 characters.\n\n---\n\n### 3. **Modified Code/Configuration**\n\n#### ✅ **File: `import_export/resources.py`**\nLocate line 1360 and refactor the line. Example fix:\n\n```python\n# Before (example):\nif some_condition and another_condition and third_condition and fourth_condition and fifth_condition:\n    do_something()\n\n# After:\nif (\n    some_condition\n    and another_condition\n    and third_condition\n    and fourth_condition\n    and fifth_condition\n):\n    do_something()\n```\n\nOr, if it's a long string or argument list:\n\n```python\n# Example: Long string concatenation\nlong_string = (\n    \"This is a very long string that exceeds the 88-character limit \"\n    \"and must be broken into multiple lines for flake8 compliance.\"\n)\n```\n\n> 🛠️ **Do not modify the `.github/workflows/pre-commit.yml`** — it is correct and working. The failure is due to **code style**, not workflow logic.\n\n---\n\n### ✅ Final Recommendation\n\n- **Fix the line in `import_export/resources.py`** at line 1360 by breaking it into multiple lines.\n- Commit and push the fix.\n- The CI will then pass.\n\n> 💡 Pro Tip: You can run `pre-commit run --all-files` locally to catch such issues early.\n\n---\n\n### ✅ Summary\n\n| Item | Status |\n|------|--------|\n| Root Cause | Line too long (101 > 88 chars) in `resources.py` |\n| Fix Required | Refactor line 1360 in `import_export/resources.py` |\n| Workflow Change | ❌ Not needed — workflow is correct |\n| Action | Break long line using parentheses or string concatenation |\n\n✅ **After fixing the code, the CI will pass.**",
+  "evaluation": {
+    "success": true,
+    "score": 0.6606233925290876,
+    "explanation": "Similarity: 0.434, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.43437232088181266,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "import_export/resources.py": [
+          "import_export/resources.py:1360:89: E501 line too long (101 > 88 characters)",
+          "# Before (too long):\nresult = some_function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)",
+          "result = some_function(\n    arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10,\n    arg11, arg12\n)",
+          "# Before:\nmessage = \"This is a very long message that exceeds the 88-character limit and will fail flake8\"",
+          "message = (\n    \"This is a very long message that exceeds the 88-character limit \"\n    \"and will fail flake8\"\n)",
+          "# Before (example):\nif some_condition and another_condition and third_condition and fourth_condition and fifth_condition:\n    do_something()\n\n# After:\nif (\n    some_condition\n    and another_condition\n    and third_condition\n    and fourth_condition\n    and fifth_condition\n):\n    do_something()",
+          "# Example: Long string concatenation\nlong_string = (\n    \"This is a very long string that exceeds the 88-character limit \"\n    \"and must be broken into multiple lines for flake8 compliance.\"\n)"
+        ],
+        ".github/workflows/pre-commit.yml": [
+          "import_export/resources.py:1360:89: E501 line too long (101 > 88 characters)",
+          "# Before (too long):\nresult = some_function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)",
+          "result = some_function(\n    arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10,\n    arg11, arg12\n)",
+          "# Before:\nmessage = \"This is a very long message that exceeds the 88-character limit and will fail flake8\"",
+          "message = (\n    \"This is a very long message that exceeds the 88-character limit \"\n    \"and will fail flake8\"\n)",
+          "# Before (example):\nif some_condition and another_condition and third_condition and fourth_condition and fifth_condition:\n    do_something()\n\n# After:\nif (\n    some_condition\n    and another_condition\n    and third_condition\n    and fourth_condition\n    and fifth_condition\n):\n    do_something()",
+          "# Example: Long string concatenation\nlong_string = (\n    \"This is a very long string that exceeds the 88-character limit \"\n    \"and must be broken into multiple lines for flake8 compliance.\"\n)"
+        ],
+        "resources.py": [
+          "import_export/resources.py:1360:89: E501 line too long (101 > 88 characters)",
+          "# Before (too long):\nresult = some_function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)",
+          "result = some_function(\n    arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10,\n    arg11, arg12\n)",
+          "# Before:\nmessage = \"This is a very long message that exceeds the 88-character limit and will fail flake8\"",
+          "message = (\n    \"This is a very long message that exceeds the 88-character limit \"\n    \"and will fail flake8\"\n)",
+          "# Before (example):\nif some_condition and another_condition and third_condition and fourth_condition and fifth_condition:\n    do_something()\n\n# After:\nif (\n    some_condition\n    and another_condition\n    and third_condition\n    and fourth_condition\n    and fifth_condition\n):\n    do_something()",
+          "# Example: Long string concatenation\nlong_string = (\n    \"This is a very long string that exceeds the 88-character limit \"\n    \"and must be broken into multiple lines for flake8 compliance.\"\n)"
+        ]
+      },
+      "target_changes": {
+        "import_export/resources.py": "index 7d7ad475..99c3fe91 100644\n--- a/import_export/resources.py\n+++ b/import_export/resources.py\n@@ -1357,7 +1357,8 @@ class ModelDeclarativeMetaclass(DeclarativeMetaclass):\n                     continue\n \n                 if f.name in declared_fields:\n-                    # If model field is declared in `ModelResource`, remove it from `declared_fields`\n+                    # If model field is declared in `ModelResource`,\n+                    # remove it from `declared_fields`\n                     # to keep exact order of model fields\n                     field = declared_fields.pop(f.name)\n                 else:\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

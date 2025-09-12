@@ -1,0 +1,45 @@
+{
+  "task": "lca_ci_builds_repair_qwen_fixed_test",
+  "model": "qwen3-235b-a22b-instruct-2507",
+  "model_type": "qianfan_with_fallback",
+  "timestamp": "2025-09-07T19:05:37.363064",
+  "test_info": {
+    "api_fallback_used": true,
+    "total_generation_time": 3.2865498065948486,
+    "avg_generation_time": 1.6432749032974243
+  },
+  "configuration": {
+    "test_samples": 2,
+    "model_config": {
+      "model_name": "qwen3-235b-a22b-instruct-2507",
+      "base_url": "https://qianfan.baidubce.com/v2/chat/completions",
+      "timeout": 30,
+      "max_retries": 2,
+      "stop": "<|endoftext|>"
+    }
+  },
+  "dataset_info": {
+    "total_samples": 2,
+    "statistics": {
+      "total_samples": 2,
+      "difficulty_distribution": {
+        "0": 2
+      },
+      "language_distribution": {
+        "Python": 2
+      },
+      "repository_distribution": {
+        "huggingface/diffusers": 2
+      },
+      "avg_changed_files": 1.5
+    }
+  },
+  "results": {
+    "success_rate": 0.0,
+    "average_score": 0.3559965090771283,
+    "total_samples": 2,
+    "success_rate_difficulty_0": 0.0,
+    "avg_score_difficulty_0": 0.3559965090771283
+  },
+  "individual_results_dir": "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/results/long_code_arena/ci_builds_repair/qwen_fixed_test_20250907_190534"
+}

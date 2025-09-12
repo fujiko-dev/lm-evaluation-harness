@@ -1,0 +1,5 @@
+task: lca_bug_localization
+description: |
+  Bug localization task from Long Code Arena benchmark.
+  Given a bug issue description and repository file list,
+  identify files that need to be modified to fix the bug.

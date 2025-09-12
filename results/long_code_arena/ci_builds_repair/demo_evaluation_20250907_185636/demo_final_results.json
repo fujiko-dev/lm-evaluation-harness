@@ -1,0 +1,30 @@
+{
+  "task": "lca_ci_builds_repair_demo",
+  "model": "demo-model",
+  "model_type": "mock",
+  "timestamp": "2025-09-07T18:56:36.400738",
+  "configuration": {
+    "max_samples": 3,
+    "is_demo": true
+  },
+  "dataset_info": {
+    "total_samples": 3,
+    "statistics": {
+      "total_samples": 3,
+      "difficulty_distribution": {
+        "0": 2,
+        "1": 1
+      },
+      "language_distribution": {
+        "Python": 3
+      },
+      "repository_distribution": {
+        "huggingface/diffusers": 2,
+        "mindsdb/mindsdb": 1
+      },
+      "avg_changed_files": 1.3333333333333333
+    }
+  },
+  "results": {},
+  "individual_results_dir": "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/results/long_code_arena/ci_builds_repair/demo_evaluation_20250907_185636"
+}

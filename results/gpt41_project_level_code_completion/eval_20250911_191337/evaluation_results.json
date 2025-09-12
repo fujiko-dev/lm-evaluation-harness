@@ -1,0 +1,30 @@
+{
+  "results": {
+    "lca_project_level_code_completion": {}
+  },
+  "samples": {
+    "lca_project_level_code_completion": [
+      {
+        "idx": "sample_0",
+        "error": "too many values to unpack (expected 3)",
+        "exact_match": 0.0,
+        "edit_distance": 0.0,
+        "bleu_score": 0.0
+      },
+      {
+        "idx": "sample_1",
+        "error": "too many values to unpack (expected 3)",
+        "exact_match": 0.0,
+        "edit_distance": 0.0,
+        "bleu_score": 0.0
+      },
+      {
+        "idx": "sample_2",
+        "error": "too many values to unpack (expected 3)",
+        "exact_match": 0.0,
+        "edit_distance": 0.0,
+        "bleu_score": 0.0
+      }
+    ]
+  }
+}

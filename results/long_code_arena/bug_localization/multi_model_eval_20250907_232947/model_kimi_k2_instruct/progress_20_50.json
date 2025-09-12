@@ -1,0 +1,20 @@
+{
+  "timestamp": "2025-09-07T23:38:29.216593",
+  "model_key": "kimi-k2-instruct",
+  "progress": {
+    "current_sample": 20,
+    "total_samples": 50,
+    "completion_rate": 0.4
+  },
+  "statistics": {
+    "total_processed": 20,
+    "successful": 20,
+    "failed": 0,
+    "success_rate": 1.0
+  },
+  "current_metrics": {
+    "avg_f1_score": 0.6012698412698413,
+    "avg_precision": 0.6054166666666667,
+    "avg_recall": 0.7000000000000001
+  }
+}

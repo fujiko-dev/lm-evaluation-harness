@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-09-07T23:41:11.093523",
+  "model_key": "qwen3-30b-a22b-instruct-2507",
+  "progress": {
+    "current_sample": 40,
+    "total_samples": 50,
+    "completion_rate": 0.8
+  },
+  "statistics": {
+    "total_processed": 40,
+    "successful": 0,
+    "failed": 40,
+    "success_rate": 0.0
+  }
+}

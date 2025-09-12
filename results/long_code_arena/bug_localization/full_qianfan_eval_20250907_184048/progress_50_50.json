@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-09-07T18:42:02.484957",
+  "progress": {
+    "current_sample": 50,
+    "total_samples": 50,
+    "completion_rate": 1.0
+  },
+  "statistics": {
+    "total_processed": 50,
+    "successful": 50,
+    "failed": 0,
+    "success_rate": 1.0
+  },
+  "current_metrics": {
+    "avg_f1_score": 0.428063492063492,
+    "avg_precision": 0.48499999999999993,
+    "avg_recall": 0.44033333333333324
+  }
+}

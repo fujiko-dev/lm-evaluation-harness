@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-09-07T22:29:49.076669",
+  "sample_info": {
+    "index": 11,
+    "original_index": 11,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 34,
+  "repo_owner": "skypilot-org",
+  "repo_name": "skypilot",
+  "difficulty": 0,
+  "generation_time": 17.252125024795532,
+  "prediction": "## Analysis of the Failure Cause\n\nThe CI workflow is failing because `yapf` (Yet Another Python Formatter) is detecting a formatting issue in the file `sky/data/storage.py`. Specifically, there's a trailing whitespace at the end of line 822 that needs to be removed. The formatter is showing a diff where the trailing space after `list):` is being removed.\n\nThis is a common issue where code formatting doesn't match the project's style guidelines. The `yapf` tool is running with `--diff` flag, which shows the changes needed but doesn't apply them, and since there are differences, it exits with code 1, causing the CI to fail.\n\n## Specific Changes Needed\n\nThe fix is simple: remove the trailing whitespace on line 822 in `sky/data/storage.py`. The line currently has an extra space after the colon that needs to be removed.\n\n## Modified Code\n\nHere's the specific change needed in `sky/data/storage.py`:\n\n**File: sky/data/storage.py**\n```python\n# Change line 822 from:\n        if not isinstance(source, list): \n# To:\n        if not isinstance(source, list):\n```\n\nThe only change is removing the trailing space after the colon on line 822. This will make the code comply with the yapf formatting standards and allow the CI workflow to pass.\n\n## Alternative Approach\n\nIf you want to automatically fix all formatting issues instead of just this specific one, you could also run:\n\n```bash\nyapf --recursive --in-place ./ --exclude 'sky/skylet/ray_patches/**' \\\n    --exclude 'sky/skylet/providers/aws/**' \\\n    --exclude 'sky/skylet/providers/gcp/**' \\\n    --exclude 'sky/skylet/providers/azure/**' \\\n    --exclude 'sky/skylet/providers/ibm/**'\n```\n\nThis would automatically fix all formatting issues in the codebase according to yapf's rules, rather than just reporting them.",
+  "evaluation": {
+    "success": false,
+    "score": 0.4875717427157779,
+    "explanation": "Similarity: 0.146, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.1459529045262965,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "sky/data/storage.py": [
+          "# Change line 822 from:\n        if not isinstance(source, list): \n# To:\n        if not isinstance(source, list):",
+          "yapf --recursive --in-place ./ --exclude 'sky/skylet/ray_patches/**' \\\n    --exclude 'sky/skylet/providers/aws/**' \\\n    --exclude 'sky/skylet/providers/gcp/**' \\\n    --exclude 'sky/skylet/providers/azure/**' \\\n    --exclude 'sky/skylet/providers/ibm/**'"
+        ]
+      },
+      "target_changes": {
+        "sky/backends/cloud_vm_ray_backend.py": "index 8a93b58c..08bc7ffb 100644\n--- a/sky/backends/cloud_vm_ray_backend.py\n+++ b/sky/backends/cloud_vm_ray_backend.py\n@@ -4557,14 +4557,15 @@ class CloudVmRayBackend(backends.Backend['CloudVmRayResourceHandle']):\n         end = time.time()\n         logger.debug(f'File mount sync took {end - start} seconds.')\n \n-    def _execute_storage_mounts(self, handle: CloudVmRayResourceHandle,\n-                                storage_mounts: Dict[Path, storage_lib.Storage],\n-                                mount_mode: storage_utils.StorageMode):\n+    def _execute_storage_mounts(\n+            self, handle: CloudVmRayResourceHandle,\n+            storage_mounts: Optional[Dict[Path, storage_lib.Storage]],\n+            mount_mode: storage_utils.StorageMode):\n         \"\"\"Executes storage mounts: installing mounting tools and mounting.\"\"\"\n         # Handle cases where `storage_mounts` is None. This occurs when users\n         # initiate a 'sky start' command from a Skypilot version that predates\n         # the introduction of the `storage_mounts_metadata` feature.\n-        if not storage_mounts:\n+        if storage_mounts is None:\n             return\n \n         # Process only mount mode objects here. COPY mode objects have been\n@@ -4674,7 +4675,7 @@ class CloudVmRayBackend(backends.Backend['CloudVmRayResourceHandle']):\n \n     def _has_csync(self, cluster_name: str) -> bool:\n         \"\"\"Chekcs if there are CSYNC mode storages within the cluster.\"\"\"\n-        storage_mounts = self._get_storage_mounts_metadata(cluster_name)\n+        storage_mounts = self.get_storage_mounts_metadata(cluster_name)\n         if storage_mounts is not None:\n             for _, storage_obj in storage_mounts.items():\n                 if storage_obj.mode == storage_utils.StorageMode.CSYNC:",
+        "sky/data/sky_csync.py": "index c0d521ff..c6c3f981 100644\n--- a/sky/data/sky_csync.py\n+++ b/sky/data/sky_csync.py\n@@ -251,7 +251,7 @@ def csync(source: str, storetype: str, destination: str, num_threads: int,\n     \"\"\"Runs daemon to sync the source to the bucket every INTERVAL seconds.\n \n     Creates an entry of pid of the sync process in local database while sync\n-    command is runninng and removes it when completed.\n+    command is running and removes it when completed.\n \n     Args:\n         source (str): The local path to the directory that you want to sync.",
+        "sky/data/storage.py": "index dea9b906..3f7c205f 100644\n--- a/sky/data/storage.py\n+++ b/sky/data/storage.py\n@@ -819,7 +819,7 @@ class Storage(object):\n         source = override_args.get('source', metadata.source)\n         name = override_args.get('name', metadata.storage_name)\n         # If the source is a list, it consists of local paths\n-        if not isinstance(source, list): \n+        if not isinstance(source, list):\n             if data_utils.is_cloud_store_url(source):\n                 name = None\n \n"
+      },
+      "difficulty": 0
+    }
+  }
+}

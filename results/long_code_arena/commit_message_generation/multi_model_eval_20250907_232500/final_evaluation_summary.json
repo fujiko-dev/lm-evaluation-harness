@@ -1,0 +1,50 @@
+{
+  "evaluation_summary": {
+    "timestamp": "2025-09-07T23:46:39.706881",
+    "evaluation_directory": "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/results/long_code_arena/commit_message_generation/multi_model_eval_20250907_232500",
+    "total_models": 3,
+    "completed_models": 2,
+    "running_models": 1
+  },
+  "completed_models": [
+    {
+      "name": "qwen3_235b_a22b_instruct_2507",
+      "display_name": "Qwen3-235B",
+      "bleu": 3.792027490652508,
+      "chrf": 34.27839780755127,
+      "rouge1": 30.35438708142164,
+      "rouge2": 7.050479600888315,
+      "rougeL": 19.978517213363727,
+      "bnorm": 0.022604259780722717,
+      "success_rate": 100.0,
+      "time_minutes": 7.2962118029594425,
+      "successful_samples": 163,
+      "total_samples": 163
+    },
+    {
+      "name": "qwen3_30b_a3b_instruct_2507",
+      "display_name": "Qwen3-30B",
+      "bleu": 3.1173721842054167,
+      "chrf": 30.593597561180964,
+      "rouge1": 26.467013649321945,
+      "rouge2": 5.706905062426378,
+      "rougeL": 17.37570040744583,
+      "bnorm": 0.01829128013491383,
+      "success_rate": 100.0,
+      "time_minutes": 6.479511551062266,
+      "successful_samples": 163,
+      "total_samples": 163
+    }
+  ],
+  "running_models": [
+    {
+      "name": "qwen3_coder_30b_a3b_instruct",
+      "display_name": "Qwen3-Coder-30B",
+      "progress": "130/163",
+      "percentage": 79.75460122699386,
+      "bleu": 2.7858209954727555,
+      "chrf": 33.44245680144002,
+      "time_minutes": 7.579410362243652
+    }
+  ]
+}

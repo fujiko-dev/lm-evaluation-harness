@@ -1,0 +1,47 @@
+task: lca_commit_message_generation
+class: lm_eval.tasks.long_code_arena.commit_message_generation.lca_commit_message_generation_task:LCACommitMessageGenerationTask
+description: |
+  Commit Message Generation task from Long Code Arena benchmark.
+  Given code diffs and repository context, generate appropriate
+  commit messages that accurately describe the changes made.
+
+config:
+  dataset_path: "/Users/xiaoyunting/Documents/ModelDev/working_path/datasets/long_code_arena/datasets/lca-commit-message-generation"
+  split: "test"
+  batch_size: 1
+  max_context_length: 8000
+  include_diff: true
+  max_commit_length: 200
+
+tag:
+  - long_code_arena
+  - commit_message_generation
+  - code_understanding
+  - git
+
+metric_list:
+  - metric: commit_bleu
+    aggregation: mean
+    higher_is_better: true
+  - metric: commit_rouge1
+    aggregation: mean
+    higher_is_better: true
+  - metric: commit_rouge2
+    aggregation: mean
+    higher_is_better: true
+  - metric: commit_rougeL
+    aggregation: mean
+    higher_is_better: true
+  - metric: commit_bert_f1
+    aggregation: mean
+    higher_is_better: true
+  - metric: length_ratio
+    aggregation: mean
+    higher_is_better: false
+
+output_type: generate_until
+generation_kwargs:
+  until:
+    - "\n\n"
+  max_gen_toks: 200
+  temperature: 0.1

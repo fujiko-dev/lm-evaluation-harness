@@ -1,0 +1,29 @@
+{
+  "timestamp": "2025-09-07T18:56:36.400188",
+  "index": 1,
+  "id": 5,
+  "repo_owner": "huggingface",
+  "repo_name": "diffusers",
+  "difficulty": 0,
+  "workflow_name": "Run code quality checks",
+  "prediction": "分析失败日志，发现是import语句顺序问题。\n\n需要修复的文件: examples/community/ip_adapter_face_id.py\n\n修改方案:\n1. 重新排列import语句的顺序\n2. 将safetensors import移到正确位置\n\n```python\nimport inspect\nfrom typing import Any, Callable, Dict, List, Optional, Union\n\nimport torch\nimport torch.nn as nn\nimport torch.nn.functional as F\nfrom packaging import version\nfrom safetensors import safe_open  # 移动到这里\nfrom transformers import CLIPImageProcessor, CLIPTextModel, CLIPTokenizer, CLIPVisionModelWithProjection\n```\n\n这样可以修复lint检查失败的问题。",
+  "target_diff": "diff --git a/src/diffusers/loaders/ip_adapter.py b/src/diffusers/loaders/ip_adapter.py\nindex df9caa946..0c310019f 100644\n--- a/src/diffusers/loaders/ip_adapter.py\n+++ b/src/diffusers/loaders/ip_adapter.py\n@@ -12,7 +12,7 @@\n # See the License for the specific language governing permissions and\n # limitations under the License.\n import os\n-from typing import Dict, Optional, Union\n+from typing import Dict, Union\n \n import torch\n from huggingface_hub.utils import validate_hf_hub_args\n",
+  "evaluation": {
+    "success": false,
+    "score": 0.24,
+    "explanation": "Similarity: 0.000, Key fixes: 0.600",
+    "details": {
+      "similarity_score": 0.0,
+      "key_fixes_score": 0.6,
+      "predicted_changes": {
+        "examples/community/ip_adapter_face_id.py": [
+          "import inspect\nfrom typing import Any, Callable, Dict, List, Optional, Union\n\nimport torch\nimport torch.nn as nn\nimport torch.nn.functional as F\nfrom packaging import version\nfrom safetensors import safe_open  # 移动到这里\nfrom transformers import CLIPImageProcessor, CLIPTextModel, CLIPTokenizer, CLIPVisionModelWithProjection"
+        ]
+      },
+      "target_changes": {
+        "src/diffusers/loaders/ip_adapter.py": "index df9caa946..0c310019f 100644\n--- a/src/diffusers/loaders/ip_adapter.py\n+++ b/src/diffusers/loaders/ip_adapter.py\n@@ -12,7 +12,7 @@\n # See the License for the specific language governing permissions and\n # limitations under the License.\n import os\n-from typing import Dict, Optional, Union\n+from typing import Dict, Union\n \n import torch\n from huggingface_hub.utils import validate_hf_hub_args\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

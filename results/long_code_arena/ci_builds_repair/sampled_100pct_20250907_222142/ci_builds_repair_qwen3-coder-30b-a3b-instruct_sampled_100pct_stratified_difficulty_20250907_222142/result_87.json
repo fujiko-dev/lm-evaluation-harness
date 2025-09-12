@@ -1,0 +1,33 @@
+{
+  "timestamp": "2025-09-07T22:27:20.795993",
+  "sample_info": {
+    "index": 33,
+    "original_index": 33,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 87,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 11.795653104782104,
+  "prediction": "Looking at the CI failure logs, I can see that the `black` pre-commit hook is failing because it's making changes to the codebase. The key indicators are:\n\n1. **Root Cause**: The `black` pre-commit hook detected formatting issues and automatically reformatted `import_export/admin.py`, which caused the hook to exit with code 1 (indicating changes were made)\n2. **Specific Issue**: A blank line was added at line 750 in `import_export/admin.py` \n3. **Workflow Behavior**: The workflow is configured to fail when pre-commit hooks make changes, which is the expected behavior for CI enforcement\n\nThe problem is that the workflow configuration doesn't account for the fact that pre-commit hooks might modify files during execution. In CI environments, we typically want to either:\n- Fail the build when hooks make changes (which is what's happening here), or\n- Automatically commit the changes\n\nSince this is a CI workflow that should enforce code quality, the proper fix is to ensure the code is properly formatted before running the CI checks.\n\nHowever, looking more carefully at the error, the workflow is actually working correctly - it's detecting that the code needs to be formatted. The real issue is that the code in the repository doesn't match the black formatting rules.\n\nLet me analyze what needs to be fixed:\n\n1. **The actual fix** is to run `black` on the codebase to format it properly\n2. **The workflow itself is correct** - it's properly configured to catch formatting issues\n3. **The change needed** is to apply the formatting that black wants\n\nBut since I'm asked to provide the fix for the workflow configuration, and the workflow is actually working as intended (catching formatting issues), the real solution is to make sure the code matches black's expectations.\n\nLooking at the diff shown in the logs, the issue is just an extra blank line that black wants to remove or reformat.\n\n## Solution\n\nThe workflow configuration is actually correct. The failure is expected behavior - it shows that black found formatting issues and made changes. The fix is to apply the formatting changes that black recommends.\n\nHowever, if we need to adjust the workflow to handle this better, here's the recommended approach:\n\n```yaml\non:\n  pull_request:\n  push:\n    branches:\n      - main\n\njobs:\n  main:\n    runs-on: ubuntu-latest\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    steps:\n    - uses: actions/checkout@v3\n    - uses: actions/setup-python@v4\n      with:\n        python-version: 3.x\n    - uses: pre-commit/action@v3.0.0\n      with:\n        extra_args: --all-files --hook-stage manual\n    - uses: pre-commit-ci/lite-action@v1.0.1\n      if: always()\n    - name: Check for uncommitted changes\n      if: failure()\n      run: |\n        git diff --exit-code || echo \"Pre-commit hooks made changes. Please run 'pre-commit run --all-files' locally and commit the changes.\"\n\nenv:\n  PIP_INDEX_URL: http://localhost:8629/2023-12-14\n  UV_INDEX_URL: http://localhost:8629/2023-12-14\n```\n\nWait, let me reconsider. Looking at the workflow more carefully, the issue is that the workflow is designed to fail when hooks make changes, but the repository has code that doesn't conform to black formatting. \n\nActually, the workflow is working correctly. The fix should be to run the pre-commit hooks locally to apply the formatting changes, then commit them. But since I'm asked to modify the workflow, and the workflow is already properly configured, the real issue is that the code needs to be formatted.\n\nHowever, if we must modify the workflow to prevent this specific failure, we could change how it handles the exit code:\n\n```yaml\non:\n  pull_request:\n  push:\n    branches:\n      - main\n\njobs:\n  main:\n    runs-on: ubuntu-latest\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    steps:\n    - uses: actions/checkout@v3\n    - uses: actions/setup-python@v4\n      with:\n        python-version: 3.x\n    - uses: pre-commit/action@v3.0.0\n      with:\n        extra_args: --all-files\n    - uses: pre-commit-ci/lite-action@v1.0.1\n      if: always()\n\nenv:\n  PIP_INDEX_URL: http://localhost:8629/2023-1",
+  "evaluation": {
+    "success": true,
+    "score": 0.6517734596700495,
+    "explanation": "Similarity: 0.420, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.41962243278341593,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "import_export/admin.py": [
+          "on:\n  pull_request:\n  push:\n    branches:\n      - main\n\njobs:\n  main:\n    runs-on: ubuntu-latest\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    steps:\n    - uses: actions/checkout@v3\n    - uses: actions/setup-python@v4\n      with:\n        python-version: 3.x\n    - uses: pre-commit/action@v3.0.0\n      with:\n        extra_args: --all-files --hook-stage manual\n    - uses: pre-commit-ci/lite-action@v1.0.1\n      if: always()\n    - name: Check for uncommitted changes\n      if: failure()\n      run: |\n        git diff --exit-code || echo \"Pre-commit hooks made changes. Please run 'pre-commit run --all-files' locally and commit the changes.\"\n\nenv:\n  PIP_INDEX_URL: http://localhost:8629/2023-12-14\n  UV_INDEX_URL: http://localhost:8629/2023-12-14"
+        ]
+      },
+      "target_changes": {
+        "import_export/admin.py": "index c5151ef2..a39508d3 100644\n--- a/import_export/admin.py\n+++ b/import_export/admin.py\n@@ -747,6 +747,7 @@ class ExportMixin(BaseExportMixin, ImportExportMixinBase):\n \n         class FakePaginator:\n             count = 0\n+\n         original_get_paginator = self.get_paginator\n         self.get_paginator = lambda request, queryset, per_page: FakePaginator()\n         cl = ChangeList(**changelist_kwargs)\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

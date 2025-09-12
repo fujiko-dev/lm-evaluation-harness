@@ -1,0 +1,45 @@
+{
+  "timestamp": "2025-09-07T22:30:28.374256",
+  "sample_info": {
+    "index": 33,
+    "original_index": 33,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 87,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 27.45334815979004,
+  "prediction": "### 1. **Analysis of the Failure Cause**\n\nThe CI workflow is failing due to a **pre-commit hook modifying files during execution**, specifically the `black` formatter reformatted `import_export/admin.py`. The key lines from the log are:\n\n```\nblack....................................................................Failed\n- hook id: black\n- files were modified by this hook\n\nreformatted import_export/admin.py\n\nAll done! ✨ 🍰 ✨\n1 file reformatted, 56 files left unchanged.\n\npre-commit hook(s) made changes.\n...\n##[error]Process completed with exit code 1.\n```\n\nThis indicates that:\n- The code in the repository does **not match the formatting expected by `black`**.\n- `pre-commit` automatically reformatted `admin.py`, which means the file was not formatted according to `black`'s rules before the commit.\n- Since the hook modifies files, and no further step commits or reports those changes, the failure occurs because **uncommitted changes exist after pre-commit runs** — this is treated as an error in CI.\n\nAdditionally, the workflow uses a **PyPI time-travel proxy (`pypi-wayback`)** pinned to `2023-12-14`, which may affect dependency resolution, but in this case, the tools (`black`, `isort`, `flake8`) are installed successfully, so it's not the root cause.\n\n> ✅ The **real issue**: The code is not pre-formatted with `black`, so CI fails when `black` tries to reformat it.\n\nThis typically happens when:\n- Developers don't run `pre-commit` locally before pushing.\n- The `pre-commit` configuration has changed (e.g., new version of `black` with different formatting rules).\n- A file was edited without formatting.\n\nBut since the **success commit is `00e7b9c...`** and the **failure is on `cfbbed9...`**, we can infer that the change introduced in `cfbbed9` broke formatting.\n\nLooking at the diff in the log:\n```diff\n@@ -747,6 +747,7 @@\n         class FakePaginator:\n             count = 0\n+            \n         original_get_paginator = self.get_paginator\n```\n\nA blank line was added after `count = 0`, and `black` inserted an **extra blank line** (likely because it expects one blank line between a class attribute and the next statement, per PEP 8). But more importantly — **the file wasn't formatted when committed**, so `black` fixed it.\n\n---\n\n### 2. **Solution Approach**\n\nTo fix this:\n- We **must ensure all code is formatted with `black` before committing**.\n- However, in CI, we **cannot allow code changes** — so if `black` wants to modify anything, the build should fail unless the code is already formatted.\n\nBut the current behavior is correct: CI fails when formatting is off. So the real fix is to **reformat the file and commit it**, but since we're asked to fix the *workflow*, not the code, we need to consider if there's a misconfiguration.\n\nWait — actually, the workflow is **correctly configured**. It's doing its job by catching unformatted code.\n\nSo why did it pass on `00e7b9c` and fail on `cfbbed9`? Because `cfbbed9` introduced unformatted code.\n\nTherefore, the **fix is not in the workflow YAML**, but in either:\n- Reformatting the code and recommitting, or\n- Adjusting the workflow to auto-format and report diffs (not usually recommended for PRs), or\n- Ensuring developers run `pre-commit install` locally.\n\nBut the question asks: **\"provide the necessary changes to fix the CI workflow\"**, implying a configuration fix.\n\nHowever, the workflow itself is fine. The only possible improvements are:\n- Add clearer instructions in failure messages.\n- Use `pre-commit run --all-files` with better feedback.\n- Potentially use `pre-commit.ci` instead of manual action (but they already use `pre-commit-ci/lite-action`).\n\nWait — they **do** have:\n```yaml\n- uses: pre-commit-ci/lite-action@v1.0.1\n  if: always()\n```\n\nThis suggests they are using Pre-commit CI's **lite action**, which is meant to **auto-fix formatting issues and push back** — but only if properly configured.\n\nBut here, it runs `if: always()`, which is good, but perhaps it's not doing anything because it's not set up to push fixes.\n\nActually, `pre-commit-ci/lite-action` does **not auto-push fixes** unless the repository has integrated with https://pre-commit.ci and has permissions.\n\nSo the current setup just runs pre-commit and fails — which is correct.\n\n---\n\n### ✅ Conclusion\n\nThe **CI is working as",
+  "evaluation": {
+    "success": true,
+    "score": 0.7368489754098362,
+    "explanation": "Similarity: 0.561, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.5614149590163935,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "import_export/admin.py": [
+          "black....................................................................Failed\n- hook id: black\n- files were modified by this hook\n\nreformatted import_export/admin.py\n\nAll done! ✨ 🍰 ✨\n1 file reformatted, 56 files left unchanged.\n\npre-commit hook(s) made changes.\n...\n##[error]Process completed with exit code 1.",
+          "@@ -747,6 +747,7 @@\n         class FakePaginator:\n             count = 0\n+            \n         original_get_paginator = self.get_paginator",
+          "- uses: pre-commit-ci/lite-action@v1.0.1\n  if: always()"
+        ],
+        "admin.py": [
+          "black....................................................................Failed\n- hook id: black\n- files were modified by this hook\n\nreformatted import_export/admin.py\n\nAll done! ✨ 🍰 ✨\n1 file reformatted, 56 files left unchanged.\n\npre-commit hook(s) made changes.\n...\n##[error]Process completed with exit code 1.",
+          "@@ -747,6 +747,7 @@\n         class FakePaginator:\n             count = 0\n+            \n         original_get_paginator = self.get_paginator",
+          "- uses: pre-commit-ci/lite-action@v1.0.1\n  if: always()"
+        ],
+        "pre-commit.ci": [
+          "black....................................................................Failed\n- hook id: black\n- files were modified by this hook\n\nreformatted import_export/admin.py\n\nAll done! ✨ 🍰 ✨\n1 file reformatted, 56 files left unchanged.\n\npre-commit hook(s) made changes.\n...\n##[error]Process completed with exit code 1.",
+          "@@ -747,6 +747,7 @@\n         class FakePaginator:\n             count = 0\n+            \n         original_get_paginator = self.get_paginator",
+          "- uses: pre-commit-ci/lite-action@v1.0.1\n  if: always()"
+        ]
+      },
+      "target_changes": {
+        "import_export/admin.py": "index c5151ef2..a39508d3 100644\n--- a/import_export/admin.py\n+++ b/import_export/admin.py\n@@ -747,6 +747,7 @@ class ExportMixin(BaseExportMixin, ImportExportMixinBase):\n \n         class FakePaginator:\n             count = 0\n+\n         original_get_paginator = self.get_paginator\n         self.get_paginator = lambda request, queryset, per_page: FakePaginator()\n         cl = ChangeList(**changelist_kwargs)\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

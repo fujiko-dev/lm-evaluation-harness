@@ -1,0 +1,20 @@
+{
+  "timestamp": "2025-09-07T23:13:23.196265",
+  "model_key": "qwen3-coder-30b-a3b-instruct",
+  "progress": {
+    "current_sample": 50,
+    "total_samples": 50,
+    "completion_rate": 1.0
+  },
+  "statistics": {
+    "total_processed": 50,
+    "successful": 50,
+    "failed": 0,
+    "success_rate": 1.0
+  },
+  "current_metrics": {
+    "avg_f1_score": 0.47542857142857137,
+    "avg_precision": 0.49333333333333335,
+    "avg_recall": 0.5536666666666666
+  }
+}

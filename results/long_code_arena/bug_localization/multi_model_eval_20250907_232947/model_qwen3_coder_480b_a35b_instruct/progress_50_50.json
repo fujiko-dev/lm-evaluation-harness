@@ -1,0 +1,20 @@
+{
+  "timestamp": "2025-09-07T23:35:11.221808",
+  "model_key": "qwen3-coder-480b-a35b-instruct",
+  "progress": {
+    "current_sample": 50,
+    "total_samples": 50,
+    "completion_rate": 1.0
+  },
+  "statistics": {
+    "total_processed": 50,
+    "successful": 50,
+    "failed": 0,
+    "success_rate": 1.0
+  },
+  "current_metrics": {
+    "avg_f1_score": 0.45457431457431446,
+    "avg_precision": 0.4643333333333332,
+    "avg_recall": 0.5109999999999999
+  }
+}

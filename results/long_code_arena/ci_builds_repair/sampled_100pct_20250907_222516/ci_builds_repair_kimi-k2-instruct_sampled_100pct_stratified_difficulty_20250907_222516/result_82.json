@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-09-07T22:36:54.628028",
+  "sample_info": {
+    "index": 28,
+    "original_index": 28,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 82,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 19.097445249557495,
+  "prediction": "## Analysis of the Failure Cause\n\nThe CI workflow is failing because the `black` formatter (a pre-commit hook) is making changes to the code. Specifically, it's reformatting a line in `tests/core/tests/test_admin_integration.py` to split a long line into multiple lines for better readability.\n\nThe failure occurs because:\n1. The pre-commit hooks are configured to run with `--all-files` flag\n2. The `black` formatter found a formatting issue and automatically fixed it\n3. Since changes were made, the pre-commit action exits with code 1, indicating failure\n4. This is expected behavior - pre-commit fails when it makes changes to ensure developers run the hooks locally before committing\n\n## Specific Changes Needed\n\nThe fix is simple: we need to apply the formatting changes that `black` made. The change involves reformatting a long line in the test file to comply with Black's formatting standards.\n\n## Modified Code\n\nThe file `tests/core/tests/test_admin_integration.py` needs to be updated with the formatting change that Black applied. Here's the specific change needed:\n\n**File: tests/core/tests/test_admin_integration.py**\n\nChange line 683 from:\n```python\n        with self.assertNumQueries(7):  # Should not contain COUNT queries from ModelAdmin.get_results()\n```\n\nTo:\n```python\n        with self.assertNumQueries(\n            7\n        ):  # Should not contain COUNT queries from ModelAdmin.get_results()\n```\n\n## Additional Recommendations\n\nWhile the immediate fix is to apply the formatting change, here are some additional recommendations to prevent similar issues:\n\n1. **Run pre-commit locally**: Developers should run `pre-commit run --all-files` locally before pushing changes\n2. **Install pre-commit hooks**: Run `pre-commit install` to set up git hooks that run automatically on commit\n3. **Consider auto-fixing in CI**: You could modify the workflow to automatically commit formatting changes, though this is generally discouraged as it can create confusing commit history\n\nThe workflow itself is correctly configured - the failure is due to code formatting issues, not workflow configuration problems.",
+  "evaluation": {
+    "success": true,
+    "score": 0.7785224118875108,
+    "explanation": "Similarity: 0.631, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.6308706864791847,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "tests/core/tests/test_admin_integration.py": [
+          "with self.assertNumQueries(7):  # Should not contain COUNT queries from ModelAdmin.get_results()",
+          "with self.assertNumQueries(\n            7\n        ):  # Should not contain COUNT queries from ModelAdmin.get_results()"
+        ]
+      },
+      "target_changes": {
+        "tests/core/tests/test_admin_integration.py": "index c178c89e..e74a7d29 100644\n--- a/tests/core/tests/test_admin_integration.py\n+++ b/tests/core/tests/test_admin_integration.py\n@@ -680,7 +680,9 @@ class ExportAdminIntegrationTest(AdminTestMixin, TestCase):\n             \"file_format\": \"0\",\n         }\n         date_str = datetime.now().strftime(\"%Y-%m-%d\")\n-        with self.assertNumQueries(7):  # Should not contain COUNT queries from ModelAdmin.get_results()\n+        with self.assertNumQueries(\n+            7\n+        ):  # Should not contain COUNT queries from ModelAdmin.get_results()\n             response = self.client.post(\"/admin/core/book/export/\", data)\n         self.assertEqual(response.status_code, 200)\n         self.assertTrue(response.has_header(\"Content-Disposition\"))\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

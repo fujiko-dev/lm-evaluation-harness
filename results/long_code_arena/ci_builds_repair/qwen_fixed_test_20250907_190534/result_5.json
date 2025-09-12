@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-09-07T19:05:37.362686",
+  "index": 1,
+  "id": 5,
+  "repo_owner": "huggingface",
+  "repo_name": "diffusers",
+  "difficulty": 0,
+  "workflow_name": "Run code quality checks",
+  "generation_time": 1.004084825515747,
+  "prediction": "根据失败的CI日志分析，这是一个代码质量检查失败的问题。\n\n**问题分析：**\n日志显示ruff检查发现import语句顺序不正确的问题：\n- `examples/community/ip_adapter_face_id.py:15:1: I001 [*] Import block is un-sorted or un-formatted`\n\n**修复方案：**\n\n需要修改文件：`examples/community/ip_adapter_face_id.py`\n\n具体修改：\n1. 重新排列import语句的顺序，确保符合PEP8规范\n2. 将`from safetensors import safe_open`移动到正确的位置\n\n修复后的import顺序应该是：\n```python\nimport inspect\nfrom typing import Any, Callable, Dict, List, Optional, Union\n\nimport torch\nimport torch.nn as nn\nimport torch.nn.functional as F\nfrom packaging import version\nfrom safetensors import safe_open\nfrom transformers import CLIPImageProcessor, CLIPTextModel, CLIPTokenizer, CLIPVisionModelWithProjection\n\nfrom diffusers.configuration_utils import FrozenDict\n# ... 其他diffusers相关的import\n```\n\n这样可以解决ruff格式检查的问题，使CI通过。",
+  "target_diff": "diff --git a/src/diffusers/loaders/ip_adapter.py b/src/diffusers/loaders/ip_adapter.py\nindex df9caa946..0c310019f 100644\n--- a/src/diffusers/loaders/ip_adapter.py\n+++ b/src/diffusers/loaders/ip_adapter.py\n@@ -12,7 +12,7 @@\n # See the License for the specific language governing permissions and\n # limitations under the License.\n import os\n-from typing import Dict, Optional, Union\n+from typing import Dict, Union\n \n import torch\n from huggingface_hub.utils import validate_hf_hub_args\n",
+  "evaluation": {
+    "success": false,
+    "score": 0.24,
+    "explanation": "Similarity: 0.000, Key fixes: 0.600",
+    "details": {
+      "similarity_score": 0.0,
+      "key_fixes_score": 0.6,
+      "predicted_changes": {
+        "examples/community/ip_adapter_face_id.py": [
+          "import inspect\nfrom typing import Any, Callable, Dict, List, Optional, Union\n\nimport torch\nimport torch.nn as nn\nimport torch.nn.functional as F\nfrom packaging import version\nfrom safetensors import safe_open\nfrom transformers import CLIPImageProcessor, CLIPTextModel, CLIPTokenizer, CLIPVisionModelWithProjection\n\nfrom diffusers.configuration_utils import FrozenDict\n# ... 其他diffusers相关的import"
+        ]
+      },
+      "target_changes": {
+        "src/diffusers/loaders/ip_adapter.py": "index df9caa946..0c310019f 100644\n--- a/src/diffusers/loaders/ip_adapter.py\n+++ b/src/diffusers/loaders/ip_adapter.py\n@@ -12,7 +12,7 @@\n # See the License for the specific language governing permissions and\n # limitations under the License.\n import os\n-from typing import Dict, Optional, Union\n+from typing import Dict, Union\n \n import torch\n from huggingface_hub.utils import validate_hf_hub_args\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

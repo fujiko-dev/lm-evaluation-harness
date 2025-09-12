@@ -1,0 +1,11 @@
+{
+  "model": "qwen3-235b-a22b-instruct-2507",
+  "api_provider": "qianfan",
+  "base_url": "https://qianfan.baidubce.com/v2/chat/completions",
+  "task": "lca_commit_message_generation",
+  "total_samples": 163,
+  "evaluated_samples": 163,
+  "timestamp": "20250907_181236",
+  "output_dir": "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/results/long_code_arena/commit_message_generation/qianfan_real_eval_20250907_181236",
+  "evaluation_type": "complete_real_api"
+}

@@ -1,0 +1,29 @@
+{
+  "timestamp": "2025-09-07T18:56:36.400610",
+  "index": 2,
+  "id": 21,
+  "repo_owner": "mindsdb",
+  "repo_name": "mindsdb",
+  "difficulty": 1,
+  "workflow_name": "MindsDB Code Checks",
+  "prediction": "分析失败日志，发现是import语句顺序问题。\n\n需要修复的文件: examples/community/ip_adapter_face_id.py\n\n修改方案:\n1. 重新排列import语句的顺序\n2. 将safetensors import移到正确位置\n\n```python\nimport inspect\nfrom typing import Any, Callable, Dict, List, Optional, Union\n\nimport torch\nimport torch.nn as nn\nimport torch.nn.functional as F\nfrom packaging import version\nfrom safetensors import safe_open  # 移动到这里\nfrom transformers import CLIPImageProcessor, CLIPTextModel, CLIPTokenizer, CLIPVisionModelWithProjection\n```\n\n这样可以修复lint检查失败的问题。",
+  "target_diff": "diff --git a/mindsdb/__main__.py b/mindsdb/__main__.py\nindex cac3482883..6cc92a7899 100644\n--- a/mindsdb/__main__.py\n+++ b/mindsdb/__main__.py\n@@ -35,6 +35,7 @@ from mindsdb.utilities.fs import create_dirs_recursive, clean_process_marks, cle\n from mindsdb.utilities.telemetry import telemetry_file_exists, disable_telemetry\n from mindsdb.utilities.context import context as ctx\n from mindsdb.utilities.auth import register_oauth_client, get_aws_meta_data\n+import type_infer  # noqa\n \n try:\n     import torch.multiprocessing as mp\n",
+  "evaluation": {
+    "success": false,
+    "score": 0.2,
+    "explanation": "Similarity: 0.000, Key fixes: 0.500",
+    "details": {
+      "similarity_score": 0.0,
+      "key_fixes_score": 0.5,
+      "predicted_changes": {
+        "examples/community/ip_adapter_face_id.py": [
+          "import inspect\nfrom typing import Any, Callable, Dict, List, Optional, Union\n\nimport torch\nimport torch.nn as nn\nimport torch.nn.functional as F\nfrom packaging import version\nfrom safetensors import safe_open  # 移动到这里\nfrom transformers import CLIPImageProcessor, CLIPTextModel, CLIPTokenizer, CLIPVisionModelWithProjection"
+        ]
+      },
+      "target_changes": {
+        "mindsdb/__main__.py": "index cac3482883..6cc92a7899 100644\n--- a/mindsdb/__main__.py\n+++ b/mindsdb/__main__.py\n@@ -35,6 +35,7 @@ from mindsdb.utilities.fs import create_dirs_recursive, clean_process_marks, cle\n from mindsdb.utilities.telemetry import telemetry_file_exists, disable_telemetry\n from mindsdb.utilities.context import context as ctx\n from mindsdb.utilities.auth import register_oauth_client, get_aws_meta_data\n+import type_infer  # noqa\n \n try:\n     import torch.multiprocessing as mp\n"
+      },
+      "difficulty": 1
+    }
+  }
+}

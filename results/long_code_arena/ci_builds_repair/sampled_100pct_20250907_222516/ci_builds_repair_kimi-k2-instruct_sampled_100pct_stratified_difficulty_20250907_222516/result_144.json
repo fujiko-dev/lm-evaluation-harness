@@ -1,0 +1,40 @@
+{
+  "timestamp": "2025-09-07T22:48:22.351988",
+  "sample_info": {
+    "index": 52,
+    "original_index": 52,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 144,
+  "repo_owner": "encode",
+  "repo_name": "starlette",
+  "difficulty": 2,
+  "generation_time": 18.133336067199707,
+  "prediction": "## Analysis of the Failure Cause\n\nThe CI workflow is failing due to a `TypeError: unhashable type: 'dict'` in the test `test_file_response_with_pathsend`. Looking at the error, the issue is on line 358 in `tests/test_responses.py` where there's an incorrect syntax for the `extensions` parameter.\n\nThe problem is in this line:\n```python\n{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n```\n\nThe issue is that `{\"http.response.pathsend\", {}}` is trying to create a set with a dictionary `{{}}` as an element, but dictionaries are unhashable and cannot be elements of a set. Additionally, the `extensions` parameter should be a dictionary, not a set.\n\n## Specific Changes Needed\n\nThe `extensions` parameter should be a dictionary where the keys are extension names and the values are the extension configurations. In this case, it appears the test is trying to enable the `http.response.pathsend` extension, which should be represented as a dictionary with the extension name as key and an empty dict as value.\n\n## Modified Code\n\nThe fix is to change the `extensions` parameter from a set to a proper dictionary format:\n\n**File: tests/test_responses.py**\n\nChange line 358 (and the corresponding line in the trio test) from:\n```python\n{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n```\n\nTo:\n```python\n{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\": {}}},\n```\n\nThe change is subtle but crucial: replacing the comma `,` between `\"http.response.pathsend\"` and `{}` with a colon `:` to create a proper dictionary entry instead of a set with an unhashable dictionary element.\n\nThis change should resolve the `TypeError: unhashable type: 'dict'` error and allow the tests to pass successfully.",
+  "evaluation": {
+    "success": true,
+    "score": 0.7526417582417583,
+    "explanation": "Similarity: 0.588, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.5877362637362638,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "tests/test_responses.py": [
+          "{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},",
+          "{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},",
+          "{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\": {}}},"
+        ],
+        "http.response.pathsend": [
+          "{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},",
+          "{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},",
+          "{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\": {}}},"
+        ]
+      },
+      "target_changes": {
+        "tests/test_responses.py": "index 8106fad..625a129 100644\n--- a/tests/test_responses.py\n+++ b/tests/test_responses.py\n@@ -355,7 +355,7 @@ async def test_file_response_with_pathsend(tmpdir: Path):\n \n     # Since the TestClient doesn't support `pathsend`, we need to test this directly.\n     await app(\n-        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n+        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\": {}}},\n         receive,\n         send,\n     )\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

@@ -1,0 +1,2080 @@
+{
+  "model_name": "qwen3-235b-a22b-instruct-2507_sampled_5pct",
+  "context_size": "small_context",
+  "timestamp": "20250908_001916",
+  "results": {
+    "by_line_type": {
+      "non_informative": {
+        "exact_match": 0.0,
+        "edit_distance": 0.9530852022099907,
+        "bleu_score": 0.026915339822798402,
+        "line_count": 28
+      },
+      "random": {
+        "exact_match": 0.0,
+        "edit_distance": 0.9674191512043188,
+        "bleu_score": 0.016045665578484837,
+        "line_count": 32
+      },
+      "infile": {
+        "exact_match": 0.0,
+        "edit_distance": 0.9427522547680385,
+        "bleu_score": 0.027065913673973107,
+        "line_count": 41
+      },
+      "commited": {
+        "exact_match": 0.0,
+        "edit_distance": 0.9522638857047457,
+        "bleu_score": 0.033281347022148605,
+        "line_count": 20
+      },
+      "common": {
+        "exact_match": 0.0,
+        "edit_distance": 0.9521825576441235,
+        "bleu_score": 0.027676443753609864,
+        "line_count": 6
+      }
+    },
+    "overall": {
+      "exact_match": 0.0,
+      "edit_distance": 0.9531890866603714,
+      "bleu_score": 0.02526361320588503,
+      "line_count": 127
+    },
+    "total_predictions": 127
+  },
+  "detailed_predictions": [
+    {
+      "predicted_line": "Here's the **completed and cleaned version** of `draw_gpt.py` with proper structure, comments, and fixes to ensure the plot renders correctly. The main issues in the original code were:\n\n- Mismatched data lengths (some arrays had 5 elements, others didn't align properly).\n- Inconsistent indexing (e.g., flipping arrays without adjusting labels).\n- Legend construction using dummy bars can be improved.\n- Missing `plt.show()` when `SHOW=True`.\n\nBelow is the **corrected and completed script**:\n\n```python\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# Define colors for bars: [Gray, Light Gray, Orange]\ncolors = [\n    [0.3, 0.3, 0",
+      "target_line": "], # CPU RPC",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9920508744038156,
+      "bleu_score": 0.019230769230769235,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "test/grpc_benchmark/benchmark/plot/draw_gpt.py",
+        "line_num": 23,
+        "sample_index": 6,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "You're working on a script to generate a bar plot comparing different distributed training methods (RPC vs Pipeline) in terms of forward, communication, and backward pass delays for a GPT-like model. The data is already provided, and the plotting logic is mostly there, but there are a few **issues and improvements** needed:\n\n---\n\n### ✅ Issues & Fixes:\n1. **Incorrect indexing in `data_bwd_stdv[0]`**:\n   - The first element of `data_bwd_stdv[0]` has a non-zero value at index 0, but all other data for CPU RPC at that index is at index 4. This breaks symmetry.\n   - Looking at the pattern: all valid data for CPU RPC",
+      "target_line": "49.89,",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9967213114754099,
+      "bleu_score": 0.013605442176870753,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "test/grpc_benchmark/benchmark/plot/draw_gpt.py",
+        "line_num": 36,
+        "sample_index": 6,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the **completed and cleaned version** of `draw_gpt.py` with proper structure, comments, and fixes to ensure the plot renders correctly. The main issues in the original code were:\n\n- Mismatched data lengths (some arrays have 5 elements, others don't — especially `data_bwd_stdv[0]`)\n- Inconsistent flipping due to data ordering\n- Misaligned legends and hatches\n- Axis limits and labeling improvements\n\nWe'll fix these and ensure the bar plot correctly shows **FWD + BWD** stacked bars for **RPC (CUDA)** and **Pipeline**, with error bars, proper hatching, and legend.\n\n---\n\n### ✅ Fixed & Completed `draw_gpt.py`\n\n```python",
+      "target_line": "[",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9983948635634029,
+      "bleu_score": 0.006666666666666668,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "test/grpc_benchmark/benchmark/plot/draw_gpt.py",
+        "line_num": 55,
+        "sample_index": 6,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "You're working on a script to generate a bar plot comparing different distributed training methods (RPC vs Pipeline) in terms of forward, communication, and backward pass delays for a GPT model. The current code is mostly complete but has a few issues and inconsistencies that need to be addressed:\n\n### Issues:\n1. **Data indexing mismatch**: You're only plotting indices 1 and 2 (`RPC CUDA`, `Pipeline`) but skipping index 0 (`CPU RPC`). That’s fine if intentional, but the comment says \"RPC\" generally — you should clarify or adjust.\n2. **Inconsistent data flipping**: You flip the arrays with `np.flip`, but your data seems already ordered for micro-batch sizes `[1, 2, 4",
+      "target_line": "], # CUDA RPC",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9821693907875185,
+      "bleu_score": 0.0245398773006135,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "test/grpc_benchmark/benchmark/plot/draw_gpt.py",
+        "line_num": 126,
+        "sample_index": 6,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the **completed and improved version** of your `draw_gpt.py` script with proper formatting, comments, and fixes to ensure the plot renders correctly (e.g., legend, bar alignment, labels). The current code has a few issues: incorrect error bar for CPU RPC in backward pass, misaligned legend, and missing handling of the first data index (i=0). However, from the context, it seems you only want to plot **CUDA RPC (i=1)** and **Pipeline (i=2)**, skipping CPU RPC (i=0), which is consistent with your loop `range(1, 3)`.\n\nBelow is the **cleaned, functional, and well-commented** version of the script:",
+      "target_line": "fwd = np.flip(np.asarray(data_fwd_mean[i]))",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9504132231404959,
+      "bleu_score": 0.04907975460122699,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "test/grpc_benchmark/benchmark/plot/draw_gpt.py",
+        "line_num": 167,
+        "sample_index": 6,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "You're working on a script to generate a bar plot comparing different distributed training methods (RPC vs Pipeline) in terms of forward, communication, and backward pass delays for a GPT model. The current code is mostly complete but has a few issues and inconsistencies that need to be addressed:\n\n### Issues Identified:\n1. **Data indexing mismatch**: You're skipping `i=0` (CPU RPC) in the loop (`range(1, 3)`), but the legend only shows RPC (CUDA) and Pipeline. This is okay if CPU RPC is intentionally excluded, but the data for `data_bwd_stdv[0]` seems misaligned.\n2. **Inconsistent data shapes**: All sublists should have 5 elements corresponding to",
+      "target_line": "com = np.flip(np.asarray(data_comm_mean[i]))",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9496183206106871,
+      "bleu_score": 0.065359477124183,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "test/grpc_benchmark/benchmark/plot/draw_gpt.py",
+        "line_num": 168,
+        "sample_index": 6,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the **completed and improved version** of your `draw_gpt.py` script with proper structure, comments, and fixes to ensure the plot renders correctly (e.g., handling missing/zero data, consistent indexing, and legend formatting). The goal is to visualize forward, communication, and backward delays for RPC vs. Pipeline in a grouped bar chart.\n\nWe'll:\n- Fix the flipped data alignment.\n- Correctly stack FWD + COMM on bottom for BWD.\n- Use consistent error bars.\n- Improve legend clarity.\n- Ensure clean layout.\n\n---\n\n### ✅ Final Completed `draw_gpt.py`\n\n```python\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# Define colors: gray shades and one accent color (orange",
+      "target_line": "\"edgecolor\" : \"black\",",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9762611275964391,
+      "bleu_score": 0.012903225806451613,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "test/grpc_benchmark/benchmark/plot/draw_gpt.py",
+        "line_num": 179,
+        "sample_index": 6,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "You're working on a script to generate a bar plot comparing different distributed training methods (RPC vs Pipeline) in terms of forward, communication, and backward pass delays for a GPT model. The data is already provided, and the plotting logic is mostly in place, but there are a few **issues and improvements** needed:\n\n### ✅ Issues Identified:\n1. **Data indexing inconsistency**: You're skipping `i=0` (CPU RPC) and only plotting `i=1` (CUDA RPC) and `i=2` (Pipeline), which is correct per your legend, but the data for `CPU RPC` (`i=0`) is non-zero only in later positions — make sure you're not accidentally including it.\n2.",
+      "target_line": "color_handles.append(plt.bar([2], [0], color=colors[2]))",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9397781299524565,
+      "bleu_score": 0.08024691358024691,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "test/grpc_benchmark/benchmark/plot/draw_gpt.py",
+        "line_num": 189,
+        "sample_index": 6,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "You're working on a script to generate a bar plot comparing different distributed training methods (RPC vs Pipeline) in terms of forward, communication, and backward pass delays for a GPT model. The data is structured by micro-batch size, and you want to visualize FWD and BWD times with error bars, grouped by method.\n\nHowever, there are **a few issues and improvements** needed in your current `plot_nlp` function:\n\n1. **Incorrect indexing** — You're skipping `i=0` (CPU RPC), but also the data for `data_fwd_stdv[0]` has a non-zero value at index 0, which suggests it should be plotted.\n2. You're **only plotting CUDA RPC (`i",
+      "target_line": "handles=interleave(color_handles, hatch_handles),",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.939297124600639,
+      "bleu_score": 0.014759604986302665,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "test/grpc_benchmark/benchmark/plot/draw_gpt.py",
+        "line_num": 201,
+        "sample_index": 6,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "You're working on a script to generate a bar plot comparing different distributed training methods (RPC vs Pipeline) in terms of forward, communication, and backward pass delays for a GPT model. The data is already provided, and the plotting logic is mostly in place, but there are a few **issues and improvements** needed:\n\n### ✅ Issues Identified:\n1. **Inconsistent data indexing**: You're skipping `i=0` (CPU RPC) and only plotting `i=1` and `i=2`, which is fine if intentional, but the comment says \"RPC\" includes both CPU and CUDA — you may want to clarify or combine.\n2. **Data alignment**: The data arrays have 5 values corresponding to micro-batch",
+      "target_line": "labels=interleave(color_names, hatch_names),",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9464831804281345,
+      "bleu_score": 0.03144654088050315,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "test/grpc_benchmark/benchmark/plot/draw_gpt.py",
+        "line_num": 203,
+        "sample_index": 6,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the **completed and improved version** of `draw_gpt.py` with proper structure, clarity, and visual enhancements. The original code is mostly functional but has a few issues:\n\n- Inconsistent handling of `data_fwd_stdv[0]` vs others (indexing mismatch).\n- The loop starts at `i=1`, skipping CPU RPC (`i=0`) — possibly intentional, but let's clarify.\n- Legend construction via dummy bars can be simplified using `matplotlib.patches`.\n- Font consistency and layout improvements.\n- Ensure all arrays are aligned for 5 micro-batch sizes: `[1, 2, 4, 8, 128]`.\n\nWe'll:\n- Only plot **CUDA RPC**",
+      "target_line": "#bbox_to_anchor=(-0.015, 0.3, 0.5, 0.5)",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9593220338983051,
+      "bleu_score": 0.09271523178807946,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "test/grpc_benchmark/benchmark/plot/draw_gpt.py",
+        "line_num": 206,
+        "sample_index": 6,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "You're working on a script to generate a bar plot comparing different distributed training methods (RPC vs Pipeline) in terms of forward, communication, and backward pass delays for a GPT model. The data is structured by micro-batch size, and you want to visualize FWD and BWD times with error bars, grouped by method.\n\nYour current code has a few **issues**:\n\n1. **Incorrect indexing** — You're skipping `i=0` (CPU RPC), but then only plotting `i=1` and `i=2`, which is okay if intentional, but the logic assumes only two methods are plotted.\n2. **Data alignment** — The data arrays are of length 5, corresponding to micro-batch sizes:",
+      "target_line": "plot_nlp(x_name = \"Micro-Batch Size\", y_lim = [0, 2000])",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.943217665615142,
+      "bleu_score": 0.01844883182004053,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "test/grpc_benchmark/benchmark/plot/draw_gpt.py",
+        "line_num": 224,
+        "sample_index": 6,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class that represents a sparse N-dimensional array in the TileDB SingleCell system. The file is already quite complete, but there are a few areas that could be improved or completed:\n\n1. The `get_nnz()` method is commented out and needs implementation\n2. The `read_as_pandas_all()` method has an incorrect return type annotation (it returns a pandas DataFrame, not a pa.RecordBatch)\n3. There are some TODOs that could be addressed\n\nHere's the completed version with these issues fixed:\n\n```python\nimport math\nimport time\nfrom typing import Any",
+      "target_line": "parent: Optional[SOMACollection] = None,",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9544787077826725,
+      "bleu_score": 0.014084507042253521,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 28,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class that represents a sparse N-dimensional array in the TileDB SingleCell system. The file is already quite complete, but there are a few areas that could be improved or completed:\n\n1. The `get_nnz()` method is commented out and needs implementation\n2. The `read_as_pandas_all()` method has an incorrect return type annotation (it returns a pandas DataFrame, not a pa.RecordBatch)\n3. There are some TODOs that could be addressed\n\nHere's the completed file with these issues addressed:\n\n```python\nimport math\nimport time\nfrom typing import Any",
+      "target_line": "super().__init__(uri=uri, name=name, parent=parent, ctx=ctx)",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9384164222873901,
+      "bleu_score": 0.01998900906668925,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 35,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class that represents a sparse N-dimensional array in the TileDB SingleCell system. The file is already quite complete, but there are a few areas that could be improved or completed:\n\n1. The `get_nnz()` method is commented out and needs implementation\n2. The `read_as_pandas_all()` method has an incorrect return type annotation\n3. There might be some missing type hints or documentation\n\nHere's the completed version with the necessary fixes:\n\n```python\nimport math\nimport time\nfrom typing import Any, Iterator, List, Optional, Sequence, Union\n\nimport",
+      "target_line": "tiledb.Array.create(self._uri, sch, ctx=self._ctx)",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9433962264150944,
+      "bleu_score": 0.07092198581560284,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 96,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class implementation for a sparse N-dimensional array in the TileDB SingleCell project. The file is already complete and doesn't appear to have any missing code that needs to be filled in.\n\nThe `SOMASparseNdArray` class is fully implemented with:\n- Constructor and initialization methods\n- Array creation functionality\n- Reading and writing methods for data\n- Support for different matrix types (sparse and dense)\n- Chunked ingestion for large matrices\n- Proper logging and progress tracking\n\nAll methods are implemented, including the main functionality for creating, reading, and writing sparse arrays, as",
+      "target_line": "return \"\\n\".join(self._repr_aux())",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9664879356568364,
+      "bleu_score": 0.0364963503649635,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 104,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class implementation for a sparse N-dimensional array in the TileDB SingleCell API. The file is already complete and doesn't appear to have any missing code that needs to be filled in.\n\nThe `SOMASparseNdArray` class is fully implemented with:\n- Constructor and initialization methods\n- Array creation functionality\n- Reading and writing methods for data\n- Support for different matrix types (sparse and dense)\n- Chunked ingestion for large matrices\n- Proper documentation and type hints\n\nAll methods are implemented, including the main functionality for creating, reading, and writing sparse arrays, as",
+      "target_line": "+ str(self._get_shape())",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9743589743589743,
+      "bleu_score": 0.021897810218978107,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 114,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class implementation for a sparse N-dimensional array in the TileDB SingleCell API. The file is already complete and doesn't appear to have any missing code that needs to be filled in.\n\nThe `SOMASparseNdArray` class is fully implemented with:\n- Constructor and initialization methods\n- Array creation functionality\n- Reading and writing methods for data\n- Support for different matrix types (sparse and dense)\n- Chunked ingestion for large matrices\n- Proper documentation and type hints\n\nAll methods are implemented, including the main functionality for creating, reading, and writing sparse arrays, as",
+      "target_line": "return self._get_shape()",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.97165991902834,
+      "bleu_score": 0.021897810218978107,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 123,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class definition for a sparse N-dimensional array that inherits from `TileDBArray`. The file appears to be mostly complete, but there are a few areas that could be improved or completed:\n\n1. The `get_nnz()` method is commented out and needs implementation\n2. The `read_as_pandas_all()` method has an incorrect return type annotation (it returns a pandas DataFrame, not a pa.RecordBatch)\n3. There might be some missing methods or improvements based on the pattern in the codebase\n\nHere's the completion for the file with the necessary fixes:\n\n```python",
+      "target_line": "return self._get_ndims()",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9680696661828737,
+      "bleu_score": 0.013840913308956657,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 125,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that the `SOMASparseNdArray` class is missing the `get_nnz` method that is currently commented out. This method should return the number of non-zero values in the array.\n\nHere's the implementation for the `get_nnz` method:\n\n```python\n    def get_nnz(self) -> int:\n        \"\"\"\n        Return the number of non-zero values in the array\n        \"\"\"\n        with self._tiledb_open() as A:\n            # For sparse arrays, we can get the number of non-zero elements by\n            # counting the number of cells in the array\n            return A.nonzero()[0].size\n```\n\nThis implementation",
+      "target_line": "if self._shape is None:",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9641638225255973,
+      "bleu_score": 0.01423496558434325,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 131,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class definition for a sparse N-dimensional array implementation using TileDB. The file appears to be mostly complete, but there are a few areas that could be improved or completed:\n\n1. The `get_nnz()` method is commented out and needs implementation\n2. The `read_as_pandas_all()` method has an incorrect return type annotation (it returns a pandas DataFrame, not a pa.RecordBatch)\n3. There might be some missing type hints or documentation\n\nHere's the completed version with the necessary fixes:\n\n```python\nimport math\nimport time\nfrom typing import Any, Iterator",
+      "target_line": "return len(self._get_shape())",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9643874643874644,
+      "bleu_score": 0.017069718549972978,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 140,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file to complete, I need to implement the `get_nnz` method in the `SOMASparseNdArray` class. This method should return the number of non-zero values in the array.\n\nLooking at the code, I can see that this is a sparse array implementation using TileDB, and the method is currently commented out with a TODO. The method should query the TileDB array to count the number of non-zero elements.\n\nHere's the implementation:\n\n```python\ndef get_nnz(self) -> int:\n    \"\"\"\n    Return the number of non-zero values in the array\n    \"\"\"\n    with self._tiledb_open(\"r\") as A:\n        # For sparse arrays, the number of",
+      "target_line": "def get_is_sparse(self) -> bool:",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9498381877022654,
+      "bleu_score": 0.025265379372872734,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 142,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `SOMASparseNdArray` is a class that represents sparse N-dimensional arrays in the TileDB SingleCell API. The file is mostly complete but has a few TODOs and missing methods.\n\nThe most notable missing piece is the `get_nnz()` method which is commented out. This method should return the number of non-zero values in the array. Here's the completion:\n\n```python\ndef get_nnz(self) -> int:\n    \"\"\"\n    Return the number of non-zero values in the array\n    \"\"\"\n    with self._tiledb_open() as A:\n        # For sparse arrays, we can get the number of non-zero elements by",
+      "target_line": "Returns ``True``.",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9758842443729904,
+      "bleu_score": 0.02219155878251178,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 144,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file to complete, I need to implement the `get_nnz` method in the `SOMASparseNdArray` class. This method should return the number of non-zero values in the array.\n\nLooking at the existing code, I can see that the class already has methods for reading data and interacting with TileDB arrays. The `get_nnz` method should query the TileDB array to count the number of non-zero elements.\n\nHere's the implementation:\n\n```python\n    def get_nnz(self) -> int:\n        \"\"\"\n        Return the number of non-zero values in the array\n        \"\"\"\n        if not self.exists():\n            return 0\n            \n        with self._tiledb_open(\"r\")",
+      "target_line": "# TODO: partition,",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9767827529021559,
+      "bleu_score": 0.014184397163120567,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 165,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class that represents a sparse N-dimensional array in the TileDB SingleCell system. The class is nearly complete but has a few missing pieces.\n\nThe main missing piece is the `get_nnz()` method which is currently commented out. This method should return the number of non-zero values in the array. Here's the completion:\n\n```python\ndef get_nnz(self) -> int:\n    \"\"\"\n    Return the number of non-zero values in the array\n    \"\"\"\n    with self._tiledb_open() as A:\n        # For sparse arrays, we can get the number of non",
+      "target_line": "with self._tiledb_open(\"r\") as A:",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9511041009463722,
+      "bleu_score": 0.03979426787007852,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 176,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class implementation for a sparse N-dimensional array in the TileDB SingleCell API. The file is already complete and doesn't appear to have any missing code that needs to be filled in.\n\nThe `SOMASparseNdArray` class is fully implemented with:\n- Constructor and initialization methods\n- Array creation functionality\n- Reading and writing methods for data\n- Support for different matrix types (sparse and dense)\n- Chunked ingestion for large matrices\n- Proper documentation and type hints\n\nAll methods are implemented, including the main functionality for creating, reading, and writing sparse arrays, as",
+      "target_line": ")",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9986504723346828,
+      "bleu_score": 0.0072992700729927,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 181,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class that represents a sparse N-dimensional array in the TileDB SingleCell system. The file is already quite complete, but there are a few areas that could be improved or completed:\n\n1. The `get_nnz()` method is commented out and needs implementation\n2. The `read_as_pandas_all()` method has an incorrect return type annotation (it returns a pandas DataFrame, not a pa.RecordBatch)\n3. There are some TODOs that could be addressed\n\nHere's the completed version with these issues fixed:\n\n```python\nimport math\nimport time\nfrom typing import Any",
+      "target_line": "dim_names = None",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9794419970631424,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 209,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class implementation for a sparse N-dimensional array in the TileDB SingleCell API. The file is already complete and doesn't appear to have any missing code that needs to be filled in.\n\nThe `SOMASparseNdArray` class is fully implemented with:\n- Constructor and initialization methods\n- Array creation functionality\n- Reading and writing methods for data\n- Support for different matrix types (sparse and dense)\n- Chunked ingestion for large matrices\n- Proper documentation and type hints\n\nAll methods are implemented, including the main functionality for creating, reading, and writing sparse arrays, as",
+      "target_line": "with self._tiledb_open() as A:",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9662618083670715,
+      "bleu_score": 0.051094890510948905,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 213,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class that represents a sparse N-dimensional array in the TileDB SingleCell system. The file is already quite complete, but there are a few areas that could be improved or completed:\n\n1. The `get_nnz()` method is commented out and needs implementation\n2. The `read_as_pandas_all()` method has an incorrect return type annotation (it returns a pandas DataFrame, not a pa.RecordBatch)\n3. There might be some missing type hints or documentation\n\nHere's the completed version with the necessary fixes:\n\n```python\nimport math\nimport time\nfrom typing import Any",
+      "target_line": "self.read(",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9855699855699855,
+      "bleu_score": 0.013986013986013991,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 252,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class that represents a sparse N-dimensional array in the TileDB SingleCell system. The file is already quite complete, but there are a few areas that could be improved or completed:\n\n1. The `get_nnz()` method is commented out and needs implementation\n2. The `read_as_pandas_all()` method has an incorrect return type annotation\n3. There are some TODOs that could be addressed\n\nHere's the completed version with the necessary fixes:\n\n```python\nimport math\nimport time\nfrom typing import Any, Iterator, List, Optional, Sequence, Union\n\nimport",
+      "target_line": "generator = self.read_as_pandas(",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9557522123893806,
+      "bleu_score": 0.01428571428571428,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 270,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class implementation for a sparse N-dimensional array in the TileDB SingleCell API. The file is already complete and doesn't appear to have any missing code that needs to be filled in.\n\nThe `SOMASparseNdArray` class is fully implemented with:\n- Constructor and initialization methods\n- Array creation functionality\n- Reading and writing methods for data\n- Support for different matrix types (sparse and dense)\n- Chunked ingestion for large matrices\n- Proper documentation and type hints\n\nAll methods are implemented, including the main functionality for creating, reading, and writing sparse arrays, as",
+      "target_line": "Write an ``Arrow.Tensor`` to the persistent object. As duplicate index values are not allowed, index values already present in the object are overwritten and new index values are added.",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.8326585695006747,
+      "bleu_score": 0.029304225900818468,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 285,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class that represents a sparse N-dimensional array in the TileDB SingleCell system. The class is nearly complete but has a few missing pieces.\n\nThe main missing piece is the `get_nnz()` method which is currently commented out. This method should return the number of non-zero values in the array. Here's the completion:\n\n```python\ndef get_nnz(self) -> int:\n    \"\"\"\n    Return the number of non-zero values in the array\n    \"\"\"\n    with self._tiledb_open() as A:\n        # For sparse arrays, we can get the number of non",
+      "target_line": "with self._tiledb_open(\"w\") as A:",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9526813880126183,
+      "bleu_score": 0.03979426787007852,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 323,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class definition for `SOMASparseNdArray` that handles sparse n-dimensional arrays in TileDB. The file is already quite complete, but there are a few areas that could be improved or completed:\n\n1. The `get_nnz()` method is commented out and needs implementation\n2. The `read_as_pandas_all()` method has an incorrect return type annotation (it returns a DataFrame, not a RecordBatch)\n3. There might be some missing type hints or docstrings\n\nHere's the completed version with these issues addressed:\n\n```python\nimport math\nimport time",
+      "target_line": "self._create_empty_array(",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9671150971599403,
+      "bleu_score": 0.014598540145985401,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 339,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `SOMASparseNdArray` is a class that represents a sparse N-dimensional array in TileDB. The file is already quite complete, but there are a few areas that could be improved or completed:\n\n1. The `get_nnz()` method is commented out and needs implementation\n2. The `read_as_pandas_all()` method has an incorrect return type annotation (it returns a DataFrame, not a RecordBatch)\n3. There might be some missing methods or improvements\n\nHere's the completed file with the necessary fixes:\n\n```python\nimport math\nimport time\nfrom typing import Any, Iterator, List, Optional, Sequence, Union\n\nimport numpy as",
+      "target_line": "self._ingest_data_whole(matrix)",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9632352941176471,
+      "bleu_score": 0.021582733812949645,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 346,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `apis/python/src/tiledbsoma/soma_sparse_nd_array.py` is a class that represents a sparse N-dimensional array in the TileDB SingleCell system. The file is already quite complete, but there are a few areas that could be improved or completed:\n\n1. The `get_nnz()` method is commented out and needs implementation\n2. The `read_as_pandas_all()` method has an incorrect return type annotation\n3. There are some TODOs that could be addressed\n\nHere's the completed version with these issues fixed:\n\n```python\nimport math\nimport time\nfrom typing import Any, Iterator, List, Optional, Sequence, Union\n\nimport",
+      "target_line": "self._ingest_data_rows_chunked(matrix)",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9556868537666174,
+      "bleu_score": 0.021428571428571425,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 348,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file to complete, I can see that `SOMASparseNdArray` is a class that represents a sparse N-dimensional array in the TileDB SingleCell API. The file is already quite complete, but there are a few missing pieces that need to be addressed.\n\nThe main missing piece is the `get_nnz()` method which is currently commented out. This method should return the number of non-zero values in the array. Additionally, there are some type hints and documentation that could be improved.\n\nHere's the completed file with the missing `get_nnz()` method implemented:\n\n```python\nimport math\nimport time\nfrom typing import Any, Iterator, List, Optional, Sequence, Union\n\nimport numpy as",
+      "target_line": "self._ingest_data_dense_rows_chunked(matrix)",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9501424501424501,
+      "bleu_score": 0.02083333333333333,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 352,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `SOMASparseNdArray` is a class that represents a sparse N-dimensional array in the TileDB SingleCell API. The file is already quite complete, but there are a few missing pieces that need to be addressed.\n\nThe main missing piece is the `get_nnz()` method which is currently commented out. This method should return the number of non-zero values in the array. Here's the implementation:\n\n```python\ndef get_nnz(self) -> int:\n    \"\"\"\n    Return the number of non-zero values in the array\n    \"\"\"\n    with self._tiledb_open() as A:\n        # For sparse arrays, we can get the number of",
+      "target_line": "tiledb.Array.create(self.get_uri(), sch, ctx=self._ctx)",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9324960753532182,
+      "bleu_score": 0.05178795552215544,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 405,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Based on the repository context and the file that needs completion, I can see that `SOMASparseNdArray` is a class that represents a sparse N-dimensional array in the TileDB-SingleCell system. The file is mostly complete but has a few TODOs and missing methods.\n\nThe most notable missing piece is the `get_nnz()` method which is commented out. This method should return the number of non-zero values in the array. Here's the completion:\n\n```python\ndef get_nnz(self) -> int:\n    \"\"\"\n    Return the number of non-zero values in the array\n    \"\"\"\n    with self._tiledb_open() as A:\n        # For sparse arrays, we can get the number of non-zero elements by",
+      "target_line": "eta_tracker = eta.Tracker()",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.963258785942492,
+      "bleu_score": 0.011986582537134607,
+      "context_info": {
+        "repo": "single-cell-data__tiledb-soma",
+        "filename": "apis/python/src/tiledbsoma/soma_sparse_nd_array.py",
+        "line_num": 522,
+        "sample_index": 26,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The file `examples/t5_example.py` is already complete and functional as provided. It does the following:\n\n1. **Defines a custom LLM class** (`FlanLLM`) using Hugging Face's `transformers` and LangChain, pointing to `google/flan-t5-large`.\n2. **Sets up embedding and LLM predictors** using `LangchainEmbedding` and `LLMPredictor`.\n3. **Creates a document** from a long text about SQL execution plans in databases.\n4. **Initializes a `GPTListIndex`** (from `llama_index`) with the document, using the custom LLM and embeddings.\n5. **Saves the index** to disk as `index.json",
+      "target_line": "model_name = \"google/flan-t5-large\"",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9456140350877194,
+      "bleu_score": 0.03725760847944744,
+      "context_info": {
+        "repo": "eosphoros-ai__DB-GPT",
+        "filename": "examples/t5_example.py",
+        "line_num": 12,
+        "sample_index": 28,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The file `examples/t5_example.py` is already complete and functional as provided. It does the following:\n\n1. Defines a custom LLM class `FlanLLM` using Hugging Face's `google/flan-t5-large` model via the `transformers` pipeline.\n2. Sets up embedding using `HuggingFaceEmbeddings`.\n3. Creates a document from a long text about database execution plans.\n4. Initializes a `GPTListIndex` (from `llama_index`) to index the document with custom LLM and embedding settings.\n5. Saves the index to disk.\n6. Runs a sample query: `\"数据库的执行计划命令有多少?\"`.\n\nHowever, there are **a few improvements and fixes** that",
+      "target_line": "def _call(self, prompt, stop=None):",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9528619528619529,
+      "bleu_score": 0.028985507246376805,
+      "context_info": {
+        "repo": "eosphoros-ai__DB-GPT",
+        "filename": "examples/t5_example.py",
+        "line_num": 17,
+        "sample_index": 28,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The file `examples/t5_example.py` is already **complete** and **fully functional** as-is. It does the following:\n\n1. Sets up a `FlanLLM` class using Hugging Face's `flan-t5-large` model via the `transformers` pipeline.\n2. Initializes embeddings using `HuggingFaceEmbeddings`.\n3. Defines a document (about SQL execution plans) and converts it into a `Document` object for `llama_index`.\n4. Configures a `PromptHelper` to manage input size, output size, and overlap.\n5. Builds a `GPTListIndex` (note: despite the name, this is a legacy index type in `llama_index`) over the document",
+      "target_line": "return self.pipeline(prompt, max_length=9999)[0][\"generated_text\"]",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9222797927461139,
+      "bleu_score": 0.035460992907801414,
+      "context_info": {
+        "repo": "eosphoros-ai__DB-GPT",
+        "filename": "examples/t5_example.py",
+        "line_num": 18,
+        "sample_index": 28,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The file `examples/t5_example.py` is already complete and functional as provided. It does the following:\n\n1. **Defines a custom LLM class** (`FlanLLM`) using Hugging Face's `transformers` and `langchain`, leveraging the `google/flan-t5-large` model.\n2. **Sets up embedding and LLM predictors** using `LangchainEmbedding` and `LLMPredictor`.\n3. **Creates a document from a long text** about database execution plans (specifically OceanBase, Oracle, PostgreSQL).\n4. **Initializes a `GPTListIndex`** (note: despite the name, this is a LlamaIndex structure for list-based indexing) with prompt tuning,",
+      "target_line": "return {\"name_of_model\": self.model_name}",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.947986577181208,
+      "bleu_score": 0.013888888888888888,
+      "context_info": {
+        "repo": "eosphoros-ai__DB-GPT",
+        "filename": "examples/t5_example.py",
+        "line_num": 21,
+        "sample_index": 28,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The file `examples/t5_example.py` is already **complete** and **fully functional** as provided. It does the following:\n\n1. Sets up a `FlanLLM` class using Hugging Face's `flan-t5-large` model via the `transformers` pipeline.\n2. Initializes an LLM predictor and embedding model for use with `llama_index`.\n3. Creates a document from a large text about database execution plans.\n4. Builds a `GPTListIndex` (a simple list-based index) over the document using custom LLM and embedding settings.\n5. Saves the index to disk.\n6. Queries the index with a sample question: *\"数据库的执行计划命令有多少?\"* (\"How many",
+      "target_line": "return \"custome\"",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9746621621621622,
+      "bleu_score": 0.013986013986013991,
+      "context_info": {
+        "repo": "eosphoros-ai__DB-GPT",
+        "filename": "examples/t5_example.py",
+        "line_num": 24,
+        "sample_index": 28,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The file `examples/t5_example.py` is already **complete** and **functionally correct** as provided. It does the following:\n\n1. Defines a custom LLM class `FlanLLM` using Hugging Face's `google/flan-t5-large`.\n2. Sets up embeddings using `HuggingFaceEmbeddings`.\n3. Loads a document (text1) into a `Document` object via `llama_index`.\n4. Creates a `GPTListIndex` with a `PromptHelper` for chunking.\n5. Saves the index to disk.\n6. Queries the index with a sample question.\n\nHowever, there are **a few improvements and fixes** that can be made for correctness, best practices, and consistency",
+      "target_line": "llm_predictor = LLMPredictor(llm=FlanLLM())",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9505962521294719,
+      "bleu_score": 0.027972027972027972,
+      "context_info": {
+        "repo": "eosphoros-ai__DB-GPT",
+        "filename": "examples/t5_example.py",
+        "line_num": 26,
+        "sample_index": 28,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The file `examples/t5_example.py` is already **complete** and **fully functional** as-is. It does the following:\n\n1. Sets up a `FlanLLM` class using Hugging Face's `flan-t5-large` model via the `transformers` pipeline.\n2. Initializes embeddings using `HuggingFaceEmbeddings`.\n3. Creates a `LLMPredictor` with the custom LLM.\n4. Defines a document (about database execution plans) and converts it into a `Document` object for `llama_index`.\n5. Configures a `PromptHelper` to manage token limits and chunking.\n6. Builds a `GPTListIndex` from the document, using the embedding model and",
+      "target_line": "hfemb = HuggingFaceEmbeddings()",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9484536082474226,
+      "bleu_score": 0.021897810218978107,
+      "context_info": {
+        "repo": "eosphoros-ai__DB-GPT",
+        "filename": "examples/t5_example.py",
+        "line_num": 27,
+        "sample_index": 28,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The file `examples/t5_example.py` is already **complete** and **fully functional** as-is. It does the following:\n\n1. Sets up a `FlanLLM` class using Hugging Face's `flan-t5-large` model via the `transformers` pipeline.\n2. Initializes embeddings using `HuggingFaceEmbeddings`.\n3. Creates a `LLMPredictor` with the custom LLM.\n4. Defines a document (about database execution plans) and converts it into a `Document` object for `llama_index`.\n5. Configures a `PromptHelper` to manage token limits and chunking.\n6. Builds a `GPTListIndex` from the document, using the embedding model and",
+      "target_line": "Query OK, 0 rows affected",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9673539518900344,
+      "bleu_score": 0.0072992700729927,
+      "context_info": {
+        "repo": "eosphoros-ai__DB-GPT",
+        "filename": "examples/t5_example.py",
+        "line_num": 68,
+        "sample_index": 28,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The file `examples/t5_example.py` is already **complete** and **fully functional** as-is. It does the following:\n\n1. Defines a custom LLM class `FlanLLM` using Hugging Face's `google/flan-t5-large`.\n2. Sets up embeddings using `HuggingFaceEmbeddings`.\n3. Loads a document (about database execution plans) into a `Document` object.\n4. Creates a `GPTListIndex` using `llama_index`, with custom `embed_model`, `llm_predictor`, and `prompt_helper`.\n5. Saves the index to disk.\n6. Queries the index with a sample question: *\"数据库的执行计划命令有多少?\"*.\n\n---\n\n### ✅",
+      "target_line": "3 - output([P1.C1], [P1.C2]), filter(nil)",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9560439560439561,
+      "bleu_score": 0.05555555555555554,
+      "context_info": {
+        "repo": "eosphoros-ai__DB-GPT",
+        "filename": "examples/t5_example.py",
+        "line_num": 92,
+        "sample_index": 28,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The file `examples/t5_example.py` is already **complete and functional** as provided. It does the following:\n\n1. Sets up a LLM (`Flan-T5-large`) via Hugging Face's `transformers` using LangChain's `LLM` wrapper.\n2. Initializes embeddings using `HuggingFaceEmbeddings`.\n3. Creates a `GPTListIndex` from a single document (about database execution plans).\n4. Saves the index to disk.\n5. Queries the index with a sample question.\n\nHowever, there are **a few improvements and fixes** that can be made for correctness, performance, and compatibility with modern versions of `llama_index`. Here's the **completed and improved version** of `examples",
+      "target_line": "access([P1.C1], [P1.C2]), partitions(p[0-1])",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9609375,
+      "bleu_score": 0.06666666666666667,
+      "context_info": {
+        "repo": "eosphoros-ai__DB-GPT",
+        "filename": "examples/t5_example.py",
+        "line_num": 94,
+        "sample_index": 28,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The file `examples/t5_example.py` is already **complete** and **fully functional** as-is. It does the following:\n\n1. Sets up a `FlanLLM` class using Hugging Face's `flan-t5-large` model via the `transformers` pipeline.\n2. Initializes embeddings using `HuggingFaceEmbeddings`.\n3. Creates a `LLMPredictor` with the custom LLM.\n4. Defines a document (about database execution plans) and converts it into a `Document` object for `llama_index`.\n5. Configures a `PromptHelper` to manage token limits and chunking.\n6. Builds a `GPTListIndex` from the document, using the embedding model and",
+      "target_line": "access([P2.C1], [P2.C2]), partitions(p[0-3])",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9587628865979382,
+      "bleu_score": 0.051094890510948905,
+      "context_info": {
+        "repo": "eosphoros-ai__DB-GPT",
+        "filename": "examples/t5_example.py",
+        "line_num": 99,
+        "sample_index": 28,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The provided file `piperider_cli/ydata/data_expectations/engine.py` contains a nearly complete implementation of the `DataExpectationsReporter` class, which integrates with Great Expectations JSON validation results to perform data quality checks and generate warnings.\n\nHowever, there are **two missing components** in the `evaluate` method and one potential improvement:\n\n1. ✅ The method calls `self._clean_warnings()` and `self._report()` — but **`_clean_warnings` and `_report` are not defined** in the class.\n2. ✅ The `evaluate` method returns results, but `_report()` is likely intended to display or log the accumulated warnings.\n3. ⚠️ There's a typo in the argument name:",
+      "target_line": "from ..utils.auxiliary import test_load_json_path",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9379615952732644,
+      "bleu_score": 0.020270270270270275,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 11,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper code completion and minor improvements for clarity, correctness, and consistency (e.g., fixing docstring parameter name mismatch, ensuring return types, and improving formatting):\n\n```python\n\"\"\"\nImplementation of DataExpectationsReporter engine to run data expectations validation analysis.\n\"\"\"\nfrom typing import Optional, Tuple, Dict, List\n\nfrom pandas import DataFrame\nfrom numpy import argmin\n\nfrom ..core.warnings import Priority\nfrom ..core import QualityEngine, QualityWarning\nfrom ..utils.auxiliary import test_load_json_path\nfrom ..utils.logger import NAME, get_logger\n\n\nclass DataExpectationsReporter(QualityEngine):\n    \"\"\"Main class to run",
+      "target_line": "bound_deviations = None",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9731903485254692,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 42,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper code completion and structure. The existing code is already quite complete, but there are a few issues and improvements to address:\n\n1. **Fix method signature mismatch in `evaluate`**: The docstring says `results_json`, but the parameter is named `results_json_path`.\n2. **Ensure consistent return type in `evaluate`** — currently returns either a string (on error) or a dict.\n3. **Add missing imports** (`pandas`, `numpy`) which are used but not imported at the top.\n4. **Fix tuple return in `_expectation_level_assessment`** — returning a tuple `(DataFrame, dict",
+      "target_line": "bounds = [expectation_summary['kwargs'][bound] for bound in ['min_value', 'max_value']]",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9145427286356822,
+      "bleu_score": 0.019230769230769235,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 45,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper code completion and minor improvements for clarity, correctness, and consistency (e.g., fixing docstring parameter name mismatch, ensuring return types, and improving formatting):\n\n```python\n\"\"\"\nImplementation of DataExpectationsReporter engine to run data expectations validation analysis.\n\"\"\"\nfrom typing import Optional, Tuple, Dict, List\n\nfrom pandas import DataFrame\nfrom numpy import argmin\n\nfrom ..core.warnings import Priority\nfrom ..core import QualityEngine, QualityWarning\nfrom ..utils.auxiliary import test_load_json_path\nfrom ..utils.logger import NAME, get_logger\n\n\nclass DataExpectationsReporter(QualityEngine):\n    \"\"\"Main class to run",
+      "target_line": "test=QualityWarning.Test.EXPECTATION_ASSESSMENT_VALUE_BETWEEN,",
+      "line_type": "common",
+      "exact_match": 0.0,
+      "edit_distance": 0.9611260053619303,
+      "bleu_score": 0.028169014084507043,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 59,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper code completion and minor improvements for clarity, consistency, and correctness — while preserving all existing logic and structure:\n\n```python\n\"\"\"\nImplementation of DataExpectationsReporter engine to run data expectations validation analysis.\n\"\"\"\nfrom typing import Optional, Dict, Any, Tuple, List\n\nfrom pandas import DataFrame\nfrom numpy import argmin\n\nfrom ..core.warnings import Priority\nfrom ..core import QualityEngine, QualityWarning\nfrom ..utils.auxiliary import test_load_json_path\nfrom ..utils.logger import NAME, get_logger\n\n\nclass DataExpectationsReporter(QualityEngine):\n    \"\"\"Main class to run data expectation validation analysis.\n    Supports standard",
+      "target_line": "df (DataFrame): The Pandas DataFrame that ran against the expectation suite, used to evaluate coverage.",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.8948751642575559,
+      "bleu_score": 0.02394690543795204,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 109,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The provided file `piperider_cli/ydata/data_expectations/engine.py` contains a nearly complete implementation of the `DataExpectationsReporter` class, which integrates data quality checks based on Great Expectations validation results. However, there are **two missing pieces** that prevent it from working correctly:\n\n1. The base class `QualityEngine` is expected to provide a `store_warning`, `_clean_warnings`, and `_report` methods — but if those aren't implemented in the base class or assumed to be inherited, we need to ensure they're available.\n2. Since the current code calls `self.store_warning(...)`, `self._clean_warnings()`, and `self._report()`, but these methods are not defined in this class, we",
+      "target_line": "results_summary = self._summarize_results(results_json_path)",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9338028169014084,
+      "bleu_score": 0.012945051607573766,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 111,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper formatting, docstring consistency, and logical completion of the `evaluate` method. The code already implements most functionality, but we ensure clarity, correctness, and completeness—especially in the return structure and error handling.\n\nWe also fix minor issues like argument name mismatch (`results_json` vs `results_json_path`) in the `evaluate` method signature and improve type hints.\n\n---\n\n### ✅ Completed & Improved File:\n\n```python\n\"\"\"\nImplementation of DataExpectationsReporter engine to run data expectations validation analysis.\n\"\"\"\nfrom typing import Optional, Dict, Any, Tuple\n\nfrom pandas import DataFrame\nfrom numpy import argmin\n\nfrom ..core.w",
+      "target_line": "column_coverage.update(kwarg)",
+      "line_type": "common",
+      "exact_match": 0.0,
+      "edit_distance": 0.968421052631579,
+      "bleu_score": 0.01986754966887417,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 120,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper code completion and minor improvements for clarity, correctness, and consistency (e.g., fixing docstring parameter name mismatch, ensuring return types, and improving formatting):\n\n```python\n\"\"\"\nImplementation of DataExpectationsReporter engine to run data expectations validation analysis.\n\"\"\"\nfrom typing import Optional, Tuple, Dict, List\n\nfrom pandas import DataFrame\nfrom numpy import argmin\n\nfrom ..core.warnings import Priority\nfrom ..core import QualityEngine, QualityWarning\nfrom ..utils.auxiliary import test_load_json_path\nfrom ..utils.logger import NAME, get_logger\n\n\nclass DataExpectationsReporter(QualityEngine):\n    \"\"\"Main class to run",
+      "target_line": "test=QualityWarning.Test.COVERAGE_FRACTION,",
+      "line_type": "common",
+      "exact_match": 0.0,
+      "edit_distance": 0.9638069705093834,
+      "bleu_score": 0.028169014084507043,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 127,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper code completion and minor improvements for clarity, correctness, and consistency (e.g., fixing docstring formatting, ensuring type hints, and handling edge cases). The existing logic is preserved and enhanced where necessary.\n\n```python\n\"\"\"\nImplementation of DataExpectationsReporter engine to run data expectations validation analysis.\n\"\"\"\nfrom typing import Optional, Dict, Any, Tuple, List\nfrom pandas import DataFrame\nfrom numpy import argmin\n\nfrom ..core.warnings import Priority\nfrom ..core import QualityEngine, QualityWarning\nfrom ..utils.auxiliary import test_load_json_path\nfrom ..utils.logger import NAME, get_logger\n\n\nclass DataExpectations",
+      "target_line": "Args:",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9946808510638298,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 141,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The provided file `piperider_cli/ydata/data_expectations/engine.py` is mostly complete, but there are a few **missing or incomplete parts** that need to be addressed for correctness and consistency:\n\n### 🔍 Issues Identified:\n1. **`evaluate` method argument mismatch**: The docstring says `results_json`, but the actual parameter is `results_json_path`.\n2. **Incomplete return in `evaluate`**: The method returns a string on error (which is acceptable), but it should consistently return a dictionary or raise an exception. Also, error handling interrupts flow without fallback.\n3. **Missing `store_warning` and `_clean_warnings` definitions**: These methods are used but not defined in the class.\n4. **Missing import for",
+      "target_line": "results_summary['EXPECTATIONS'].values()) if not exp['success']]",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9457579972183588,
+      "bleu_score": 0.025316455696202535,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 147,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper code completion and structure. The existing code is already quite complete, but there are a few improvements and fixes needed for correctness, clarity, and consistency:\n\n- Fix the argument name in `evaluate()` (should be `results_json_path`, not `results_json`).\n- Ensure proper return type hints.\n- Add missing imports (`pandas`, `numpy`).\n- Improve docstring consistency.\n- Fix minor formatting issues (e.g., long lines, f-string formatting).\n- Ensure `store_warning` and `_clean_warnings` are properly used (assuming they're defined in the base class `QualityEngine`).\n\nHere is the **completed",
+      "target_line": "test=QualityWarning.Test.OVERALL_ASSESSMENT,",
+      "line_type": "common",
+      "exact_match": 0.0,
+      "edit_distance": 0.9656160458452722,
+      "bleu_score": 0.019230769230769235,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 153,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper code completion and minor improvements for clarity, correctness, and consistency (e.g., fixing docstring formatting, ensuring type hints are respected, and improving readability):\n\n```python\n\"\"\"\nImplementation of DataExpectationsReporter engine to run data expectations validation analysis.\n\"\"\"\nfrom typing import Optional, Dict, Tuple, List\nfrom pandas import DataFrame\nfrom numpy import argmin\n\nfrom ..core.warnings import Priority\nfrom ..core import QualityEngine, QualityWarning\nfrom ..utils.auxiliary import test_load_json_path\nfrom ..utils.logger import NAME, get_logger\n\n\nclass DataExpectationsReporter(QualityEngine):\n    \"\"\"Main class to run",
+      "target_line": "expectations_summary = self._summarize_results(results_json)['EXPECTATIONS']",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9316353887399463,
+      "bleu_score": 0.035211267605633804,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 168,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper formatting, docstring consistency, and logical completion of the `evaluate` method. The code already implements most functionality, but we ensure clarity, correctness, and robustness — especially in error handling and return types.\n\nWe also fix minor issues like:\n\n- Correcting the argument name in `evaluate` (`results_json` → `results_json_path`)\n- Ensuring consistent return structure\n- Adding type hints where missing\n- Improving docstring alignment\n\n---\n\n### ✅ Completed File: `piperider_cli/ydata/data_expectations/engine.py`\n\n```python\n\"\"\"\nImplementation of DataExpectationsReporter engine to run data expectations validation analysis",
+      "target_line": "index=expectations_summary.keys(),",
+      "line_type": "common",
+      "exact_match": 0.0,
+      "edit_distance": 0.9621621621621622,
+      "bleu_score": 0.028368794326241134,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 170,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper code completion and structure. The existing code is already quite comprehensive, but we'll finalize it by ensuring all components are properly connected, docstrings are consistent, and any missing logic or cleanup is addressed.\n\nWe'll also fix minor issues like:\n\n- Correcting the argument name in `evaluate()` from `results_json` to `results_json_path` (it was incorrectly named in the docstring).\n- Ensuring return types are consistent.\n- Adding missing imports if needed.\n- Finalizing the `evaluate` method to return a clean result dictionary.\n\n---\n\n### ✅ Completed File: `piperider_cli/ydata/data_expectations/engine",
+      "target_line": "columns=[",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9902777777777778,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 171,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper code completion and structure. The existing code is already quite comprehensive, but there are a few **missing or incomplete parts** that need to be addressed:\n\n### ✅ Issues Identified:\n1. The method `_expectation_level_assessment` takes `results_json: dict`, but the docstring and usage suggest it should take a path (`str`) — this is inconsistent.\n2. In `evaluate`, the argument is named `results_json_path`, but inside `_expectation_level_assessment`, it's passed as if it were a string path, while the method expects a `dict`.\n3. The return value of `_expectation_level",
+      "target_line": "if result is False:",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9733727810650887,
+      "bleu_score": 0.020408163265306117,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 180,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper code completion and structure. The existing code is already quite comprehensive, but we'll finalize it by ensuring all components are correctly implemented, docstrings are consistent, and any missing parts (like `_clean_warnings` and `_report`) are added based on typical patterns in such quality engines.\n\nSince `DataExpectationsReporter` inherits from `QualityEngine`, and methods like `store_warning`, `_clean_warnings`, and `_report` are likely defined in the base class or expected to be implemented, we will assume they should be instance methods that manage internal warnings and logging. If not implemented in the base class, we provide minimal implementations here for completeness",
+      "target_line": "error_metric = self.__between_value_error(expectation_summary)",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.935687263556116,
+      "bleu_score": 0.020408163265306117,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 183,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper code completion and minor improvements for clarity, correctness, and consistency (e.g., fixing docstring formatting, ensuring return types, and handling edge cases). The existing logic is preserved and enhanced where necessary.\n\n```python\n\"\"\"\nImplementation of DataExpectationsReporter engine to run data expectations validation analysis.\n\"\"\"\nfrom typing import Optional, Tuple, Dict, List\nfrom pandas import DataFrame\nfrom numpy import argmin\n\nfrom ..core.warnings import Priority\nfrom ..core import QualityEngine, QualityWarning\nfrom ..utils.auxiliary import test_load_json_path\nfrom ..utils.logger import NAME, get_logger\n\n\nclass DataExpectationsReporter(Q",
+      "target_line": "return (expectation_level_report, {idx: expectations_summary[idx] for idx in expectation_level_report.index})",
+      "line_type": "common",
+      "exact_match": 0.0,
+      "edit_distance": 0.8919631093544137,
+      "bleu_score": 0.042253521126760556,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 185,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The provided file `piperider_cli/ydata/data_expectations/engine.py` contains a nearly complete implementation of the `DataExpectationsReporter` class, which integrates data quality checks based on Great Expectations validation results. However, there are **two missing components** that prevent the `evaluate` method from working correctly:\n\n1. The method calls `self._clean_warnings()` — but this method is not defined.\n2. The method calls `self._report()` — also not defined.\n\nAdditionally, while `store_warning` is used throughout the code, it is **not implemented** in the class.\n\n---\n\n### ✅ Required Additions\n\nWe need to implement the following **private methods**:\n- `store_warning(self, warning: QualityWarning",
+      "target_line": "error_tol (int): Defines how many failed expectations are tolerated.",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9172510518934082,
+      "bleu_score": 0.039473684210526314,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 196,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper code completion and minor improvements for clarity, correctness, and consistency (e.g., fixing docstring parameter name mismatch, ensuring return types, and improving formatting):\n\n```python\n\"\"\"\nImplementation of DataExpectationsReporter engine to run data expectations validation analysis.\n\"\"\"\nfrom typing import Optional, Dict, Any, Tuple, List\n\nfrom pandas import DataFrame\nfrom numpy import argmin\n\nfrom ..core.warnings import Priority\nfrom ..core import QualityEngine, QualityWarning\nfrom ..utils.auxiliary import test_load_json_path\nfrom ..utils.logger import NAME, get_logger\n\n\nclass DataExpectationsReporter(QualityEngine):\n    \"\"\"Main class",
+      "target_line": "results['Coverage Fraction'] = self._coverage_fraction(",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9408602150537635,
+      "bleu_score": 0.021126760563380285,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 205,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper formatting, docstring consistency, and logical completion of the `evaluate` method. The code is already mostly complete, but we'll finalize it by ensuring all components are properly structured and any missing parts (like `_clean_warnings` and `_report`) are referenced appropriately or implemented inline if necessary.\n\nSince `store_warning`, `_clean_warnings`, and `_report` are inherited from the base `QualityEngine` class (assumed to exist in `piperider_cli/ydata/core/quality_engine.py`), we don't need to redefine them — but we should ensure the logic in `evaluate` is robust and clear.\n\nBelow is the",
+      "target_line": "results['Overall Assessment'] = self._overall_assessment(results_json_path, error_tol, rel_error_tol)",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9012693935119888,
+      "bleu_score": 0.0472972972972973,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 214,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper code completion and structure. The existing code is already quite comprehensive, but we'll finalize it by ensuring all components are correctly implemented, docstrings are consistent, and any missing parts (like `_clean_warnings` and `_report`) are added based on typical patterns in such quality engines.\n\nSince `DataExpectationsReporter` inherits from `QualityEngine`, and methods like `store_warning`, `_clean_warnings`, and `_report` are likely defined in the base class or expected to be implemented, we will assume they should be instance methods that manage internal warnings and logging. If not implemented in the base class, we provide minimal implementations here for completeness",
+      "target_line": "results['Expectation Level Assessment'] = self._expectation_level_assessment(results_json_path)",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9041614123581336,
+      "bleu_score": 0.03401360544217687,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 215,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper formatting, docstring consistency, and logical completion of the `evaluate` method. The code is already mostly complete, but we'll finalize it by ensuring all components are properly structured and any missing parts (like `_clean_warnings` and `_report`) are referenced appropriately or implemented inline if necessary.\n\nSince `store_warning`, `_clean_warnings`, and `_report` are inherited from the base `QualityEngine` class (assumed), we will keep them as-is, assuming they exist in the parent class. However, for clarity and completeness, we'll add a note and ensure the logic flows correctly.\n\n---\n\n### ✅ Completed & Cleaned",
+      "target_line": "self._clean_warnings()",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9698630136986301,
+      "bleu_score": 0.0261437908496732,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 216,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's the completed version of the file `piperider_cli/ydata/data_expectations/engine.py`, with proper code completion and structure. The existing code is already quite comprehensive, but there are a few **missing or incomplete parts** that need to be addressed:\n\n### ✅ Issues Identified:\n1. The method `_expectation_level_assessment` takes `results_json: dict`, but the docstring and usage suggest it should take a path (`str`) — this is inconsistent.\n2. In `evaluate`, the argument is named `results_json_path`, but inside `_expectation_level_assessment`, it's passed as if it were a string path, while the method expects a `dict`. This causes a type mismatch.\n3. The return",
+      "target_line": "self._report()",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9807692307692307,
+      "bleu_score": 0.02013422818791946,
+      "context_info": {
+        "repo": "infuseai__piperider",
+        "filename": "piperider_cli/ydata/data_expectations/engine.py",
+        "line_num": 218,
+        "sample_index": 35,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `docs/conf.py` file is already complete and properly configured for a Sphinx documentation setup. It includes:\n\n- Project metadata (`project`, `author`, `copyright`, `version`, `release`)\n- General Sphinx configuration (extensions, source suffix, master document, etc.)\n- HTML, LaTeX, manual page, Texinfo, and Epub output settings\n- Extension-specific configurations (autodoc, autosectionlabel, intersphinx, linkcheck)\n\nThere are **no missing parts** or incomplete sections in the provided `docs/conf.py`. The file is fully functional as-is for building documentation with Sphinx.\n\n✅ **Conclusion**: No code completion is needed. The file is already correct and complete.",
+      "target_line": "# http://www.sphinx-doc.org/en/master/config",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.950965824665676,
+      "bleu_score": 0.05333333333333334,
+      "context_info": {
+        "repo": "bowtie-json-schema__bowtie",
+        "filename": "docs/conf.py",
+        "line_num": 6,
+        "sample_index": 57,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `docs/conf.py` file is already complete and properly configured for a Sphinx documentation setup. It includes:\n\n- Project metadata (`project`, `author`, `copyright`, `version`, `release`)\n- General Sphinx configuration (extensions, source suffix, master document, etc.)\n- HTML, LaTeX, manual page, Texinfo, and Epub output settings\n- Extension-specific configurations (autodoc, autosectionlabel, intersphinx, linkcheck)\n\nThere are **no missing parts** or incomplete sections in the provided `docs/conf.py`. The file is fully functional as-is for building documentation with Sphinx.\n\n✅ **No changes needed.**\n\nHowever, if you'd like to enhance or customize it further (e.g., add custom theme options",
+      "target_line": "# needs_sphinx = \"1.0\"",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9785100286532952,
+      "bleu_score": 0.006211180124223602,
+      "context_info": {
+        "repo": "bowtie-json-schema__bowtie",
+        "filename": "docs/conf.py",
+        "line_num": 26,
+        "sample_index": 57,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `docs/conf.py` file is already complete and properly configured for a Sphinx documentation setup. It includes:\n\n- Project metadata (name, author, version via `importlib.metadata`)\n- Sphinx extensions (autodoc, intersphinx, spelling, etc.)\n- HTML, LaTeX, man page, and epub output configurations\n- `linkcheck_ignore` rules using regex helpers\n- Proper configuration for `autosectionlabel`, `intersphinx`, and more\n\nThere are **no missing or incomplete parts** in this file that require code completion. Everything present is valid, well-structured, and follows Sphinx best practices.\n\n✅ **Conclusion**: No changes or additions are needed. The file is ready to use as-is.",
+      "target_line": "default_role = \"any\"",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9746268656716418,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "bowtie-json-schema__bowtie",
+        "filename": "docs/conf.py",
+        "line_num": 28,
+        "sample_index": 57,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `docs/conf.py` file is already complete and properly configured for a Sphinx documentation setup. It includes:\n\n- Project metadata (name, author, version via `importlib.metadata`)\n- Sphinx extensions (autodoc, intersphinx, spelling, etc.)\n- HTML, LaTeX, man page, and epub output configurations\n- `linkcheck_ignore` rules using regex helpers\n\nThere are **no missing or incomplete sections** in the provided `docs/conf.py`. All required configuration for a standard Sphinx documentation project is present and correct.\n\n✅ **Conclusion**: No code completion is needed — the file is fully functional as-is for building documentation with Sphinx.",
+      "target_line": "source_suffix = \".rst\"",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9720062208398134,
+      "bleu_score": 0.0073529411764705855,
+      "context_info": {
+        "repo": "bowtie-json-schema__bowtie",
+        "filename": "docs/conf.py",
+        "line_num": 51,
+        "sample_index": 57,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `docs/conf.py` file is already complete and properly configured for a Sphinx documentation setup. It includes:\n\n- Project metadata (name, author, version via `importlib.metadata`)\n- Sphinx extensions (autodoc, intersphinx, spelling, etc.)\n- HTML, LaTeX, man page, and epub output configurations\n- `linkcheck_ignore` rules using regex helpers\n- Proper autodoc and autosectionlabel settings\n\n✅ **No changes are needed.**\n\nThis configuration will work well for building documentation for the `bowtie` project using Sphinx with the `furo` theme, and it follows best practices.\n\nIf you were expecting a missing section or code completion, there isn't anything missing — this `conf.py` is",
+      "target_line": "# directories to ignore when looking for source files.",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9252199413489736,
+      "bleu_score": 0.013986013986013991,
+      "context_info": {
+        "repo": "bowtie-json-schema__bowtie",
+        "filename": "docs/conf.py",
+        "line_num": 64,
+        "sample_index": 57,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `docs/conf.py` file is already complete and properly configured for a Sphinx documentation setup. It includes:\n\n- Project metadata (name, author, version via `importlib.metadata`)\n- Sphinx extensions (autodoc, intersphinx, spelling, etc.)\n- HTML, LaTeX, man page, and epub output configurations\n- `linkcheck_ignore` rules using regex to skip fragile URLs\n- Proper autodoc and autosectionlabel settings\n\nThere are **no missing parts or placeholders** that require code completion in this file.\n\n✅ **Conclusion**: No changes or additions are needed. The file is fully functional as-is for building documentation with Sphinx.\n\nIf you were expecting a specific addition (e.g., custom theme options, Google Analytics,",
+      "target_line": "# further.  For a list of options available for each theme, see the",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9199438202247191,
+      "bleu_score": 0.019046755268780535,
+      "context_info": {
+        "repo": "bowtie-json-schema__bowtie",
+        "filename": "docs/conf.py",
+        "line_num": 80,
+        "sample_index": 57,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `docs/conf.py` file is already complete and properly configured for a Sphinx documentation setup. It includes:\n\n- Project metadata (`project`, `author`, `version`, `release`)\n- Sphinx extensions (autodoc, intersphinx, spelling, etc.)\n- HTML, LaTeX, man page, and epub output configurations\n- `linkcheck_ignore` rules using regex helpers\n- Proper configuration for `autodoc`, `autosectionlabel`, and `intersphinx`\n\nThere are **no missing or incomplete sections** in this file. It is ready to be used with Sphinx to build documentation for the `bowtie` project.\n\n✅ **Conclusion**: No code completion is needed — the file is fully implemented.",
+      "target_line": "latex_elements = {",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9750390015600624,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "bowtie-json-schema__bowtie",
+        "filename": "docs/conf.py",
+        "line_num": 109,
+        "sample_index": 57,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `docs/conf.py` file is already complete and properly configured for a Sphinx documentation setup. It includes:\n\n- Project metadata (name, author, version via `importlib.metadata`)\n- Sphinx extensions (autodoc, intersphinx, spelling, etc.)\n- HTML, LaTeX, man page, and epub output configurations\n- `linkcheck_ignore` rules using regex patterns to skip external links that are known to be flaky (e.g., badges)\n\nThere are **no missing or incomplete sections** in the provided `docs/conf.py`. All required configuration for a standard Sphinx documentation project is present and correct.\n\n✅ **Conclusion**: No code completion is needed. The file is fully functional as-is for building documentation with Sphinx.",
+      "target_line": "master_doc,",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9858757062146892,
+      "bleu_score": 0.006493506493506491,
+      "context_info": {
+        "repo": "bowtie-json-schema__bowtie",
+        "filename": "docs/conf.py",
+        "line_num": 147,
+        "sample_index": 57,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `docs/conf.py` file is already complete and properly configured for a Sphinx documentation setup. It includes:\n\n- Project metadata (`project`, `author`, `copyright`, `version`, `release`)\n- General Sphinx configuration (extensions, source suffix, master doc, etc.)\n- HTML, LaTeX, manual page, Texinfo, and Epub output settings\n- Extension-specific configurations (autodoc, intersphinx, linkcheck, etc.)\n\nThere are **no missing or incomplete sections** in the provided `docs/conf.py`. The file is fully functional as-is for building documentation with Sphinx.\n\n✅ **No changes are needed.**\n\nHowever, if you'd like to enhance or customize it further (e.g., add custom theme options, enable `",
+      "target_line": "#",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 1.0,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "bowtie-json-schema__bowtie",
+        "filename": "docs/conf.py",
+        "line_num": 181,
+        "sample_index": 57,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `docs/conf.py` file is already complete and properly configured for a Sphinx documentation setup. It includes:\n\n- Project metadata (name, author, version via `importlib.metadata`)\n- Sphinx extensions (autodoc, intersphinx, spelling, etc.)\n- HTML, LaTeX, man page, and epub output configurations\n- `linkcheck_ignore` rules using regex helpers\n- Proper configuration for `autosectionlabel`, `intersphinx`, and more\n\nThere are **no missing or incomplete sections** in the provided `docs/conf.py`. The file is valid and ready to use for building documentation with Sphinx.\n\n✅ **No changes needed.** The file is already fully implemented.",
+      "target_line": "\"members\": True,",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9794952681388013,
+      "bleu_score": 0.014388489208633098,
+      "context_info": {
+        "repo": "bowtie-json-schema__bowtie",
+        "filename": "docs/conf.py",
+        "line_num": 197,
+        "sample_index": 57,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `docs/conf.py` file is already complete and properly configured for a Sphinx documentation setup. It includes:\n\n- Project metadata (name, author, version via `importlib.metadata`)\n- Sphinx extensions (autodoc, intersphinx, spelling, etc.)\n- HTML, LaTeX, man page, and epub output configurations\n- `linkcheck_ignore` rules using regex helpers\n\nThere are **no missing or incomplete sections** in the provided `docs/conf.py`. All required configuration for Sphinx is present and correct for a standard Python project documentation layout.\n\n✅ **Conclusion**: No code completion is needed. The file is fully functional as-is.",
+      "target_line": "entire_domain(\"codecov.io\"),",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9629629629629629,
+      "bleu_score": 0.029850746268656716,
+      "context_info": {
+        "repo": "bowtie-json-schema__bowtie",
+        "filename": "docs/conf.py",
+        "line_num": 220,
+        "sample_index": 57,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `docs/conf.py` file is already complete and properly configured for a Sphinx documentation setup. It includes:\n\n- Project metadata (name, author, version via `importlib.metadata`)\n- Sphinx extensions (autodoc, intersphinx, spelling, etc.)\n- HTML, LaTeX, man page, and epub output configurations\n- `linkcheck_ignore` rules using regex helpers\n- Proper autodoc and autosectionlabel settings\n\n✅ **No changes are needed.**\n\nThis configuration will work well for building documentation for the `bowtie` project using Sphinx with the `furo` theme, and it follows best practices.\n\nIf you were expecting a missing section or code completion, there isn't anything missing — this `conf.py` is",
+      "target_line": "entire_domain(\"img.shields.io\"),",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9589442815249267,
+      "bleu_score": 0.03496503496503497,
+      "context_info": {
+        "repo": "bowtie-json-schema__bowtie",
+        "filename": "docs/conf.py",
+        "line_num": 221,
+        "sample_index": 57,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and correctly implements the DenseNet architecture with all necessary components:\n\n1. **Core Components:**\n   - `_DenseLayer`: Implements the basic unit of a DenseBlock with batch normalization, ReLU, and convolutions\n   - `_DenseBlock`: Creates densely connected layers where each layer receives feature maps from all preceding layers\n   - `_Transition`: Reduces the number of feature maps between DenseBlocks with batch norm, 1x1 conv, and 2x2 max pooling\n\n2. **Main DenseNet Class:**\n   - Implements the complete DenseNet architecture with initial convolution, multiple DenseBlocks, and transition layers\n   - Includes proper weight initialization using",
+      "target_line": "Refer to: Densely Connected Convolutional Networks",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9324712643678161,
+      "bleu_score": 0.013479096650429801,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 15,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and correctly implements the DenseNet architecture with all necessary components. The code includes:\n\n1. **Core DenseNet components:**\n   - `_DenseLayer`: Bottleneck layer for DenseBlock\n   - `_DenseBlock`: Collection of densely connected layers\n   - `_Transition`: Transition layer between DenseBlocks\n   - `DenseNet`: Main DenseNet class with proper initialization\n\n2. **Proper initialization:**\n   - He normal initialization for Conv2d layers\n   - Proper initialization for BatchNorm and Dense layers\n\n3. **Forward methods:**\n   - `forward_features`: Extract features from the network\n   - `forward_head`: Apply classification head",
+      "target_line": "'url': url,",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9879518072289156,
+      "bleu_score": 0.007751937984496126,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 42,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and fully functional. It contains:\n\n- A full implementation of the **DenseNet** architecture in MindSpore.\n- Core components:\n  - `_DenseLayer`: Bottleneck layer used within dense blocks.\n  - `_DenseBlock`: A sequence of densely connected layers.\n  - `_Transition`: Reduces spatial dimensions and feature maps between blocks.\n  - `DenseNet`: The main model class that composes the above components.\n- Weight initialization via `_initialize_weights`.\n- Feature and head forward methods (`forward_features`, `forward_head`) for flexibility.\n- Registration of standard variants: `densenet121`, `densenet161",
+      "target_line": "default_cfgs = {",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.978494623655914,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 49,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and correctly implements the DenseNet architecture with all necessary components. The file includes:\n\n1. **DenseNet building blocks**:\n   - `_DenseLayer`: Bottleneck layer with batch norm, ReLU, and convolutions\n   - `_DenseBlock`: Collection of densely connected layers\n   - `_Transition`: Transition layer with batch norm, ReLU, 1x1 conv, and pooling\n\n2. **Main DenseNet class**:\n   - Complete initialization with proper layer ordering\n   - Weight initialization using He normal/uniform methods\n   - Forward pass with feature extraction and classification head\n   - Proper input/output handling\n\n3. **Pre-configured",
+      "target_line": "'densenet121': _cfg(url='https://download.mindspore.cn/toolkits/mindcv/densenet/densenet_121_imagenet2012.ckpt'),",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9015384615384615,
+      "bleu_score": 0.03783023939287672,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 50,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and fully functional. It contains:\n\n- A full implementation of the **DenseNet** architecture in MindSpore.\n- Core components:\n  - `_DenseLayer`: Bottleneck layer used in each dense block.\n  - `_DenseBlock`: A sequence of densely connected layers.\n  - `_Transition`: Reduces spatial dimensions and feature maps between blocks.\n  - `DenseNet`: The main model class that composes the full network.\n- Weight initialization via `_initialize_weights`.\n- Feature and head forward methods (`forward_features`, `forward_head`) for flexibility.\n- Registration of standard variants: `densenet121`, `densenet16",
+      "target_line": "'densenet169': _cfg(url='https://download.mindspore.cn/toolkits/mindcv/densenet/densenet_169_imagenet2012.ckpt'),",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.8962848297213623,
+      "bleu_score": 0.047490822372082395,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 51,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and correctly implements the DenseNet architecture with all necessary components, including:\n\n- The core `DenseNet` class\n- Supporting classes: `_DenseLayer`, `_DenseBlock`, and `_Transition`\n- Weight initialization via `_initialize_weights`\n- Feature and head forwarding methods: `forward_features` and `forward_head`\n- Pretrained model registration for `densenet121`, `densenet161`, `densenet169`, and `densenet201` using the `@register_model` decorator\n- Proper configuration loading and initialization from URLs via `load_pretrained`\n\n✅ **Conclusion**: No code completion is",
+      "target_line": "'densenet201': _cfg(url='https://download.mindspore.cn/toolkits/mindcv/densenet/densenet_201_imagenet2012.ckpt'),",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.8894154818325435,
+      "bleu_score": 0.03491914907260798,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 52,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and correctly implements the DenseNet architecture with all necessary components, including:\n\n- `_DenseLayer`: Bottleneck layer used in each dense block.\n- `_DenseBlock`: A sequence of densely connected layers.\n- `_Transition`: Transition layer between dense blocks to downsample feature maps.\n- `DenseNet`: The main model class that composes the full network.\n- Weight initialization via `_initialize_weights`.\n- Feature extraction (`forward_features`) and classification head (`forward_head`).\n- Registration of standard variants: `densenet121`, `densenet161`, `densenet169`, and `densenet201`",
+      "target_line": "'densenet161': _cfg(url='https://download.mindspore.cn/toolkits/mindcv/densenet/densenet_161_imagenet2012.ckpt'),",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.8924731182795699,
+      "bleu_score": 0.03968138610357223,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 53,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and fully functional. It contains:\n\n- A full implementation of the **DenseNet** architecture in MindSpore.\n- Core components:\n  - `_DenseLayer`: Bottleneck layer used in each dense block.\n  - `_DenseBlock`: A sequence of densely connected layers.\n  - `_Transition`: Reduces spatial dimensions and feature maps between blocks.\n- The main `DenseNet` class with proper initialization, feature extraction, and classification head.\n- Weight initialization via `_initialize_weights`.\n- Forward methods split into `forward_features` and `forward_head` for modularity.\n- Pretrained model loading via `@register_model` and `load_pretrained`.",
+      "target_line": "super(_DenseLayer, self).__init__()",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9560117302052786,
+      "bleu_score": 0.02238805970149254,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 66,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and correctly implements the DenseNet architecture with all necessary components. The file includes:\n\n1. **Core DenseNet classes**:\n   - `_DenseLayer`: Bottleneck layer for DenseBlock\n   - `_DenseBlock`: Collection of densely connected layers\n   - `_Transition`: Transition layer between DenseBlocks\n   - `DenseNet`: Main DenseNet class with proper initialization\n\n2. **Model variants**:\n   - `densenet121`, `densenet161`, `densenet169`, `densenet201` with appropriate configurations\n\n3. **Key features**:\n   - Proper weight initialization using",
+      "target_line": "",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 1.0,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 88,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and correctly implements the DenseNet architecture with all necessary components. The code includes:\n\n1. **Core DenseNet components:**\n   - `_DenseLayer`: Bottleneck layer for DenseBlock\n   - `_DenseBlock`: Collection of densely connected layers\n   - `_Transition`: Transition layer between DenseBlocks\n   - `DenseNet`: Main DenseNet class with proper initialization\n\n2. **Model variants:**\n   - `densenet121`, `densenet161`, `densenet169`, `densenet201` with appropriate configurations\n\n3. **Proper initialization:**\n   - He initialization for",
+      "target_line": "super(_DenseBlock, self).__init__()",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9551724137931035,
+      "bleu_score": 0.025210084033613446,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 95,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and fully functional. It contains:\n\n- A full implementation of the **DenseNet** architecture in MindSpore.\n- Core components:\n  - `_DenseLayer`: Bottleneck layer used in each dense block.\n  - `_DenseBlock`: A sequence of densely connected layers.\n  - `_Transition`: Reduces spatial dimensions and feature maps between blocks.\n- The main `DenseNet` class with proper initialization, feature extraction, and classification head.\n- Weight initialization via `_initialize_weights`.\n- Support for pretrained models via `load_pretrained` and the `@register_model` decorator.\n- Pre-configured model variants: `densenet121`,",
+      "target_line": "layer = _DenseLayer(",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.972972972972973,
+      "bleu_score": 0.015037593984962409,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 98,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and correctly implements the DenseNet architecture with all necessary components. The file includes:\n\n1. **Core DenseNet classes**:\n   - `_DenseLayer`: Basic unit of DenseBlock using bottleneck layer\n   - `_DenseBlock`: DenseBlock with densely connected layers\n   - `_Transition`: Transition layer between DenseBlocks\n   - `DenseNet`: Main DenseNet class that composes the network\n\n2. **Model initialization and weight initialization**:\n   - Proper initialization using He normal and He uniform methods\n   - Forward pass methods (`forward_features`, `forward_head`, `construct`)\n\n3. **Pre-trained model registration**:\n   - `densen",
+      "target_line": "drop_rate=drop_rate",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9728915662650602,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 102,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and correctly implements the DenseNet architecture with all necessary components, including:\n\n- `_DenseLayer`: Bottleneck layer used in each dense block.\n- `_DenseBlock`: A sequence of densely connected layers.\n- `_Transition`: Reduces spatial dimensions and feature maps between dense blocks.\n- `DenseNet`: Main model class that composes the full network.\n- Registration of standard variants: `densenet121`, `densenet169`, `densenet201`, and `densenet161`.\n- Weight initialization and pretrained loading support.\n\n✅ **Conclusion**: No code completion is needed. The file is fully implemented and",
+      "target_line": "class _Transition(nn.Cell):",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9631336405529954,
+      "bleu_score": 0.03053435114503817,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 114,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and correctly implements the DenseNet architecture with all necessary components. The file includes:\n\n1. **Core DenseNet classes**:\n   - `_DenseLayer`: Basic unit of DenseBlock using bottleneck layer\n   - `_DenseBlock`: DenseBlock with densely connected layers\n   - `_Transition`: Transition layer between DenseBlocks\n   - `DenseNet`: Main DenseNet class that composes the network\n\n2. **Model initialization and weight initialization**:\n   - Proper initialization using He normal and He uniform methods\n   - Forward pass methods (`forward_features`, `forward_head`, `construct`)\n\n3. **Pre-trained model registration**:\n   - `densen",
+      "target_line": "super(_Transition, self).__init__()",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9578313253012049,
+      "bleu_score": 0.03676470588235295,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 121,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and correctly implements the DenseNet architecture with all necessary components. The code includes:\n\n1. **Core building blocks**:\n   - `_DenseLayer`: Bottleneck layer for DenseNet\n   - `_DenseBlock`: Collection of densely connected layers\n   - `_Transition`: Transition layer between dense blocks\n\n2. **Main DenseNet class**:\n   - Complete initialization with proper layer ordering\n   - Weight initialization via `_initialize_weights`\n   - Forward pass methods (`forward_features`, `forward_head`, `construct`)\n\n3. **Pre-trained model functions**:\n   - `densenet121`, `densenet161`, `densen",
+      "target_line": "super(DenseNet, self).__init__()",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9567307692307693,
+      "bleu_score": 0.03787878787878788,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 143,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and fully functional. It contains:\n\n- A full implementation of the **DenseNet** architecture in MindSpore.\n- Core components:\n  - `_DenseLayer`: Bottleneck layer used in each dense block.\n  - `_DenseBlock`: A sequence of densely connected layers.\n  - `_Transition`: Reduces spatial dimensions and feature maps between blocks.\n- The main `DenseNet` class with proper initialization, feature extraction, and classification head.\n- Weight initialization via `_initialize_weights`.\n- Forward methods split into `forward_features` and `forward_head` for modularity.\n- Pretrained model loading via `@register_model` and `load_pretrained`.",
+      "target_line": "block = _DenseBlock(",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9736070381231672,
+      "bleu_score": 0.014925373134328363,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 154,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and fully functional. It contains:\n\n- A full implementation of the **DenseNet** architecture in MindSpore.\n- Core components: `_DenseLayer`, `_DenseBlock`, and `_Transition` modules.\n- The main `DenseNet` class with proper initialization, feature extraction, classification head, and weight initialization.\n- Model variants: `densenet121`, `densenet161`, `densenet169`, and `densenet201`, all registered via `@register_model`.\n- Pretrained weight loading support through `load_pretrained` from the model registry.\n- Global average pooling via `Global",
+      "target_line": "transition = _Transition(num_features, num_features // 2)",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9240924092409241,
+      "bleu_score": 0.03200000000000001,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 164,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and correctly implements the DenseNet architecture with all standard variants (densenet121, densenet161, densenet169, densenet201). It includes:\n\n- Core building blocks: `_DenseLayer`, `_DenseBlock`, `_Transition`\n- The main `DenseNet` class with proper initialization and forward pass\n- Weight initialization via `_initialize_weights`\n- Feature and head separation via `forward_features` and `forward_head`\n- Pretrained model loading support via `@register_model` and `load_pretrained`\n- Configurations for all standard DenseNet variants\n\n✅ **No code completion is needed**",
+      "target_line": "self._initialize_weights()",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9634340222575517,
+      "bleu_score": 0.034188034188034185,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 176,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and fully functional. It contains:\n\n- A full implementation of the **DenseNet** architecture in MindSpore.\n- Core components:\n  - `_DenseLayer`: Bottleneck layer used in each dense block.\n  - `_DenseBlock`: A sequence of densely connected layers.\n  - `_Transition`: Reduces spatial dimensions and feature maps between blocks.\n  - `DenseNet`: The main model class that composes the full network.\n- Weight initialization via `_initialize_weights`.\n- Feature and head forward methods (`forward_features`, `forward_head`) for modularity.\n- Registration of standard variants: `densenet121`, `densenet1",
+      "target_line": "def construct(self, x: Tensor) -> Tensor:",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.9456521739130435,
+      "bleu_score": 0.04545454545454546,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 207,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and fully functional. It contains:\n\n- A full implementation of the **DenseNet** architecture in MindSpore.\n- Core components:\n  - `_DenseLayer`: Bottleneck layer used in each dense block.\n  - `_DenseBlock`: A sequence of densely connected layers.\n  - `_Transition`: Reduces spatial dimensions and feature maps between blocks.\n- The main `DenseNet` class with proper initialization, feature extraction, and classification head.\n- Weight initialization via `_initialize_weights`.\n- Forward methods split into `forward_features` and `forward_head` for modularity.\n- Pretrained model loading via `@register_model` and `load_pretrained`.",
+      "target_line": "x = self.forward_features(x)",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.966275659824047,
+      "bleu_score": 0.014925373134328363,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 208,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and correctly implements the DenseNet architecture with all necessary components, including:\n\n- The core building blocks: `_DenseLayer`, `_DenseBlock`, and `_Transition`\n- The main `DenseNet` class with proper initialization, feature extraction, and classification head\n- Weight initialization via `_initialize_weights`\n- Forward methods: `forward_features`, `forward_head`, and `construct`\n- Pretrained model loading integration via `@register_model` and `load_pretrained`\n- Configurations for `densenet121`, `densenet161`, `densenet169`, and `densenet201`\n\n✅ **No",
+      "target_line": "x = self.forward_head(x)",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9693548387096774,
+      "bleu_score": 0.016393442622950817,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 209,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and fully functional. It contains:\n\n- A full implementation of the **DenseNet** architecture in MindSpore.\n- Core components:\n  - `_DenseLayer`: Bottleneck layer used in each dense block.\n  - `_DenseBlock`: A sequence of densely connected layers.\n  - `_Transition`: Reduces spatial dimensions and feature maps between blocks.\n  - `DenseNet`: The main model class that composes the full network.\n- Weight initialization via `_initialize_weights`.\n- Feature and head forward methods (`forward_features`, `forward_head`) for flexibility.\n- Registration of standard variants: `densenet121`, `densenet16",
+      "target_line": "model = DenseNet(growth_rate=32, block_config=(6, 12, 24, 16), num_init_features=64, in_channels=in_channels,",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.8947368421052632,
+      "bleu_score": 0.04545454545454546,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 216,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and correctly implements the DenseNet architecture with all standard variants (densenet121, densenet161, densenet169, densenet201). It includes:\n\n- Core building blocks: `_DenseLayer`, `_DenseBlock`, `_Transition`\n- The main `DenseNet` class with proper initialization and forward methods\n- Weight initialization via `_initialize_weights`\n- Pretrained model loading support via `@register_model` and `load_pretrained`\n- Configurations for each variant in `default_cfgs`\n\n✅ **No code completion is needed** — the file is fully implemented as per standard practices and matches the",
+      "target_line": "model = DenseNet(growth_rate=48, block_config=(6, 12, 36, 24), num_init_features=96, in_channels=in_channels,",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.88801261829653,
+      "bleu_score": 0.07563025210084033,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 228,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and fully functional. It contains:\n\n- A full implementation of the **DenseNet** architecture as described in the paper *\"Densely Connected Convolutional Networks\"*\n- Core components:\n  - `_DenseLayer`: Bottleneck layer used in each dense block\n  - `_DenseBlock`: A sequence of densely connected layers\n  - `_Transition`: Reduces spatial dimensions and feature maps between blocks\n- The main `DenseNet` class with proper initialization and modular construction\n- Weight initialization via `_initialize_weights`\n- Feature extraction (`forward_features`) and classification head (`forward_head`)\n- Pretrained model loading support via `@register_model` and `load",
+      "target_line": "model = DenseNet(growth_rate=32, block_config=(6, 12, 32, 32), num_init_features=64, in_channels=in_channels,",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9012693935119888,
+      "bleu_score": 0.037037037037037035,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 240,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and correctly implements the DenseNet architecture with all necessary components, including:\n\n- The core building blocks: `_DenseLayer`, `_DenseBlock`, and `_Transition`\n- The main `DenseNet` class with proper initialization, feature extraction, and classification head\n- Weight initialization via `_initialize_weights`\n- Forward methods: `forward_features`, `forward_head`, and `construct`\n- Pretrained model loading support via `@register_model` and `load_pretrained`\n- Configurations for `densenet121`, `densenet161`, `densenet169`, and `densenet201`\n\n✅ **No",
+      "target_line": "num_classes=num_classes, **kwargs)",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9577922077922078,
+      "bleu_score": 0.014255682913344999,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 241,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "The `mindcv/models/densenet.py` file is already complete and fully functional. It contains:\n\n- A full implementation of the **DenseNet** architecture in MindSpore.\n- Core components:\n  - `_DenseLayer`: Bottleneck layer used in each dense block.\n  - `_DenseBlock`: A sequence of densely connected layers.\n  - `_Transition`: Reduces spatial dimensions and feature maps between blocks.\n  - `DenseNet`: The main model class that composes the full network.\n- Weight initialization via `_initialize_weights`.\n- Feature and head forward methods (`forward_features`, `forward_head`) for modularity.\n- Pretrained model loading via `@register_model` and `load_pretrained`.\n- Four",
+      "target_line": "model = DenseNet(growth_rate=32, block_config=(6, 12, 48, 32), num_init_features=64, in_channels=in_channels,",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.8984848484848484,
+      "bleu_score": 0.03676470588235295,
+      "context_info": {
+        "repo": "mindspore-lab__mindcv",
+        "filename": "mindcv/models/densenet.py",
+        "line_num": 252,
+        "sample_index": 62,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a completed and well-structured version of the `sqeleton/abcs/database_types.py` file, incorporating best practices, consistency, and filling in any missing pieces while preserving the original intent and design:\n\n```python\nimport decimal\nfrom abc import ABC, abstractmethod\nfrom typing import Sequence, Optional, Tuple, Union, Dict, List\nfrom datetime import datetime\n\nfrom runtype import dataclass\n\nfrom ..utils import ArithAlphanumeric, ArithUUID\n\n\nDbPath = Tuple[str, ...]\nDbKey = Union[int, str, bytes, ArithUUID, ArithAlphanumeric]\nDbTime = datetime\n\n\nclass ColType:\n    supported = True\n\n\n@dataclass\nclass PrecisionType(ColType):",
+      "target_line": "DbKey = Union[int, str, bytes, ArithUUID, ArithAlphanumeric]",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9047619047619048,
+      "bleu_score": 0.10000218543408314,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 11,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a **completed and well-structured version** of the file `sqeleton/abcs/database_types.py`, with logical extensions, consistent typing, and proper use of abstractions. The code already defines many column types and interfaces; we’ll ensure completeness, especially around missing implementations and coherence in type hierarchy.\n\nWe'll:\n- Add missing standard types (e.g., `Date`, `Time`, `Binary`, etc.)\n- Ensure all abstract methods in `AbstractDialect` and `AbstractDatabase` are properly documented and ready for implementation.\n- Add helper logic where appropriate (e.g., `__str__` for debugging).\n- Improve consistency in naming and structure.\n\n---\n\n### ✅ Completed File: `sqeleton/ab",
+      "target_line": "class PrecisionType(ColType):",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.963924963924964,
+      "bleu_score": 0.018987341772151903,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 20,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a **completed and well-structured version** of the file `sqeleton/abcs/database_types.py`, with logical extensions, consistent typing, and proper use of abstractions. The code already defines many column types and interfaces; we’ll ensure completeness, especially around key column types, dialect parsing, and extensibility.\n\nWe’ll:\n- Keep all existing definitions.\n- Add missing standard types (e.g., `Date`, `Time`, `Binary`, etc.).\n- Improve `IKey` interface usage.\n- Add common base types.\n- Ensure `parse_type` in `AbstractDialect` is clearly documented and extensible.\n\n---\n\n### ✅ Completed File: `sqeleton/abcs/database_types.py`",
+      "target_line": "pass",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.99375,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 30,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a completed and well-structured version of the `sqeleton/abcs/database_types.py` file, incorporating the provided context and ensuring all type definitions, abstractions, and interfaces are properly defined and consistent. The code is organized logically, with clear inheritance, type hints, and docstrings where appropriate.\n\n```python\nimport decimal\nfrom abc import ABC, abstractmethod\nfrom typing import Sequence, Optional, Tuple, Union, Dict, List, Type\nfrom datetime import datetime\n\nfrom runtype import dataclass\n\nfrom ..utils import ArithAlphanumeric, ArithUUID\n\n\nDbPath = Tuple[str, ...]\nDbKey = Union[int, str, bytes, ArithUUID, ArithAlphanumeric]\nDbTime =",
+      "target_line": "@abstractmethod",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9790104947526237,
+      "bleu_score": 0.007633587786259545,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 63,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a **completed and well-structured version** of the file `sqeleton/abcs/database_types.py`, with logical additions, consistency improvements, and proper implementation of missing components where appropriate — while preserving all existing code and extending it thoughtfully.\n\nWe'll:\n- Keep all existing types.\n- Add missing standard column types (e.g., `Date`, `Time`, `Binary`, etc.).\n- Improve `IKey` interface usage.\n- Add common base types.\n- Ensure `parse_type` in `AbstractDialect` is clearly documented.\n- Add placeholder or abstract implementations where needed.\n\n---\n\n```python\n# sqeleton/abcs/database_types.py\nimport decimal\nfrom abc import ABC, abstractmethod\nfrom",
+      "target_line": "return self.python_type(value)",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9602941176470589,
+      "bleu_score": 0.01986754966887417,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 68,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a completed and well-structured version of the file `sqeleton/abcs/database_types.py`, incorporating best practices, consistency, and filling in any missing logical components while preserving the original intent and structure.\n\n```python\nimport decimal\nfrom abc import ABC, abstractmethod\nfrom typing import Sequence, Optional, Tuple, Union, Dict, List\nfrom datetime import datetime\n\nfrom runtype import dataclass\n\nfrom ..utils import ArithAlphanumeric, ArithUUID\n\n\nDbPath = Tuple[str, ...]\nDbKey = Union[int, str, bytes, ArithUUID, ArithAlphanumeric]\nDbTime = datetime\n\n\nclass ColType:\n    \"\"\"Base class for all column types. Indicates general type information.\"\"\"\n    supported",
+      "target_line": "return decimal.Decimal",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9672619047619048,
+      "bleu_score": 0.014814814814814814,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 76,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a **completed and well-structured version** of the file `sqeleton/abcs/database_types.py`, with logical additions, consistency improvements, and proper implementation of missing components where appropriate. The code remains faithful to the existing design patterns and abstractions.\n\n```python\nimport decimal\nfrom abc import ABC, abstractmethod\nfrom typing import Sequence, Optional, Tuple, Union, Dict, List\nfrom datetime import datetime\n\nfrom runtype import dataclass\n\nfrom ..utils import ArithAlphanumeric, ArithUUID\n\n\nDbPath = Tuple[str, ...]\nDbKey = Union[int, str, bytes, ArithUUID, ArithAlphanumeric]\nDbTime = datetime\n\n\nclass ColType:\n    supported = True\n\n\n@",
+      "target_line": "python_type = ArithUUID",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9667673716012085,
+      "bleu_score": 0.015267175572519078,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 85,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a completed and well-structured version of the `sqeleton/abcs/database_types.py` file, incorporating the provided context and ensuring all abstractions are properly defined, consistent, and ready for use across various database dialects. The code includes docstrings, proper inheritance, and logical organization.\n\n```python\nimport decimal\nfrom abc import ABC, abstractmethod\nfrom typing import Sequence, Optional, Tuple, Union, Dict, List\nfrom datetime import datetime\n\nfrom runtype import dataclass\n\nfrom ..utils import ArithAlphanumeric, ArithUUID\n\n\nDbPath = Tuple[str, ...]\nDbKey = Union[int, str, bytes, ArithUUID, ArithAlphanumeric]\nDbTime = datetime\n\n\nclass Col",
+      "target_line": "python_type = ArithAlphanumeric",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9550898203592815,
+      "bleu_score": 0.015503875968992251,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 89,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a **completed and well-structured version** of the file `sqeleton/abcs/database_types.py`, with logical additions, consistency improvements, and proper implementation of missing components where appropriate — while preserving all existing code and extending it thoughtfully.\n\nWe'll:\n- Keep all existing types.\n- Add missing standard column types (e.g., `Date`, `Time`, `Binary`, etc.).\n- Improve `IKey` interface usage.\n- Add common base types.\n- Ensure `parse_type` in `AbstractDialect` is clearly documented.\n- Add placeholder or abstract implementations where needed.\n\n---\n\n```python\n# sqeleton/abcs/database_types.py\nimport decimal\nfrom abc import ABC, abstractmethod\nfrom",
+      "target_line": "ArithAlphanumeric(value)",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9705882352941176,
+      "bleu_score": 0.013245033112582783,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 104,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a **completed and well-structured version** of the file `sqeleton/abcs/database_types.py`, with logical additions, proper type handling, and consistency across the codebase. The file already contains a solid foundation, so the completion focuses on:\n\n- Adding missing standard column types (e.g., `Date`, `Time`, `Binary`, etc.)\n- Ensuring all abstract methods are properly documented and consistent.\n- Adding common base types and organizing hierarchy clearly.\n- Completing `IKey` interface usage where appropriate.\n- Adding support for more `ColType` variants used across databases.\n\n---\n\n### ✅ Completed File: `sqeleton/abcs/database_types.py`\n\n```python\nimport decimal\nfrom abc import",
+      "target_line": "return self.python_type(value, max_len=self.length)",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9392185238784371,
+      "bleu_score": 0.03246753246753246,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 124,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a completed and well-structured version of the `sqeleton/abcs/database_types.py` file, incorporating best practices, consistency, and filling in any missing pieces while preserving the original intent and design patterns:\n\n```python\nimport decimal\nfrom abc import ABC, abstractmethod\nfrom typing import Sequence, Optional, Tuple, Union, Dict, List\nfrom datetime import datetime\n\nfrom runtype import dataclass\n\nfrom ..utils import ArithAlphanumeric, ArithUUID\n\n\nDbPath = Tuple[str, ...]\nDbKey = Union[int, str, bytes, ArithUUID, ArithAlphanumeric]\nDbTime = datetime\n\n\nclass ColType:\n    supported = True\n\n\n@dataclass\nclass PrecisionType(ColType",
+      "target_line": "python_type: type = int",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.9654631083202512,
+      "bleu_score": 0.023999999999999997,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 135,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a **completed and well-structured version** of the file `sqeleton/abcs/database_types.py`, with logical extensions, consistent typing, and proper use of abstractions. The code already has a solid foundation, so the additions focus on:\n\n- Completing missing standard column types (e.g., `Date`, `Time`, `Binary`, etc.)\n- Adding support for common database-specific types.\n- Ensuring all abstract methods are properly documented and aligned with expected behavior.\n- Adding missing but commonly used `ColType` subclasses.\n- Improving type hints and docstrings.\n\n---\n\n### ✅ Completed File: `sqeleton/abcs/database_types.py`\n\n```python\nimport decimal\nfrom abc import ABC, abstract",
+      "target_line": "type_repr: str,",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.979381443298969,
+      "bleu_score": 0.012987012987012983,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 207,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a **completed and well-structured version** of the file `sqeleton/abcs/database_types.py`, with logical extensions, consistent typing, and proper use of abstractions. The code already defines many column types and interfaces; we’ll ensure completeness, especially around missing implementations and clarity in type handling.\n\nWe'll:\n- Add missing standard types (e.g., `Date`, `Time`, `Binary`, etc.)\n- Ensure all `IKey` implementations have proper `make_value` and `python_type`\n- Improve `String_Alphanum` and subclasses\n- Add docstrings where missing\n- Keep consistency with `runtype.dataclass`, `ArithUUID`, `ArithAlphanumeric`\n\n---\n\n### ✅ Final",
+      "target_line": "numeric_precision: int = None,",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9586523736600306,
+      "bleu_score": 0.013422818791946308,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 209,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a completed and well-structured version of the `sqeleton/abcs/database_types.py` file, incorporating best practices, consistency, and filling in any missing pieces while preserving the original intent and design patterns:\n\n```python\nimport decimal\nfrom abc import ABC, abstractmethod\nfrom typing import Sequence, Optional, Tuple, Union, Dict, List\nfrom datetime import datetime\n\nfrom runtype import dataclass\n\nfrom ..utils import ArithAlphanumeric, ArithUUID\n\n\nDbPath = Tuple[str, ...]\nDbKey = Union[int, str, bytes, ArithUUID, ArithAlphanumeric]\nDbTime = datetime\n\n\nclass ColType:\n    supported = True\n\n\n@dataclass\nclass PrecisionType(ColType",
+      "target_line": ") -> ColType:",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9827315541601256,
+      "bleu_score": 0.013912166872805052,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 211,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a completed and well-structured version of the `sqeleton/abcs/database_types.py` file, incorporating best practices, consistency, and filling in any missing pieces while preserving the original intent and design.\n\n```python\nimport decimal\nfrom abc import ABC, abstractmethod\nfrom typing import Sequence, Optional, Tuple, Union, Dict, List, Type\nfrom datetime import datetime\n\nfrom runtype import dataclass\n\nfrom ..utils import ArithAlphanumeric, ArithUUID\n\n\nDbPath = Tuple[str, ...]\nDbKey = Union[int, str, bytes, ArithUUID, ArithAlphanumeric]\nDbTime = datetime\n\n\nclass ColType:\n    \"\"\"Base class for all column types.\"\"\"\n    supported = True",
+      "target_line": "@property",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9873817034700315,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 226,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a completed and well-structured version of the `sqeleton/abcs/database_types.py` file, incorporating best practices, consistency, and filling in any missing pieces while preserving the original intent and design:\n\n```python\nimport decimal\nfrom abc import ABC, abstractmethod\nfrom typing import Sequence, Optional, Tuple, Union, Dict, List\nfrom datetime import datetime\n\nfrom runtype import dataclass\n\nfrom ..utils import ArithAlphanumeric, ArithUUID\n\n\nDbPath = Tuple[str, ...]\nDbKey = Union[int, str, bytes, ArithUUID, ArithAlphanumeric]\nDbTime = datetime\n\n\nclass ColType:\n    \"\"\"Base class for all column types.\"\"\"\n    supported = True\n\n    def",
+      "target_line": "\"\"\"Query the table for its schema for table in 'path', and return {column: tuple}",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.8987341772151899,
+      "bleu_score": 0.025206041127096922,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 237,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    },
+    {
+      "predicted_line": "Here's a completed and well-structured version of the `sqeleton/abcs/database_types.py` file, incorporating best practices, consistency, and filling in any missing pieces while preserving the original intent and design:\n\n```python\nimport decimal\nfrom abc import ABC, abstractmethod\nfrom typing import Sequence, Optional, Tuple, Union, Dict, List\nfrom datetime import datetime\n\nfrom runtype import dataclass\n\nfrom ..utils import ArithAlphanumeric, ArithUUID\n\n\nDbPath = Tuple[str, ...]\nDbKey = Union[int, str, bytes, ArithUUID, ArithAlphanumeric]\nDbTime = datetime\n\n\nclass ColType:\n    \"\"\"Base class for all column types.\"\"\"\n    supported = True\n\n\n@data",
+      "target_line": "self, path: DbPath, raw_schema: Dict[str, tuple], filter_columns: Sequence[str], where: str = None",
+      "line_type": "commited",
+      "exact_match": 0.0,
+      "edit_distance": 0.88801261829653,
+      "bleu_score": 0.028635117136135473,
+      "context_info": {
+        "repo": "datafold__data-diff",
+        "filename": "sqeleton/abcs/database_types.py",
+        "line_num": 254,
+        "sample_index": 70,
+        "is_sampled": true,
+        "sample_ratio": 0.05
+      }
+    }
+  ]
+}

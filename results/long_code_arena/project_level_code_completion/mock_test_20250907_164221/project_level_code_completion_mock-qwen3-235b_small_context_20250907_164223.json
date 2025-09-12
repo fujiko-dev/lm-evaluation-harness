@@ -1,0 +1,252 @@
+{
+  "model_name": "mock-qwen3-235b",
+  "context_size": "small_context",
+  "timestamp": "20250907_164223",
+  "results": {
+    "by_line_type": {
+      "random": {
+        "exact_match": 0.0,
+        "edit_distance": 0.9090450906463632,
+        "bleu_score": 0.05833333333333333,
+        "line_count": 6
+      },
+      "non_informative": {
+        "exact_match": 0.0,
+        "edit_distance": 0.8562139338494017,
+        "bleu_score": 0.08333333333333333,
+        "line_count": 7
+      },
+      "common": {
+        "exact_match": 0.0,
+        "edit_distance": 0.75,
+        "bleu_score": 0.125,
+        "line_count": 1
+      },
+      "infile": {
+        "exact_match": 0.0,
+        "edit_distance": 0.9411764705882353,
+        "bleu_score": 0.0,
+        "line_count": 1
+      }
+    },
+    "overall": {
+      "exact_match": 0.0,
+      "edit_distance": 0.8759296367608154,
+      "bleu_score": 0.07055555555555555,
+      "line_count": 15
+    },
+    "total_predictions": 15
+  },
+  "detailed_predictions": [
+    {
+      "predicted_line": "from typing import Any",
+      "target_line": "Any,",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9090909090909091,
+      "bleu_score": 0.25,
+      "context_info": {
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/data_loader.py",
+        "line_num": 21,
+        "sample_index": 0
+      }
+    },
+    {
+      "predicted_line": "import sys",
+      "target_line": ")",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 1.0,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/data_loader.py",
+        "line_num": 25,
+        "sample_index": 0
+      }
+    },
+    {
+      "predicted_line": "import logging",
+      "target_line": "bug",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9285714285714286,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/data_loader.py",
+        "line_num": 34,
+        "sample_index": 0
+      }
+    },
+    {
+      "predicted_line": "from typing import Any",
+      "target_line": "from fuzz_introspector.datatypes import function_profile",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.7142857142857143,
+      "bleu_score": 0.3333333333333333,
+      "context_info": {
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/datatypes/fuzzer_profile.py",
+        "line_num": 31,
+        "sample_index": 1
+      }
+    },
+    {
+      "predicted_line": "import logging",
+      "target_line": "logger = logging.getLogger(name=__name__)",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.7804878048780488,
+      "bleu_score": 0.1,
+      "context_info": {
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/datatypes/fuzzer_profile.py",
+        "line_num": 34,
+        "sample_index": 1
+      }
+    },
+    {
+      "predicted_line": "import json",
+      "target_line": "data = json.load(jf)",
+      "line_type": "common",
+      "exact_match": 0.0,
+      "edit_distance": 0.75,
+      "bleu_score": 0.125,
+      "context_info": {
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/datatypes/fuzzer_profile.py",
+        "line_num": 99,
+        "sample_index": 1
+      }
+    },
+    {
+      "predicted_line": "import json",
+      "target_line": "from fuzz_introspector import utils",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.8,
+      "bleu_score": 0.25,
+      "context_info": {
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/datatypes/project_profile.py",
+        "line_num": 24,
+        "sample_index": 2
+      }
+    },
+    {
+      "predicted_line": "import logging",
+      "target_line": "# Set all unreached functions",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.8620689655172413,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/datatypes/project_profile.py",
+        "line_num": 53,
+        "sample_index": 2
+      }
+    },
+    {
+      "predicted_line": "import sys",
+      "target_line": "self.unreached_functions.add(func_name)",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9230769230769231,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/datatypes/project_profile.py",
+        "line_num": 58,
+        "sample_index": 2
+      }
+    },
+    {
+      "predicted_line": "import sys",
+      "target_line": "handles.append(plt.bar(",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 0.9130434782608695,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "test/grpc_benchmark/benchmark/plot/draw_raw.py",
+        "line_num": 117,
+        "sample_index": 3
+      }
+    },
+    {
+      "predicted_line": "import os",
+      "target_line": "0.0599402910232544,     # GGP",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.96,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "test/grpc_benchmark/benchmark/plot/draw_raw.py",
+        "line_num": 157,
+        "sample_index": 3
+      }
+    },
+    {
+      "predicted_line": "import json",
+      "target_line": "0.0014466304063796998,",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 1.0,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "test/grpc_benchmark/benchmark/plot/draw_raw.py",
+        "line_num": 164,
+        "sample_index": 3
+      }
+    },
+    {
+      "predicted_line": "import sys",
+      "target_line": "All rights reserved.",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.8,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "doc/theme/lightning_sphinx_theme/pt_lightning_sphinx_theme/extensions/pytorch_tutorials.py",
+        "line_num": 5,
+        "sample_index": 4
+      }
+    },
+    {
+      "predicted_line": "import sys",
+      "target_line": "node = cardnode()",
+      "line_type": "infile",
+      "exact_match": 0.0,
+      "edit_distance": 0.9411764705882353,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "doc/theme/lightning_sphinx_theme/pt_lightning_sphinx_theme/extensions/pytorch_tutorials.py",
+        "line_num": 100,
+        "sample_index": 4
+      }
+    },
+    {
+      "predicted_line": "import sys",
+      "target_line": "def run(self):",
+      "line_type": "non_informative",
+      "exact_match": 0.0,
+      "edit_distance": 0.8571428571428571,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "fedml-ai__fedml",
+        "filename": "doc/theme/lightning_sphinx_theme/pt_lightning_sphinx_theme/extensions/pytorch_tutorials.py",
+        "line_num": 140,
+        "sample_index": 4
+      }
+    }
+  ]
+}

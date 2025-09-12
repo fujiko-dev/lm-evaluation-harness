@@ -1,0 +1,45 @@
+{
+  "timestamp": "2025-09-07T22:26:54.508247",
+  "sample_info": {
+    "index": 22,
+    "original_index": 22,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 53,
+  "repo_owner": "yt-dlp",
+  "repo_name": "yt-dlp",
+  "difficulty": 1,
+  "generation_time": 8.859606742858887,
+  "prediction": "Looking at the error logs, the root cause is clear: `ModuleNotFoundError: No module named 'yt_dlp.extractor.elevensports'`. This indicates that the `elevensports.py` file is referenced in the import statements but doesn't exist in the repository.\n\nThe error occurs in `yt_dlp/extractor/_extractors.py` at line 544, where it tries to import `ElevenSportsIE` from `.elevensports`, but this module file is missing.\n\n## Analysis of the Failure Cause\n\n1. **Missing Module**: The `yt_dlp.extractor.elevensports` module is referenced in `_extractors.py` but the actual `elevensports.py` file doesn't exist\n2. **Root Cause**: This is likely due to a commit that removed the `elevensports.py` file but forgot to remove the corresponding import statement from `_extractors.py`\n3. **Impact**: This breaks both the linter job (which runs `make_lazy_extractors.py`) and the core tests (which try to import all extractors)\n\n## Specific Changes Needed\n\nThe fix is to remove the import statement for the missing `elevensports` module from the `_extractors.py` file.\n\n## Modified Code\n\n**File: `yt_dlp/extractor/_extractors.py`**\n\nRemove line 544 which contains:\n```python\nfrom .elevensports import ElevenSportsIE\n```\n\nThis single line removal will resolve the `ModuleNotFoundError` and allow both the linter and test jobs to complete successfully.\n\nThe fix addresses the immediate issue by removing the reference to the non-existent module. In a real-world scenario, you would also want to:\n1. Check if there are any other references to this module that need cleanup\n2. Verify if the module was intentionally removed and if so, ensure all references are cleaned up\n3. Consider adding a pre-commit hook or validation script to catch such issues early\n\nHowever, based on the provided information and focusing on the minimal change needed to fix the CI workflow, removing this single import line is the solution.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6530909090909092,
+    "explanation": "Similarity: 0.422, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.4218181818181818,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "yt_dlp/extractor/_extractors.py": [
+          "from .elevensports import ElevenSportsIE"
+        ],
+        "elevensports.py": [
+          "from .elevensports import ElevenSportsIE"
+        ],
+        "yt_dlp.extractor.elevensports": [
+          "from .elevensports import ElevenSportsIE"
+        ],
+        "_extractors.py": [
+          "from .elevensports import ElevenSportsIE"
+        ],
+        "make_lazy_extractors.py": [
+          "from .elevensports import ElevenSportsIE"
+        ]
+      },
+      "target_changes": {
+        "yt_dlp/extractor/_extractors.py": "index e5c6b219e..0667a5255 100644\n--- a/yt_dlp/extractor/_extractors.py\n+++ b/yt_dlp/extractor/_extractors.py\n@@ -541,12 +541,6 @@\n from .einthusan import EinthusanIE\n from .eitb import EitbIE\n from .elemental_tv import ElementalTVIE\n-from .elevensports import ElevenSportsIE\n-from .ellentube import (\n-    EllenTubeIE,\n-    EllenTubeVideoIE,\n-    EllenTubePlaylistIE,\n-)\n from .elonet import ElonetIE\n from .elpais import ElPaisIE\n from .eltrecetv import ElTreceTVIE\n"
+      },
+      "difficulty": 1
+    }
+  }
+}

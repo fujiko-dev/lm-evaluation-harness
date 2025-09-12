@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-09-07T22:36:09.836578",
+  "sample_info": {
+    "index": 30,
+    "original_index": 30,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 84,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 25.181047201156616,
+  "prediction": "# Analysis and Solution for Failed GitHub Actions Workflow\n\n## Root Cause Analysis\n\nThe workflow failure occurs during the `pre-commit/action@v3.0.0` step where `flake8` fails with two specific errors:\n\n1. `import_export/admin.py:749:89: E501 line too long (96 > 88 characters)`\n2. `import_export/admin.py:756:89: E501 line too long (98 > 88 characters)`\n\nThe issue is not with the workflow configuration itself, but rather with the code violating the flake8 style guide (specifically E501 - line length exceeding 88 characters). The workflow is correctly identifying these style violations.\n\n## Solution Options\n\nThere are two ways to fix this:\n\n### Option 1: Fix the long lines in the code (Recommended)\nThis involves modifying the two offending lines in `import_export/admin.py` to wrap them under 88 characters.\n\n### Option 2: Adjust the flake8 configuration (Alternative)\nWe could modify the flake8 configuration to allow longer line lengths if needed, though this is generally not recommended for readability.\n\n## Recommended Solution\n\nI recommend fixing the code (Option 1) since maintaining consistent line lengths improves readability. Here's what needs to be done:\n\n1. Locate the two long lines in `import_export/admin.py` (lines 749 and 756)\n2. Rewrap these lines to be under 88 characters each\n\nSince I don't have access to the exact content of those lines, I can't provide the specific code modifications, but here's the general approach:\n\n```python\n# Before (example)\ndef some_long_function_name(with_too_many_parameters, that_push_the_line_over_limit, and_make_flake8_complain):\n\n# After (example)\ndef some_long_function_name(\n    with_too_many_parameters,\n    that_are_now_properly_wrapped,\n    and_under_88_chars\n):\n```\n\n## If You Want to Temporarily Suppress the Errors\n\nIf you need to temporarily bypass line length checks while working on a solution, you can modify the workflow to ignore line length errors (not recommended for permanent solution):\n\n```yaml\n- uses: pre-commit/action@v3.0.0\n  with:\n    extra_args: --all-files --show-diff-on-failure --color=always --ignore=E501\n```\n\nBut again, the proper solution is to fix the line lengths in the source code. The workflow itself is functioning correctly - it's catching style violations exactly as it should.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6472794928375856,
+    "explanation": "Similarity: 0.412, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.4121324880626426,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "import_export/admin.py": [
+          "# Before (example)\ndef some_long_function_name(with_too_many_parameters, that_push_the_line_over_limit, and_make_flake8_complain):\n\n# After (example)\ndef some_long_function_name(\n    with_too_many_parameters,\n    that_are_now_properly_wrapped,\n    and_under_88_chars\n):",
+          "- uses: pre-commit/action@v3.0.0\n  with:\n    extra_args: --all-files --show-diff-on-failure --color=always --ignore=E501"
+        ]
+      },
+      "target_changes": {
+        "import_export/admin.py": "index a1b288e9..8bb2db67 100644\n--- a/import_export/admin.py\n+++ b/import_export/admin.py\n@@ -746,14 +746,16 @@ class ExportMixin(BaseExportMixin, ImportExportMixinBase):\n             def get_results(self, request):\n                 \"\"\"\n                 We override this method because we only call ChangeList.get_queryset()\n-                so we don't need anything from this method. The get_results() gets called during\n-                ChangeList.__init__() and we do want to avoid unnecessary COUNT queries.\n+                so we don't need anything from this method.\n+                The get_results() gets called during ChangeList.__init__()\n+                and we do want to avoid unnecessary COUNT queries.\n                 \"\"\"\n                 pass\n \n         cl = ExportChangeList(**changelist_kwargs)\n \n-        # get_queryset() is already called during initialization, it is enough to get it's results\n+        # get_queryset() is already called during initialization,\n+        # it is enough to get it's results\n         if hasattr(cl, \"queryset\"):\n             return cl.queryset\n \n"
+      },
+      "difficulty": 0
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-09-07T22:33:49.161073",
+  "sample_info": {
+    "index": 52,
+    "original_index": 52,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 144,
+  "repo_owner": "encode",
+  "repo_name": "starlette",
+  "difficulty": 2,
+  "generation_time": 11.325316905975342,
+  "prediction": "Looking at the CI failure logs, I can see that there are 2 test failures in `tests/test_responses.py` related to the `test_file_response_with_pathsend` test function. The error is:\n\n```\nTypeError: unhashable type: 'dict'\n```\n\nThis occurs at line 358 where the test is calling:\n```python\nawait app(\n    {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n    receive,\n    send,\n)\n```\n\n## Analysis of the Failure Cause\n\nThe issue is in the test code where there's a syntax error in the dictionary structure. The line:\n```python\n{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}}\n```\n\nContains a set literal `{\"http.response.pathsend\", {}}` instead of a proper dictionary. The second element `{}` is an empty dictionary, which is unhashable and cannot be part of a set. This should be a dictionary mapping the extension name to a value.\n\nLooking at ASGI specifications, the `extensions` field should be a dictionary where keys are extension names and values are their configuration/support status.\n\n## Specific Changes Needed\n\nThe fix needs to be made in the test file `tests/test_responses.py` at line 358 (approximately) where the malformed dictionary literal exists.\n\n## Modified Code\n\n```python\n# In tests/test_responses.py, around line 358\n# Change from:\nawait app(\n    {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n    receive,\n    send,\n)\n\n# Change to:\nawait app(\n    {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\": {}}},\n    receive,\n    send,\n)\n```\n\nThe key change is replacing the set syntax `{\"http.response.pathsend\", {}}` with dictionary syntax `{\"http.response.pathsend\": {}}`, where the empty dictionary `{}` becomes the value for the `\"http.response.pathsend\"` key rather than being treated as an element in a set.\n\nThis will resolve the \"unhashable type: 'dict'\" error since dictionaries can contain other dictionaries as values, but sets cannot contain unhashable types like dictionaries.",
+  "evaluation": {
+    "success": true,
+    "score": 0.7157098086124403,
+    "explanation": "Similarity: 0.526, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.526183014354067,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "tests/test_responses.py": [
+          "TypeError: unhashable type: 'dict'",
+          "await app(\n    {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n    receive,\n    send,\n)",
+          "{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}}",
+          "# In tests/test_responses.py, around line 358\n# Change from:\nawait app(\n    {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n    receive,\n    send,\n)\n\n# Change to:\nawait app(\n    {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\": {}}},\n    receive,\n    send,\n)"
+        ]
+      },
+      "target_changes": {
+        "tests/test_responses.py": "index 8106fad..625a129 100644\n--- a/tests/test_responses.py\n+++ b/tests/test_responses.py\n@@ -355,7 +355,7 @@ async def test_file_response_with_pathsend(tmpdir: Path):\n \n     # Since the TestClient doesn't support `pathsend`, we need to test this directly.\n     await app(\n-        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n+        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\": {}}},\n         receive,\n         send,\n     )\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

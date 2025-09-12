@@ -1,0 +1,110 @@
+{
+  "task": "lca_ci_builds_repair_sampled_evaluation",
+  "model": "qwen3-235b-a22b-instruct-2507",
+  "model_type": "qianfan_sampled",
+  "timestamp": "2025-09-07T19:26:43.642258",
+  "sampling_info": {
+    "strategy": "stratified_difficulty",
+    "sample_ratio": 0.1,
+    "seed": 42,
+    "original_samples": 68,
+    "sampled_samples": 6,
+    "actual_sample_ratio": 0.08823529411764706
+  },
+  "performance_summary": {
+    "total_samples": 6,
+    "successful_samples": 6,
+    "failed_samples": 0,
+    "total_generation_time": 164.99112176895142,
+    "avg_generation_time": 27.498520294825237
+  },
+  "original_dataset_stats": {
+    "total_samples": 68,
+    "difficulty_distribution": {
+      "0": 36,
+      "1": 7,
+      "2": 19,
+      "3": 6
+    },
+    "language_distribution": {
+      "Python": 68
+    },
+    "repository_distribution": {
+      "huggingface/diffusers": 4,
+      "mindsdb/mindsdb": 2,
+      "sanic-org/sanic": 1,
+      "tornadoweb/tornado": 1,
+      "canonical/cloud-init": 5,
+      "skypilot-org/skypilot": 5,
+      "beetbox/beets": 5,
+      "yt-dlp/yt-dlp": 1,
+      "hacs/integration": 3,
+      "optuna/optuna": 2,
+      "django-import-export/django-import-export": 6,
+      "hugsy/gef": 1,
+      "mosaicml/composer": 1,
+      "online-ml/river": 1,
+      "encode/httpx": 5,
+      "wandb/wandb": 2,
+      "googleapis/google-cloud-python": 1,
+      "huggingface/accelerate": 4,
+      "dask/dask": 1,
+      "encode/starlette": 3,
+      "encode/uvicorn": 1,
+      "mwaskom/seaborn": 3,
+      "octodns/octodns": 2,
+      "pwndbg/pwndbg": 1,
+      "pylint-dev/pylint": 1,
+      "errbotio/errbot": 2,
+      "openvinotoolkit/open_model_zoo": 2,
+      "cowrie/cowrie": 1,
+      "danielegrattarola/spektral": 1
+    },
+    "avg_changed_files": 1.8235294117647058
+  },
+  "sampled_dataset_stats": {
+    "total_samples": 6,
+    "difficulty_distribution": {
+      "0": 3,
+      "1": 1,
+      "2": 1,
+      "3": 1
+    },
+    "language_distribution": {
+      "Python": 6
+    },
+    "repository_distribution": {
+      "skypilot-org/skypilot": 1,
+      "huggingface/diffusers": 1,
+      "django-import-export/django-import-export": 1,
+      "canonical/cloud-init": 1,
+      "hacs/integration": 1,
+      "encode/httpx": 1
+    },
+    "avg_changed_files": 1.5
+  },
+  "configuration": {
+    "model_config": {
+      "model_name": "qwen3-235b-a22b-instruct-2507",
+      "timeout": 120,
+      "max_retries": 3
+    },
+    "max_tokens": 1024,
+    "temperature": 0.0,
+    "difficulty_filter": null
+  },
+  "results": {
+    "success_rate": 0.6666666666666666,
+    "average_score": 0.5472520142009167,
+    "total_samples": 6,
+    "success_rate_difficulty_0": 1.0,
+    "avg_score_difficulty_0": 0.6393366624344674,
+    "success_rate_difficulty_1": 1.0,
+    "avg_score_difficulty_1": 0.6655020979020979,
+    "success_rate_difficulty_2": 0.0,
+    "avg_score_difficulty_2": 0.4,
+    "success_rate_difficulty_3": 0.0,
+    "avg_score_difficulty_3": 0.30000000000000004
+  },
+  "individual_results_dir": "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/results/long_code_arena/ci_builds_repair/sampled_10pct_20250907_192358/ci_builds_repair_qwen3-235b-a22b-instruct-2507_sampled_10pct_stratified_difficulty_20250907_192358"
+}

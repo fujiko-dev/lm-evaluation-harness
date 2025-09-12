@@ -1,0 +1,32 @@
+Error: expected str, bytes or os.PathLike object, not NoneType
+
+Traceback (most recent call last):
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/tasks/long_code_arena/bug_localization/run_bug_localization_eval.py", line 108, in run_evaluation
+    results = evaluator.simple_evaluate(
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/utils.py", line 456, in _wrapper
+    return fn(*args, **kwargs)
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/evaluator.py", line 283, in simple_evaluate
+    task_dict = get_task_dict(
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/tasks/__init__.py", line 635, in get_task_dict
+    task_name_from_string_dict = task_manager.load_task_or_group(
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/tasks/__init__.py", line 426, in load_task_or_group
+    collections.ChainMap(
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/tasks/__init__.py", line 428, in <lambda>
+    lambda task: self._load_individual_task_or_group(task),
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/tasks/__init__.py", line 326, in _load_individual_task_or_group
+    return _load_task(task_config, task=name_or_config)
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/tasks/__init__.py", line 286, in _load_task
+    task_object = ConfigurableTask(config=config)
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/api/task.py", line 865, in __init__
+    self.download(self.config.dataset_kwargs)
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/api/task.py", line 997, in download
+    self.dataset = datasets.load_dataset(
+  File "/Users/xiaoyunting/Library/Python/3.9/lib/python/site-packages/datasets/load.py", line 2044, in load_dataset
+    if Path(path, config.DATASET_STATE_JSON_FILENAME).exists():
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1072, in __new__
+    self = cls._from_parts(args, init=False)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 697, in _from_parts
+    drv, root, parts = self._parse_args(args)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 681, in _parse_args
+    a = os.fspath(a)
+TypeError: expected str, bytes or os.PathLike object, not NoneType

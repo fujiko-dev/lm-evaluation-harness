@@ -1,0 +1,42 @@
+{
+  "timestamp": "2025-09-07T22:24:51.680222",
+  "sample_info": {
+    "index": 11,
+    "original_index": 11,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 34,
+  "repo_owner": "skypilot-org",
+  "repo_name": "skypilot",
+  "difficulty": 0,
+  "generation_time": 6.452193021774292,
+  "prediction": "Looking at the CI failure logs, I can see that the `yapf` formatter is detecting a formatting issue in `./sky/data/storage.py`. Specifically, there's a trailing whitespace issue on line 822 where there's an extra space before the colon in the `if` statement.\n\n## Analysis of the Failure Cause\n\nThe root cause is a formatting inconsistency in the codebase. The `yapf` step is configured to check for proper formatting across the entire codebase (with some exclusions), and it found that line 822 in `sky/data/storage.py` has a trailing whitespace that needs to be removed:\n\n**Current code:**\n```python\nif not isinstance(source, list): \n```\n\n**Should be:**\n```python\nif not isinstance(source, list):\n```\n\nNotice the extra space before the colon that needs to be removed.\n\n## Specific Changes Needed\n\nThe fix is simple: remove the trailing whitespace from line 822 in `sky/data/storage.py`.\n\n## Modified Code\n\n**File: `sky/data/storage.py`**\n```python\n# Line 822: Remove the trailing space before the colon\n# Change from:\nif not isinstance(source, list): \n# To:\nif not isinstance(source, list):\n```\n\nThis single character change (removing the trailing space) will make the file compliant with the yapf formatting rules and allow the CI workflow to pass.\n\nAlternatively, you could run `yapf --in-place ./sky/data/storage.py` locally to automatically fix this and any other formatting issues, then commit the result.",
+  "evaluation": {
+    "success": false,
+    "score": 0.4947914438502674,
+    "explanation": "Similarity: 0.158, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.15798573975044564,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "sky/data/storage.py": [
+          "if not isinstance(source, list):",
+          "if not isinstance(source, list):",
+          "# Line 822: Remove the trailing space before the colon\n# Change from:\nif not isinstance(source, list): \n# To:\nif not isinstance(source, list):"
+        ],
+        "./sky/data/storage.py": [
+          "if not isinstance(source, list):",
+          "if not isinstance(source, list):",
+          "# Line 822: Remove the trailing space before the colon\n# Change from:\nif not isinstance(source, list): \n# To:\nif not isinstance(source, list):"
+        ]
+      },
+      "target_changes": {
+        "sky/backends/cloud_vm_ray_backend.py": "index 8a93b58c..08bc7ffb 100644\n--- a/sky/backends/cloud_vm_ray_backend.py\n+++ b/sky/backends/cloud_vm_ray_backend.py\n@@ -4557,14 +4557,15 @@ class CloudVmRayBackend(backends.Backend['CloudVmRayResourceHandle']):\n         end = time.time()\n         logger.debug(f'File mount sync took {end - start} seconds.')\n \n-    def _execute_storage_mounts(self, handle: CloudVmRayResourceHandle,\n-                                storage_mounts: Dict[Path, storage_lib.Storage],\n-                                mount_mode: storage_utils.StorageMode):\n+    def _execute_storage_mounts(\n+            self, handle: CloudVmRayResourceHandle,\n+            storage_mounts: Optional[Dict[Path, storage_lib.Storage]],\n+            mount_mode: storage_utils.StorageMode):\n         \"\"\"Executes storage mounts: installing mounting tools and mounting.\"\"\"\n         # Handle cases where `storage_mounts` is None. This occurs when users\n         # initiate a 'sky start' command from a Skypilot version that predates\n         # the introduction of the `storage_mounts_metadata` feature.\n-        if not storage_mounts:\n+        if storage_mounts is None:\n             return\n \n         # Process only mount mode objects here. COPY mode objects have been\n@@ -4674,7 +4675,7 @@ class CloudVmRayBackend(backends.Backend['CloudVmRayResourceHandle']):\n \n     def _has_csync(self, cluster_name: str) -> bool:\n         \"\"\"Chekcs if there are CSYNC mode storages within the cluster.\"\"\"\n-        storage_mounts = self._get_storage_mounts_metadata(cluster_name)\n+        storage_mounts = self.get_storage_mounts_metadata(cluster_name)\n         if storage_mounts is not None:\n             for _, storage_obj in storage_mounts.items():\n                 if storage_obj.mode == storage_utils.StorageMode.CSYNC:",
+        "sky/data/sky_csync.py": "index c0d521ff..c6c3f981 100644\n--- a/sky/data/sky_csync.py\n+++ b/sky/data/sky_csync.py\n@@ -251,7 +251,7 @@ def csync(source: str, storetype: str, destination: str, num_threads: int,\n     \"\"\"Runs daemon to sync the source to the bucket every INTERVAL seconds.\n \n     Creates an entry of pid of the sync process in local database while sync\n-    command is runninng and removes it when completed.\n+    command is running and removes it when completed.\n \n     Args:\n         source (str): The local path to the directory that you want to sync.",
+        "sky/data/storage.py": "index dea9b906..3f7c205f 100644\n--- a/sky/data/storage.py\n+++ b/sky/data/storage.py\n@@ -819,7 +819,7 @@ class Storage(object):\n         source = override_args.get('source', metadata.source)\n         name = override_args.get('name', metadata.storage_name)\n         # If the source is a list, it consists of local paths\n-        if not isinstance(source, list): \n+        if not isinstance(source, list):\n             if data_utils.is_cloud_store_url(source):\n                 name = None\n \n"
+      },
+      "difficulty": 0
+    }
+  }
+}

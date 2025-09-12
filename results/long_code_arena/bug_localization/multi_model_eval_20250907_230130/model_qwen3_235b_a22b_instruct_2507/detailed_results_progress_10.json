@@ -1,0 +1,323 @@
+[
+  {
+    "text_id": "thealgorithms/python/295/289",
+    "repo_owner": "thealgorithms",
+    "repo_name": "python",
+    "prediction_text": "{\"files\": [\"Project Euler/Problem 01/sol2.py\"]}",
+    "predicted_files": [
+      "Project Euler/Problem 01/sol2.py"
+    ],
+    "target_files": [
+      "Project Euler/Problem 01/sol2.py"
+    ],
+    "all_files_count": 195,
+    "target_files_count": 1,
+    "predicted_files_count": 1,
+    "bug_loc_precision": 1.0,
+    "bug_loc_recall": 1.0,
+    "bug_loc_f1": 1.0,
+    "bug_loc_fpr": 0.0,
+    "bug_loc_all_correct": 1,
+    "bug_loc_at_least_one_correct": 1,
+    "bug_loc_all_incorrect": 0,
+    "bug_loc_target_files_rate": 0.005128205128205128,
+    "expected_files_count": 1,
+    "true_positives": 1,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "true_negatives": 194,
+    "inference_time": 0.8300397396087646,
+    "sample_index": 1,
+    "model_key": "qwen3-235b-a22b-instruct-2507"
+  },
+  {
+    "text_id": "keras-team/keras/15943/15942",
+    "repo_owner": "keras-team",
+    "repo_name": "keras",
+    "prediction_text": "{\"files\": [\"keras/layers/convolutional.py\"]}",
+    "predicted_files": [
+      "keras/layers/convolutional.py"
+    ],
+    "target_files": [
+      "keras/layers/convolutional/base_conv.py"
+    ],
+    "all_files_count": 309,
+    "target_files_count": 1,
+    "predicted_files_count": 1,
+    "bug_loc_precision": 0.0,
+    "bug_loc_recall": 0.0,
+    "bug_loc_f1": 0.0,
+    "bug_loc_fpr": 0.003236245954692557,
+    "bug_loc_all_correct": 0,
+    "bug_loc_at_least_one_correct": 0,
+    "bug_loc_all_incorrect": 1,
+    "bug_loc_target_files_rate": 0.003236245954692557,
+    "expected_files_count": 1,
+    "true_positives": 0,
+    "false_positives": 1,
+    "false_negatives": 1,
+    "true_negatives": 308,
+    "inference_time": 0.7696037292480469,
+    "sample_index": 2,
+    "model_key": "qwen3-235b-a22b-instruct-2507"
+  },
+  {
+    "text_id": "serverless/serverless/5500/5499",
+    "repo_owner": "serverless",
+    "repo_name": "serverless",
+    "prediction_text": "{\"files\": [\"lib/plugins/aws/invokeLocal/invoke.py\"]}",
+    "predicted_files": [
+      "lib/plugins/aws/invokeLocal/invoke.py"
+    ],
+    "target_files": [
+      "lib/plugins/aws/invokeLocal/invoke.py"
+    ],
+    "all_files_count": 10,
+    "target_files_count": 1,
+    "predicted_files_count": 1,
+    "bug_loc_precision": 1.0,
+    "bug_loc_recall": 1.0,
+    "bug_loc_f1": 1.0,
+    "bug_loc_fpr": 0.0,
+    "bug_loc_all_correct": 1,
+    "bug_loc_at_least_one_correct": 1,
+    "bug_loc_all_incorrect": 0,
+    "bug_loc_target_files_rate": 0.1,
+    "expected_files_count": 1,
+    "true_positives": 1,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "true_negatives": 9,
+    "inference_time": 0.9714150428771973,
+    "sample_index": 3,
+    "model_key": "qwen3-235b-a22b-instruct-2507"
+  },
+  {
+    "text_id": "textualize/rich/2212/2197",
+    "repo_owner": "textualize",
+    "repo_name": "rich",
+    "prediction_text": "{\"files\": [\"rich/__init__.py\"]}",
+    "predicted_files": [
+      "rich/__init__.py"
+    ],
+    "target_files": [
+      "rich/__init__.py"
+    ],
+    "all_files_count": 121,
+    "target_files_count": 1,
+    "predicted_files_count": 1,
+    "bug_loc_precision": 1.0,
+    "bug_loc_recall": 1.0,
+    "bug_loc_f1": 1.0,
+    "bug_loc_fpr": 0.0,
+    "bug_loc_all_correct": 1,
+    "bug_loc_at_least_one_correct": 1,
+    "bug_loc_all_incorrect": 0,
+    "bug_loc_target_files_rate": 0.008264462809917356,
+    "expected_files_count": 1,
+    "true_positives": 1,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "true_negatives": 120,
+    "inference_time": 1.4277031421661377,
+    "sample_index": 4,
+    "model_key": "qwen3-235b-a22b-instruct-2507"
+  },
+  {
+    "text_id": "mitmproxy/mitmproxy/4298/3994",
+    "repo_owner": "mitmproxy",
+    "repo_name": "mitmproxy",
+    "prediction_text": "{\"files\": [\"mitmproxy/proxy/modes/transparent_proxy.py\", \"mitmproxy/certs.py\", \"mitmproxy/connections.py\"]}",
+    "predicted_files": [
+      "mitmproxy/proxy/modes/transparent_proxy.py",
+      "mitmproxy/certs.py",
+      "mitmproxy/connections.py"
+    ],
+    "target_files": [
+      "mitmproxy/net/tls.py",
+      "test/mitmproxy/net/test_tls.py",
+      "setup.py"
+    ],
+    "all_files_count": 294,
+    "target_files_count": 3,
+    "predicted_files_count": 3,
+    "bug_loc_precision": 0.0,
+    "bug_loc_recall": 0.0,
+    "bug_loc_f1": 0.0,
+    "bug_loc_fpr": 0.010273972602739725,
+    "bug_loc_all_correct": 0,
+    "bug_loc_at_least_one_correct": 0,
+    "bug_loc_all_incorrect": 1,
+    "bug_loc_target_files_rate": 0.01020408163265306,
+    "expected_files_count": 3,
+    "true_positives": 0,
+    "false_positives": 3,
+    "false_negatives": 3,
+    "true_negatives": 289,
+    "inference_time": 1.2230548858642578,
+    "sample_index": 5,
+    "model_key": "qwen3-235b-a22b-instruct-2507"
+  },
+  {
+    "text_id": "hpcaitech/colossalai/3621/3620",
+    "repo_owner": "hpcaitech",
+    "repo_name": "colossalai",
+    "prediction_text": "{\"files\": [\"examples/train_prompts.py\"]}",
+    "predicted_files": [
+      "examples/train_prompts.py"
+    ],
+    "target_files": [
+      "applications/Chat/examples/train_prompts.py"
+    ],
+    "all_files_count": 852,
+    "target_files_count": 1,
+    "predicted_files_count": 1,
+    "bug_loc_precision": 0.0,
+    "bug_loc_recall": 0.0,
+    "bug_loc_f1": 0.0,
+    "bug_loc_fpr": 0.0011737089201877935,
+    "bug_loc_all_correct": 0,
+    "bug_loc_at_least_one_correct": 0,
+    "bug_loc_all_incorrect": 1,
+    "bug_loc_target_files_rate": 0.0011737089201877935,
+    "expected_files_count": 1,
+    "true_positives": 0,
+    "false_positives": 1,
+    "false_negatives": 1,
+    "true_negatives": 851,
+    "inference_time": 1.7211387157440186,
+    "sample_index": 6,
+    "model_key": "qwen3-235b-a22b-instruct-2507"
+  },
+  {
+    "text_id": "docker/compose/8158/8136",
+    "repo_owner": "docker",
+    "repo_name": "compose",
+    "prediction_text": "{\"files\": [\"compose/cli/log_printer.py\", \"compose/project.py\"]}",
+    "predicted_files": [
+      "compose/cli/log_printer.py",
+      "compose/project.py"
+    ],
+    "target_files": [
+      "compose/cli/main.py"
+    ],
+    "all_files_count": 44,
+    "target_files_count": 1,
+    "predicted_files_count": 2,
+    "bug_loc_precision": 0.0,
+    "bug_loc_recall": 0.0,
+    "bug_loc_f1": 0.0,
+    "bug_loc_fpr": 0.046511627906976744,
+    "bug_loc_all_correct": 0,
+    "bug_loc_at_least_one_correct": 0,
+    "bug_loc_all_incorrect": 1,
+    "bug_loc_target_files_rate": 0.045454545454545456,
+    "expected_files_count": 1,
+    "true_positives": 0,
+    "false_positives": 2,
+    "false_negatives": 1,
+    "true_negatives": 41,
+    "inference_time": 1.1327250003814697,
+    "sample_index": 7,
+    "model_key": "qwen3-235b-a22b-instruct-2507"
+  },
+  {
+    "text_id": "ccxt/ccxt/18301/18192",
+    "repo_owner": "ccxt",
+    "repo_name": "ccxt",
+    "prediction_text": "{\"files\": [\"python/ccxt/pro/__init__.py\", \"python/ccxt/async_support/base/exchange.py\", \"python/ccxt/base/exchange.py\"]}",
+    "predicted_files": [
+      "python/ccxt/pro/__init__.py",
+      "python/ccxt/async_support/base/exchange.py",
+      "python/ccxt/base/exchange.py"
+    ],
+    "target_files": [
+      "python/ccxt/pro/__init__.py"
+    ],
+    "all_files_count": 684,
+    "target_files_count": 1,
+    "predicted_files_count": 3,
+    "bug_loc_precision": 0.3333333333333333,
+    "bug_loc_recall": 1.0,
+    "bug_loc_f1": 0.5,
+    "bug_loc_fpr": 0.0029282576866764276,
+    "bug_loc_all_correct": 0,
+    "bug_loc_at_least_one_correct": 1,
+    "bug_loc_all_incorrect": 0,
+    "bug_loc_target_files_rate": 0.0043859649122807015,
+    "expected_files_count": 1,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "true_negatives": 681,
+    "inference_time": 2.0814311504364014,
+    "sample_index": 8,
+    "model_key": "qwen3-235b-a22b-instruct-2507"
+  },
+  {
+    "text_id": "microsoft/deepspeed/4084/4083",
+    "repo_owner": "microsoft",
+    "repo_name": "deepspeed",
+    "prediction_text": "{\"files\": [\"deepspeed/runtime/zero/stage_1_and_2.py\", \"deepspeed/runtime/zero/config.py\", \"deepspeed/runtime/zero/offload_config.py\"]}",
+    "predicted_files": [
+      "deepspeed/runtime/zero/stage_1_and_2.py",
+      "deepspeed/runtime/zero/config.py",
+      "deepspeed/runtime/zero/offload_config.py"
+    ],
+    "target_files": [
+      "deepspeed/runtime/engine.py",
+      "deepspeed/runtime/zero/stage_1_and_2.py"
+    ],
+    "all_files_count": 292,
+    "target_files_count": 2,
+    "predicted_files_count": 3,
+    "bug_loc_precision": 0.3333333333333333,
+    "bug_loc_recall": 0.5,
+    "bug_loc_f1": 0.4,
+    "bug_loc_fpr": 0.006896551724137931,
+    "bug_loc_all_correct": 0,
+    "bug_loc_at_least_one_correct": 1,
+    "bug_loc_all_incorrect": 0,
+    "bug_loc_target_files_rate": 0.010273972602739725,
+    "expected_files_count": 2,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 1,
+    "true_negatives": 288,
+    "inference_time": 2.119832992553711,
+    "sample_index": 9,
+    "model_key": "qwen3-235b-a22b-instruct-2507"
+  },
+  {
+    "text_id": "streamlit/streamlit/6459/6440",
+    "repo_owner": "streamlit",
+    "repo_name": "streamlit",
+    "prediction_text": "{\"files\": [\"lib/streamlit/runtime/caching/hashing.py\"]}",
+    "predicted_files": [
+      "lib/streamlit/runtime/caching/hashing.py"
+    ],
+    "target_files": [
+      "lib/tests/streamlit/runtime/caching/hashing_test.py",
+      "lib/streamlit/runtime/caching/hashing.py"
+    ],
+    "all_files_count": 351,
+    "target_files_count": 2,
+    "predicted_files_count": 1,
+    "bug_loc_precision": 1.0,
+    "bug_loc_recall": 0.5,
+    "bug_loc_f1": 0.6666666666666666,
+    "bug_loc_fpr": 0.0,
+    "bug_loc_all_correct": 0,
+    "bug_loc_at_least_one_correct": 1,
+    "bug_loc_all_incorrect": 0,
+    "bug_loc_target_files_rate": 0.002849002849002849,
+    "expected_files_count": 2,
+    "true_positives": 1,
+    "false_positives": 0,
+    "false_negatives": 1,
+    "true_negatives": 350,
+    "inference_time": 1.3235700130462646,
+    "sample_index": 10,
+    "model_key": "qwen3-235b-a22b-instruct-2507"
+  }
+]

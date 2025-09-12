@@ -1,0 +1,51 @@
+{
+  "results": {
+    "lca_ci_builds_repair": {
+      "ci_repair_score": 0.31000000000000005,
+      "ci_repair_success_rate": 0.5,
+      "ci_repair_bleu": 0.25,
+      "ci_repair_rouge_l": 0.4,
+      "ci_repair_exact_match": 0.0,
+      "valid_samples": 2,
+      "total_samples": 2
+    }
+  },
+  "samples": {
+    "lca_ci_builds_repair": [
+      {
+        "text_id": "",
+        "repo_name": "diffusers",
+        "prediction_text": "{\n  \"fix\": \"The CI build failed due to unsorted or unformatted imports in 'examples/community/ip_adapter_face_id.py' (ruff I001). To fix this, run the following command to automatically sort and format the imports:\\n\\nruff check examples/community/ip_adapter_face_id.py --fix\\n\\nAlternatively, you can manually sort the imports at the top of 'examples/community/ip_adapter_face_id.py' according to PEP8 and ruff's conventions. After fixing, commit the changes and re-run the CI.\"\n}",
+        "predicted_fix": "The CI build failed due to unsorted or unformatted imports in 'examples/community/ip_adapter_face_id.py' (ruff I001). To fix this, run the following command to automatically sort and format the imports:\n\nruff check examples/community/ip_adapter_face_id.py --fix\n\nAlternatively, you can manually sort the imports at the top of 'examples/community/ip_adapter_face_id.py' according to PEP8 and ruff's conventions. After fixing, commit the changes and re-run the CI.",
+        "target_fix": "",
+        "ci_repair_score": 0.6200000000000001,
+        "ci_repair_success_rate": 1.0,
+        "ci_repair_bleu": 0.5,
+        "ci_repair_rouge_l": 0.8,
+        "ci_repair_exact_match": 0.0
+      },
+      {
+        "text_id": "",
+        "repo_name": "diffusers",
+        "prediction_text": "{\n  \"fix\": {\n    \"description\": \"Remove the unused import of 'typing.Optional' in 'src/diffusers/loaders/ip_adapter.py' to resolve the F401 error.\",\n    \"steps\": [\n      \"Open the file 'src/diffusers/loaders/ip_adapter.py'.\",\n      \"Locate the line where 'typing.Optional' is imported.\",\n      \"Remove or comment out the line importing 'typing.Optional' if it is not used elsewhere in the file.\",\n      \"Save the file.\",\n      \"Re-run the CI build to verify that the error is resolved.\"\n    ],\n    \"code_change\": \"In 'src/diffusers/loaders/ip_adapter.py', find and remove or comment out the line:\\n\\nfrom typing import Optional\"\n  }\n}",
+        "predicted_fix": {
+          "description": "Remove the unused import of 'typing.Optional' in 'src/diffusers/loaders/ip_adapter.py' to resolve the F401 error.",
+          "steps": [
+            "Open the file 'src/diffusers/loaders/ip_adapter.py'.",
+            "Locate the line where 'typing.Optional' is imported.",
+            "Remove or comment out the line importing 'typing.Optional' if it is not used elsewhere in the file.",
+            "Save the file.",
+            "Re-run the CI build to verify that the error is resolved."
+          ],
+          "code_change": "In 'src/diffusers/loaders/ip_adapter.py', find and remove or comment out the line:\n\nfrom typing import Optional"
+        },
+        "target_fix": "",
+        "ci_repair_score": 0.0,
+        "ci_repair_success_rate": 0.0,
+        "ci_repair_bleu": 0.0,
+        "ci_repair_rouge_l": 0.0,
+        "ci_repair_exact_match": 0.0
+      }
+    ]
+  }
+}

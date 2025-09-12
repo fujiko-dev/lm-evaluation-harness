@@ -1,0 +1,40 @@
+{
+  "timestamp": "2025-09-07T22:28:53.866319",
+  "sample_info": {
+    "index": 39,
+    "original_index": 39,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 107,
+  "repo_owner": "encode",
+  "repo_name": "httpx",
+  "difficulty": 2,
+  "generation_time": 11.285238027572632,
+  "prediction": "# Analysis of the Failure Cause\n\nThe CI workflow is failing during the \"Run linting checks\" step due to **mypy type errors** in `httpx/_client.py` related to the `AsyncHTTPTransport` class. The specific errors are:\n\n```\nhttpx/_client.py:1456: error: Unexpected keyword argument \"verify\" for \"AsyncHTTPTransport\"  [call-arg]\nhttpx/_client.py:1456: error: Unexpected keyword argument \"cert\" for \"AsyncHTTPTransport\"  [call-arg]\nhttpx/_client.py:1458: error: Name \"verify\" is not defined  [name-defined]\nhttpx/_client.py:1459: error: Name \"cert\" is not defined  [name-defined]\n```\n\n## Root Cause\n\nThe issue is in `httpx/_client.py` where the code is passing `verify` and `cert` as keyword arguments to `AsyncHTTPTransport`, but these parameters are not defined in the `AsyncHTTPTransport` class's constructor signature. This is a **type mismatch** between what the code is doing and what mypy expects.\n\nLooking at the error message:\n- `AsyncHTTPTransport` is defined at line 260 in `httpx/_transports/default.py`\n- The constructor does not accept `verify` or `cert` parameters\n- Yet, in `httpx/_client.py` at line 1456, these parameters are being passed to `AsyncHTTPTransport`\n\nThis suggests that the code is trying to pass `verify` and `cert` parameters to `AsyncHTTPTransport`, but those parameters should either:\n1. Be removed if they're not needed\n2. Be properly accepted by the `AsyncHTTPTransport` class\n3. Be handled differently (e.g., passed to a different class or processed before transport creation)\n\nThe fact that this failure occurs across Python 3.10, 3.11, and 3.12 indicates it's a code-level issue, not a Python version-specific problem.\n\n# Specific Changes Needed\n\nThe fix requires modifying `httpx/_client.py` to correct how `verify` and `cert` are handled when creating `AsyncHTTPTransport` instances.\n\nLooking at the code pattern, the issue is likely in the `create_transport` method or similar logic where `AsyncHTTPTransport` is instantiated. The `verify` and `cert` parameters should not be passed directly to `AsyncHTTPTransport` if they're not part of its constructor signature.\n\n## Solution\n\nThe correct approach is to:\n1. Remove `verify` and `cert` from the `AsyncHTTPTransport` constructor call\n2. Handle these parameters at a higher level (e.g., in the client or transport factory)\n3. Or, if these parameters are meant to be passed to the underlying HTTP client (like `httpcore`), they should be passed there instead\n\nBased on the error and typical HTTPX architecture, `verify` and `cert` are typically handled by the underlying HTTP client (like `httpcore`), not by `AsyncHTTPTransport` directly.\n\n## Modified Code\n\nHere's the fix for `httpx/_client.py`:\n\n```python\n# In httpx/_client.py, locate the code around line 1456 where AsyncHTTPTransport is instantiated\n\n# Change this:\n# transport = AsyncHTTPTransport(\n#     verify=verify,\n#     cert=cert,\n#     # ... other parameters\n# )\n\n# To this:\n# transport = AsyncHTTPTransport(\n#     # Remove verify and cert from here\n#     # ... other parameters\n# )\n\n# Instead, handle verify and cert at the client level or pass them to the underlying HTTP client\n```\n\nMore specifically, the fix should be:\n\n```python\n# In httpx/_client.py, around line 1456:\n\n# Before (failing):\n# transport = AsyncHTTPTransport(\n#     verify=verify,\n#     cert=cert,\n#     # ... other parameters\n# )\n\n# After (fixed):\n# Create the transport without verify and cert\ntransport = AsyncHTTPTransport(\n    # Remove verify and cert from here\n    # ... other parameters\n)\n\n# Then, if needed, pass verify and cert to the underlying HTTP client\n# This would typically be done in the client's constructor or setup\n```\n\n## Additional Context\n\nThe `verify` and `cert` parameters are typically handled by the `httpcore` library, not by `AsyncHTTPTransport`. The `AsyncHTTPTransport` class should only accept parameters that are relevant to the transport layer itself (like `http_version`, `retries`, etc.).\n\nThe correct pattern is to:\n1. Pass `verify` and `cert` to the `httpcore` client\n2. Let the `httpcore` client handle SSL verification and certificate loading\n3. Pass the `httpcore` client to the `AsyncHTTPTransport`\n\n##",
+  "evaluation": {
+    "success": true,
+    "score": 0.5261264390243903,
+    "explanation": "Similarity: 0.460, Key fixes: 0.625",
+    "details": {
+      "similarity_score": 0.4602107317073171,
+      "key_fixes_score": 0.625,
+      "predicted_changes": {
+        "httpx/_client.py": [
+          "httpx/_client.py:1456: error: Unexpected keyword argument \"verify\" for \"AsyncHTTPTransport\"  [call-arg]\nhttpx/_client.py:1456: error: Unexpected keyword argument \"cert\" for \"AsyncHTTPTransport\"  [call-arg]\nhttpx/_client.py:1458: error: Name \"verify\" is not defined  [name-defined]\nhttpx/_client.py:1459: error: Name \"cert\" is not defined  [name-defined]",
+          "# In httpx/_client.py, locate the code around line 1456 where AsyncHTTPTransport is instantiated\n\n# Change this:\n# transport = AsyncHTTPTransport(\n#     verify=verify,\n#     cert=cert,\n#     # ... other parameters\n# )\n\n# To this:\n# transport = AsyncHTTPTransport(\n#     # Remove verify and cert from here\n#     # ... other parameters\n# )\n\n# Instead, handle verify and cert at the client level or pass them to the underlying HTTP client",
+          "# In httpx/_client.py, around line 1456:\n\n# Before (failing):\n# transport = AsyncHTTPTransport(\n#     verify=verify,\n#     cert=cert,\n#     # ... other parameters\n# )\n\n# After (fixed):\n# Create the transport without verify and cert\ntransport = AsyncHTTPTransport(\n    # Remove verify and cert from here\n    # ... other parameters\n)\n\n# Then, if needed, pass verify and cert to the underlying HTTP client\n# This would typically be done in the client's constructor or setup"
+        ],
+        "httpx/_transports/default.py": [
+          "httpx/_client.py:1456: error: Unexpected keyword argument \"verify\" for \"AsyncHTTPTransport\"  [call-arg]\nhttpx/_client.py:1456: error: Unexpected keyword argument \"cert\" for \"AsyncHTTPTransport\"  [call-arg]\nhttpx/_client.py:1458: error: Name \"verify\" is not defined  [name-defined]\nhttpx/_client.py:1459: error: Name \"cert\" is not defined  [name-defined]",
+          "# In httpx/_client.py, locate the code around line 1456 where AsyncHTTPTransport is instantiated\n\n# Change this:\n# transport = AsyncHTTPTransport(\n#     verify=verify,\n#     cert=cert,\n#     # ... other parameters\n# )\n\n# To this:\n# transport = AsyncHTTPTransport(\n#     # Remove verify and cert from here\n#     # ... other parameters\n# )\n\n# Instead, handle verify and cert at the client level or pass them to the underlying HTTP client",
+          "# In httpx/_client.py, around line 1456:\n\n# Before (failing):\n# transport = AsyncHTTPTransport(\n#     verify=verify,\n#     cert=cert,\n#     # ... other parameters\n# )\n\n# After (fixed):\n# Create the transport without verify and cert\ntransport = AsyncHTTPTransport(\n    # Remove verify and cert from here\n    # ... other parameters\n)\n\n# Then, if needed, pass verify and cert to the underlying HTTP client\n# This would typically be done in the client's constructor or setup"
+        ]
+      },
+      "target_changes": {
+        "httpx/_client.py": "index e5cff5d..4dd2d07 100644\n--- a/httpx/_client.py\n+++ b/httpx/_client.py\n@@ -1455,8 +1455,6 @@ class AsyncClient(BaseClient):\n     ) -> AsyncBaseTransport:\n         return AsyncHTTPTransport(\n             ssl_context=ssl_context,\n-            verify=verify,\n-            cert=cert,\n             http1=http1,\n             http2=http2,\n             limits=limits,\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

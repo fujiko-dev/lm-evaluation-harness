@@ -1,0 +1,44 @@
+{
+  "timestamp": "2025-09-07T22:21:58.662378",
+  "sample_info": {
+    "index": 14,
+    "original_index": 14,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 37,
+  "repo_owner": "skypilot-org",
+  "repo_name": "skypilot",
+  "difficulty": 0,
+  "generation_time": 34.21122097969055,
+  "prediction": "### 1. **Analysis of the Failure Cause**\n\nThe CI workflow failed in the **\"Running yapf\"** step with a non-zero exit code, indicating that `yapf` detected formatting issues in the code. Specifically, the log shows a diff in `sky/resources.py` where yapf wants to reformat a ternary expression:\n\n```python\n# Current code (before yapf)\nsize_comp = ('larger than' if image_size > self.disk_size else 'equal to')\n\n# After yapf formatting\nsize_comp = ('larger than'\n             if image_size > self.disk_size else 'equal to')\n```\n\nThis change is being **rejected** because the workflow runs `yapf --diff`, which outputs differences and exits with code 1 if any formatting changes are needed. This is intentional — the CI expects the code to already be perfectly formatted.\n\nHowever, the failure indicates that the code in commit `c3f4fe9eefdb297183b6d51bfc305e40feeec358` is **not** formatted according to `yapf`'s rules, even though it should be.\n\nBut here's the key: **the workflow is set up to exclude certain directories from yapf**, including:\n- `sky/skylet/providers/aws/**`\n- `sky/skylet/providers/gcp/**`\n- etc.\n\nYet, the file that failed — `sky/resources.py` — is **not excluded**, so it **should be yapf-formatted**.\n\nThe root cause is therefore:  \n> **The file `sky/resources.py` contains code that is not formatted according to `yapf`'s style, and the CI correctly caught it.**\n\nThis means the developer either:\n- Made a change that introduced unformatted code.\n- Did not run `yapf` locally before pushing.\n\n---\n\n### 2. **Specific Changes Needed to Fix the Issue**\n\nTo fix the CI:\n- We must **reformat `sky/resources.py`** according to `yapf`'s output.\n- Apply the exact change that `yapf` suggests in the diff.\n\nAlternatively, if the team prefers a different formatting style, they could adjust the `.style.yapf` config — but since the CI uses `yapf` without a custom config, it defaults to **Google style**, which prefers breaking before the `if` in long ternary expressions.\n\nGiven that the CI passed on a previous commit (`9cce23f0c627...`), and only this change is causing the failure, the fix is simply to **accept yapf's suggested formatting**.\n\n---\n\n### 3. **Modified Code**\n\n#### ✅ Fix: Update `sky/resources.py` with yapf-compliant formatting\n\n```diff\n--- sky/resources.py\n+++ sky/resources.py\n@@ -836,8 +836,8 @@\n             image_size = self.cloud.get_image_size(image_id, region)\n             if image_size >= self.disk_size:\n                 with ux_utils.print_exception_no_traceback():\n-                    size_comp = ('larger than' if image_size > self.disk_size\n-                                 else 'equal to')\n+                    size_comp = ('larger than'\n+                                 if image_size > self.disk_size else 'equal to')\n                     raise ValueError(\n                         f'Image {image_id!r} is {image_size}GB, which is '\n                         f'{size_comp} the specified disk_size: '\n```\n\n#### 🛠️ How to Apply the Fix\n\nRun locally:\n```bash\nyapf --in-place --style=google sky/resources.py\n```\n\nOr manually edit the file to match the above.\n\n---\n\n### ✅ Optional: Ensure Consistency with Local Pre-commit (Recommended)\n\nTo prevent future issues, consider adding a pre-commit hook:\n\n```yaml\n# .pre-commit-config.yaml\nrepos:\n  - repo: https://github.com/google/yapf\n    rev: v0.32.0\n    hooks:\n      - id: yapf\n        types: [python]\n```\n\nBut this is out of scope for fixing the immediate CI failure.\n\n---\n\n### ✅ Summary\n\n- **Root Cause**: `sky/resources.py` is not formatted according to `yapf` rules.\n- **Fix**: Apply the `yapf`-suggested formatting change.\n- **Change**: Break the line before the `if` in the ternary expression.\n\nNo changes to the **workflow file** are needed — the CI is correctly enforcing formatting. The issue is in the **source code**, not the configuration.\n\n---\n\n### Final Fix (Code Change)\n\nUpdate `sky/resources.py` at the relevant location to:\n\n```python\n                    size_comp = ('larger than'\n                                 if image_size > self.disk_size else 'equal to')\n```\n\nAfter this change, the `yapf --diff` check will",
+  "evaluation": {
+    "success": true,
+    "score": 0.8705375494071146,
+    "explanation": "Similarity: 0.784, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.7842292490118576,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "sky/resources.py": [
+          "# Current code (before yapf)\nsize_comp = ('larger than' if image_size > self.disk_size else 'equal to')\n\n# After yapf formatting\nsize_comp = ('larger than'\n             if image_size > self.disk_size else 'equal to')",
+          "--- sky/resources.py\n+++ sky/resources.py\n@@ -836,8 +836,8 @@\n             image_size = self.cloud.get_image_size(image_id, region)\n             if image_size >= self.disk_size:\n                 with ux_utils.print_exception_no_traceback():\n-                    size_comp = ('larger than' if image_size > self.disk_size\n-                                 else 'equal to')\n+                    size_comp = ('larger than'\n+                                 if image_size > self.disk_size else 'equal to')\n                     raise ValueError(\n                         f'Image {image_id!r} is {image_size}GB, which is '\n                         f'{size_comp} the specified disk_size: '",
+          "yapf --in-place --style=google sky/resources.py",
+          "# .pre-commit-config.yaml\nrepos:\n  - repo: https://github.com/google/yapf\n    rev: v0.32.0\n    hooks:\n      - id: yapf\n        types: [python]",
+          "size_comp = ('larger than'\n                                 if image_size > self.disk_size else 'equal to')"
+        ],
+        ".style.yapf": [
+          "# Current code (before yapf)\nsize_comp = ('larger than' if image_size > self.disk_size else 'equal to')\n\n# After yapf formatting\nsize_comp = ('larger than'\n             if image_size > self.disk_size else 'equal to')",
+          "--- sky/resources.py\n+++ sky/resources.py\n@@ -836,8 +836,8 @@\n             image_size = self.cloud.get_image_size(image_id, region)\n             if image_size >= self.disk_size:\n                 with ux_utils.print_exception_no_traceback():\n-                    size_comp = ('larger than' if image_size > self.disk_size\n-                                 else 'equal to')\n+                    size_comp = ('larger than'\n+                                 if image_size > self.disk_size else 'equal to')\n                     raise ValueError(\n                         f'Image {image_id!r} is {image_size}GB, which is '\n                         f'{size_comp} the specified disk_size: '",
+          "yapf --in-place --style=google sky/resources.py",
+          "# .pre-commit-config.yaml\nrepos:\n  - repo: https://github.com/google/yapf\n    rev: v0.32.0\n    hooks:\n      - id: yapf\n        types: [python]",
+          "size_comp = ('larger than'\n                                 if image_size > self.disk_size else 'equal to')"
+        ]
+      },
+      "target_changes": {
+        "sky/resources.py": "index b965401b..01cb9cce 100644\n--- a/sky/resources.py\n+++ b/sky/resources.py\n@@ -836,8 +836,8 @@ class Resources:\n             image_size = self.cloud.get_image_size(image_id, region)\n             if image_size >= self.disk_size:\n                 with ux_utils.print_exception_no_traceback():\n-                    size_comp = ('larger than' if image_size > self.disk_size\n-                                 else 'equal to')\n+                    size_comp = ('larger than'\n+                                 if image_size > self.disk_size else 'equal to')\n                     raise ValueError(\n                         f'Image {image_id!r} is {image_size}GB, which is '\n                         f'{size_comp} the specified disk_size: '\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

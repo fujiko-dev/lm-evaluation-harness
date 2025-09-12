@@ -1,0 +1,51 @@
+{
+  "model_name": "mock-qwen3-235b",
+  "context_size": "small_context",
+  "timestamp": "20250907_164159",
+  "results": {
+    "by_line_type": {
+      "random": {
+        "exact_match": 0.0,
+        "edit_distance": 0.9312345189863748,
+        "bleu_score": 0.0,
+        "line_count": 6
+      },
+      "non_informative": {
+        "exact_match": 0.0,
+        "edit_distance": 0.8757037297677691,
+        "bleu_score": 0.05952380952380952,
+        "line_count": 7
+      },
+      "common": {
+        "exact_match": 0.0,
+        "edit_distance": 0.85,
+        "bleu_score": 0.0,
+        "line_count": 1
+      },
+      "infile": {
+        "exact_match": 0.0,
+        "edit_distance": 0.8823529411764706,
+        "bleu_score": 0.0,
+        "line_count": 1
+      }
+    },
+    "overall": {
+      "exact_match": 0.0,
+      "edit_distance": 0.8966457442312737,
+      "bleu_score": 0.027777777777777776,
+      "line_count": 15
+    },
+    "total_predictions": 15
+  },
+  "detailed_predictions": [
+    {
+      "predicted_line": "import json",
+      "target_line": "Any,",
+      "line_type": "random",
+      "exact_match": 0.0,
+      "edit_distance": 1.0,
+      "bleu_score": 0.0,
+      "context_info": {
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/data_loader.py",
+        "line_num": 

@@ -1,0 +1,33 @@
+{
+  "timestamp": "2025-09-07T22:46:11.921352",
+  "sample_info": {
+    "index": 52,
+    "original_index": 52,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 144,
+  "repo_owner": "encode",
+  "repo_name": "starlette",
+  "difficulty": 2,
+  "generation_time": 18.623962879180908,
+  "prediction": "Based on the failure logs, I can analyze the issue and propose a solution:\n\n1. **Analysis of the Failure Cause**:\n   - The tests are failing specifically in `test_file_response_with_pathsend` for both asyncio and trio backends\n   - The error occurs when trying to create a set containing a dictionary: `{\"http.response.pathsend\", {}}`\n   - The issue is that Python sets can only contain hashable types, and dictionaries are unhashable\n   - This appears to be a regression in the test suite where the test is trying to use a set literal incorrectly\n\n2. **Root Cause**:\n   - The test is incorrectly constructing the extensions dictionary by mixing set and dictionary syntax\n   - The intention was likely to create a dictionary with a key \"http.response.pathsend\" and an empty dictionary as its value\n   - Instead, it's creating a set literal containing two elements (a string and a dict)\n\n3. **Specific Changes Needed**:\n   - The test file `tests/test_responses.py` needs to be modified to properly construct the extensions dictionary\n   - The set syntax `{}` should be changed to proper dictionary syntax `{}`\n\n4. **Modified Code**:\n   Here's the fix for the failing test cases:\n\n```python\n# In tests/test_responses.py, line ~358 (in both test cases)\n# Change from:\n{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}}\n# To:\n{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\": {}}}\n```\n\nThe workflow itself doesn't need any modifications as the issue is in the test code, not the CI configuration. The test suite was correctly catching this programming error.\n\nThe change is simple but important: removing the comma and replacing it with a colon to convert the set literal into a proper dictionary with a key-value pair. This maintains the intended functionality while resolving the TypeError about unhashable types.\n\nIf this fix doesn't immediately resolve the issue, there might be additional related changes needed in how the test interacts with the FileResponse class, but based on the error message, the dictionary syntax correction should be sufficient.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6757270465584646,
+    "explanation": "Similarity: 0.460, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.45954507759744107,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "tests/test_responses.py": [
+          "# In tests/test_responses.py, line ~358 (in both test cases)\n# Change from:\n{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}}\n# To:\n{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\": {}}}"
+        ]
+      },
+      "target_changes": {
+        "tests/test_responses.py": "index 8106fad..625a129 100644\n--- a/tests/test_responses.py\n+++ b/tests/test_responses.py\n@@ -355,7 +355,7 @@ async def test_file_response_with_pathsend(tmpdir: Path):\n \n     # Since the TestClient doesn't support `pathsend`, we need to test this directly.\n     await app(\n-        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n+        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\": {}}},\n         receive,\n         send,\n     )\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

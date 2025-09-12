@@ -1,0 +1,16 @@
+{
+  "model": "kimi-k2-instruct",
+  "display_name": "Kimi-K2",
+  "api_provider": "qianfan",
+  "base_url": "https://qianfan.baidubce.com/v2/chat/completions",
+  "task": "lca_commit_message_generation",
+  "total_samples": 163,
+  "evaluated_samples": 163,
+  "timestamp": "2025-09-08T00:55:33.174167",
+  "model_config": {
+    "name": "kimi-k2-instruct",
+    "display_name": "Kimi-K2",
+    "max_tokens": 256,
+    "temperature": 0.8
+  }
+}

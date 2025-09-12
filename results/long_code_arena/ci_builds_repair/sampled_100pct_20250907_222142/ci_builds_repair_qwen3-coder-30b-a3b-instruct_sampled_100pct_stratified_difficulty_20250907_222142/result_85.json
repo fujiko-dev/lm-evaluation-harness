@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-09-07T22:27:03.883673",
+  "sample_info": {
+    "index": 31,
+    "original_index": 31,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 85,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 7.6880943775177,
+  "prediction": "Looking at the CI failure logs, I can see that the `flake8` pre-commit hook is failing due to a line that exceeds the 88 character limit. The error occurs in `import_export/resources.py` at line 1360, column 89 with error code `E501`.\n\nLet me analyze this step by step:\n\n## 1. Analysis of the Failure Cause\n\nThe root cause is a line in `import_export/resources.py` that is 101 characters long, exceeding the flake8 line length limit of 88 characters. This is a style violation that the pre-commit hooks are catching.\n\n## 2. Specific Changes Needed\n\nI need to modify the problematic line in `import_export/resources.py` to comply with the 88-character line limit. Based on the error message, this appears to be a docstring or comment line that needs to be wrapped or restructured.\n\n## 3. Modified Code/Configuration\n\nSince I don't have access to the actual content of the file, I'll provide the approach to fix it. However, looking at the commit history mentioned (the diff between 2f0605c9ec79b7a675728cb525ad55b36ade2e93 and d1e35b26f1cfc1bd08b03ac606fa8bcd26dc91cb), the fix would involve:\n\n**The fix should be applied to `import_export/resources.py` around line 1360:**\n\n```python\n# Before (problematic):\n# This is a very long line that exceeds the 88 character limit for flake8 checking, which will cause the pre-commit hook to fail\n\n# After (fixed):\n# This is a very long line that exceeds the 88 character limit for flake8 checking,\n# which will cause the pre-commit hook to fail\n```\n\nOr alternatively, break it into multiple lines:\n\n```python\n# Alternative fix:\n# This is a very long line that exceeds the 88 character limit for flake8 checking\n# which will cause the pre-commit hook to fail\n```\n\nHowever, since I cannot see the exact content of the problematic line, here's what the actual fix would look like in context:\n\n**In `import_export/resources.py`, line 1360:**\n```python\n# Find the line that looks something like:\n# \"This is a very long description that exceeds the 88 character limit for flake8 checking, causing the pre-commit hook to fail\"\n\n# And change it to:\n# \"This is a very long description that exceeds the 88 character limit for flake8 checking, \"\n# \"causing the pre-commit hook to fail\"\n```\n\n**Note:** The specific fix depends on the exact content of the problematic line. The general approach is to either:\n1. Wrap the line to stay under 88 characters\n2. Break it into multiple lines\n3. Use a more concise phrasing\n\nThe CI workflow itself is correctly configured - the issue is simply that one line in the codebase violates the style guide enforced by flake8. The fix requires modifying the source code to comply with the existing pre-commit configuration.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6525691389221677,
+    "explanation": "Similarity: 0.421, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.4209485648702796,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "import_export/resources.py": [
+          "# Before (problematic):\n# This is a very long line that exceeds the 88 character limit for flake8 checking, which will cause the pre-commit hook to fail\n\n# After (fixed):\n# This is a very long line that exceeds the 88 character limit for flake8 checking,\n# which will cause the pre-commit hook to fail",
+          "# Alternative fix:\n# This is a very long line that exceeds the 88 character limit for flake8 checking\n# which will cause the pre-commit hook to fail",
+          "# Find the line that looks something like:\n# \"This is a very long description that exceeds the 88 character limit for flake8 checking, causing the pre-commit hook to fail\"\n\n# And change it to:\n# \"This is a very long description that exceeds the 88 character limit for flake8 checking, \"\n# \"causing the pre-commit hook to fail\""
+        ]
+      },
+      "target_changes": {
+        "import_export/resources.py": "index 7d7ad475..99c3fe91 100644\n--- a/import_export/resources.py\n+++ b/import_export/resources.py\n@@ -1357,7 +1357,8 @@ class ModelDeclarativeMetaclass(DeclarativeMetaclass):\n                     continue\n \n                 if f.name in declared_fields:\n-                    # If model field is declared in `ModelResource`, remove it from `declared_fields`\n+                    # If model field is declared in `ModelResource`,\n+                    # remove it from `declared_fields`\n                     # to keep exact order of model fields\n                     field = declared_fields.pop(f.name)\n                 else:\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "timestamp": "2025-09-07T22:33:18.480187",
+  "sample_info": {
+    "index": 19,
+    "original_index": 19,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 43,
+  "repo_owner": "beetbox",
+  "repo_name": "beets",
+  "difficulty": 2,
+  "generation_time": 19.986401081085205,
+  "prediction": "## Analysis of the Failure Cause\n\nThe CI workflow is failing because the code formatting check is detecting that one file (`beetsplug/listenbrainz.py`) needs to be reformatted according to Black's formatting standards. The workflow is running `black --check` which only checks if files are properly formatted without actually reformatting them, and it exits with code 1 when formatting issues are found.\n\nThe error message clearly states:\n```\nwould reformat /home/runner/work/beets/beets/beetsplug/listenbrainz.py\nOh no!  💥  💔  💥\n1 file would be reformatted, 186 files would be left unchanged.\n```\n\n## Specific Changes Needed\n\nThe issue is not with the workflow configuration itself, but rather with the code formatting in the repository. The file `beetsplug/listenbrainz.py` needs to be reformatted to comply with Black's formatting standards.\n\nHowever, since this is a CI workflow that's supposed to check formatting (not fix it), the proper fix is to run Black locally on the repository to format the problematic file, then commit the changes.\n\n## The Fix\n\nTo fix this issue, you need to:\n\n1. Run Black formatter on the repository locally\n2. Commit the formatted changes\n\nHere's what you should do:\n\n```bash\n# Run black to format the code\nblack beets beetsplug test\n\n# Verify the formatting is correct\nblack beets beetsplug test --check\n\n# If the check passes, commit the changes\ngit add beetsplug/listenbrainz.py\ngit commit -m \"Fix code formatting with black\"\ngit push\n```\n\n## No Workflow File Changes Needed\n\nThe workflow file `.github/workflows/formatting_check.yml` is correctly configured. It's doing exactly what it's supposed to do: checking if the code is properly formatted. The failure indicates that the code in the repository doesn't meet the formatting standards, which is a code issue, not a workflow configuration issue.\n\nThe workflow is working as intended - it's detecting that `beetsplug/listenbrainz.py` needs formatting and failing the build to alert developers that they need to format their code before merging.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6586463742943987,
+    "explanation": "Similarity: 0.431, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.43107729049066434,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "beetsplug/listenbrainz.py": [
+          "would reformat /home/runner/work/beets/beets/beetsplug/listenbrainz.py\nOh no!  💥  💔  💥\n1 file would be reformatted, 186 files would be left unchanged.",
+          "# Run black to format the code\nblack beets beetsplug test\n\n# Verify the formatting is correct\nblack beets beetsplug test --check\n\n# If the check passes, commit the changes\ngit add beetsplug/listenbrainz.py\ngit commit -m \"Fix code formatting with black\"\ngit push"
+        ],
+        ".github/workflows/formatting_check.yml": [
+          "would reformat /home/runner/work/beets/beets/beetsplug/listenbrainz.py\nOh no!  💥  💔  💥\n1 file would be reformatted, 186 files would be left unchanged.",
+          "# Run black to format the code\nblack beets beetsplug test\n\n# Verify the formatting is correct\nblack beets beetsplug test --check\n\n# If the check passes, commit the changes\ngit add beetsplug/listenbrainz.py\ngit commit -m \"Fix code formatting with black\"\ngit push"
+        ]
+      },
+      "target_changes": {
+        "beetsplug/listenbrainz.py": "index 11ef71597..3127237ee 100644\n--- a/beetsplug/listenbrainz.py\n+++ b/beetsplug/listenbrainz.py\n@@ -150,6 +150,7 @@ class ListenBrainzPlugin(BeetsPlugin):\n     def get_listenbrainz_playlists(self):\n         \"\"\"Returns a list of playlists created by ListenBrainz.\"\"\"\n         import re\n+\n         resp = self.get_playlists_createdfor(self.username)\n         playlists = resp.get(\"playlists\")\n         listenbrainz_playlists = []\n@@ -158,7 +159,9 @@ class ListenBrainzPlugin(BeetsPlugin):\n             playlist_info = playlist.get(\"playlist\")\n             if playlist_info.get(\"creator\") == \"listenbrainz\":\n                 title = playlist_info.get(\"title\")\n-                match = re.search(r\"(Missed Recordings of \\d{4}|Discoveries of \\d{4})\", title)\n+                match = re.search(\n+                    r\"(Missed Recordings of \\d{4}|Discoveries of \\d{4})\", title\n+                )\n                 if \"Exploration\" in title:\n                     playlist_type = \"Exploration\"\n                 elif \"Jams\" in title:\n@@ -178,7 +181,7 @@ class ListenBrainzPlugin(BeetsPlugin):\n                 id = identifier.split(\"/\")[-1]\n                 if playlist_type in [\"Jams\", \"Exploration\"]:\n                     listenbrainz_playlists.append(\n-                    {\"type\": playlist_type, \"date\": date, \"identifier\": id}\n+                        {\"type\": playlist_type, \"date\": date, \"identifier\": id}\n                     )\n         return listenbrainz_playlists\n \n"
+      },
+      "difficulty": 2
+    }
+  }
+}

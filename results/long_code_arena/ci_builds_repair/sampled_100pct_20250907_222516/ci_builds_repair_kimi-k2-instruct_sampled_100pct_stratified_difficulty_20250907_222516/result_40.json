@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-09-07T22:32:15.825516",
+  "sample_info": {
+    "index": 17,
+    "original_index": 17,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 40,
+  "repo_owner": "beetbox",
+  "repo_name": "beets",
+  "difficulty": 2,
+  "generation_time": 31.996260166168213,
+  "prediction": "## Analysis of the Failure Cause\n\nThe CI workflow is failing because the code formatting check is detecting that one file (`test/plugins/test_smartplaylist.py`) is not properly formatted according to the project's Black formatting standards. The Black formatter would reformat this file, but since the `--check` flag is used, it exits with code 1 when formatting issues are found.\n\nThis is not a workflow configuration issue, but rather a code formatting issue that needs to be resolved by formatting the file properly.\n\n## Specific Changes Needed\n\nThe fix requires running Black on the repository to format the code according to the project's standards. Since this is a CI failure, the developer needs to:\n\n1. Run `black beets beetsplug test` locally to format the files\n2. Commit the formatted changes\n\nHowever, since we're fixing the CI workflow itself, we should also consider making the workflow more robust by:\n\n1. Adding a step to automatically format the code (though this might not be desired for a check workflow)\n2. Improving the workflow to provide better error messages\n3. Ensuring the workflow uses the correct Python version and dependencies\n\n## Modified Workflow Configuration\n\nThe workflow itself is correctly configured for a formatting check. The issue is with the code, not the workflow. However, we can make some improvements to the workflow:\n\n```yaml\nname: formatting_check\nrun-name: Check code formatting\non: [push, pull_request]\njobs:\n  formatting_check:\n    runs-on: ubuntu-latest\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    steps:\n      - name: Checkout code\n        uses: actions/checkout@v3\n\n      - name: Set up Python\n        uses: actions/setup-python@v4\n        with:\n          python-version: '3.10'\n\n      - name: Install dependencies\n        run: |\n          python -m pip install --upgrade pip\n          pip install tox\n\n      - name: Run formatting check\n        run: |\n          tox -e format_check\n        env:\n          PIP_INDEX_URL: http://localhost:8629/2023-12-15\n          UV_INDEX_URL: http://localhost:8629/2023-12-15\n\n      - name: Show formatting diff\n        if: failure()\n        run: |\n          echo \"::group::Formatting issues detected\"\n          echo \"The following files need formatting:\"\n          black --check --diff beets beetsplug test || true\n          isort --check-only --diff beets beetsplug test || true\n          echo \"::endgroup::\"\n```\n\n## Immediate Fix for the Repository\n\nTo fix the immediate issue, the repository maintainer needs to run:\n\n```bash\nblack beets beetsplug test\ngit add test/plugins/test_smartplaylist.py\ngit commit -m \"Fix code formatting with black\"\ngit push\n```\n\nThe file `test/plugins/test_smartplaylist.py` needs to be reformatted using Black to match the project's formatting standards.",
+  "evaluation": {
+    "success": true,
+    "score": 0.650641881602166,
+    "explanation": "Similarity: 0.418, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.41773646933694314,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "test/plugins/test_smartplaylist.py": [
+          "name: formatting_check\nrun-name: Check code formatting\non: [push, pull_request]\njobs:\n  formatting_check:\n    runs-on: ubuntu-latest\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    steps:\n      - name: Checkout code\n        uses: actions/checkout@v3\n\n      - name: Set up Python\n        uses: actions/setup-python@v4\n        with:\n          python-version: '3.10'\n\n      - name: Install dependencies\n        run: |\n          python -m pip install --upgrade pip\n          pip install tox\n\n      - name: Run formatting check\n        run: |\n          tox -e format_check\n        env:\n          PIP_INDEX_URL: http://localhost:8629/2023-12-15\n          UV_INDEX_URL: http://localhost:8629/2023-12-15\n\n      - name: Show formatting diff\n        if: failure()\n        run: |\n          echo \"::group::Formatting issues detected\"\n          echo \"The following files need formatting:\"\n          black --check --diff beets beetsplug test || true\n          isort --check-only --diff beets beetsplug test || true\n          echo \"::endgroup::\"",
+          "black beets beetsplug test\ngit add test/plugins/test_smartplaylist.py\ngit commit -m \"Fix code formatting with black\"\ngit push"
+        ]
+      },
+      "target_changes": {
+        "test/plugins/test_smartplaylist.py": "index eecf408f1..4685e1491 100644\n--- a/test/plugins/test_smartplaylist.py\n+++ b/test/plugins/test_smartplaylist.py\n@@ -241,7 +241,6 @@ class SmartPlaylistTest(_common.TestCase):\n             + b\"http://beets:8337/files/tagada.mp3\\n\",\n         )\n \n-\n     def test_playlist_update_uri_template(self):\n         spl = SmartPlaylistPlugin()\n \n@@ -263,7 +262,8 @@ class SmartPlaylistTest(_common.TestCase):\n         spl._matched_playlists = [pl]\n \n         dir = bytestring_path(mkdtemp())\n-        config[\"smartplaylist\"][\"uri_template\"] = \"http://beets:8337/item/$id/file\"\n+        tpl = \"http://beets:8337/item/$id/file\"\n+        config[\"smartplaylist\"][\"uri_template\"] = tpl\n         config[\"smartplaylist\"][\"playlist_dir\"] = py3_path(dir)\n         try:\n             spl.update_playlists(lib)\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

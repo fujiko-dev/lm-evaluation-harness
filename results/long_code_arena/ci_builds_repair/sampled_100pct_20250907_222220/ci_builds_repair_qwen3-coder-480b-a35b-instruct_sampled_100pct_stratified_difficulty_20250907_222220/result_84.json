@@ -1,0 +1,42 @@
+{
+  "timestamp": "2025-09-07T22:28:40.458291",
+  "sample_info": {
+    "index": 30,
+    "original_index": 30,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 84,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 10.099653720855713,
+  "prediction": "Looking at the CI failure logs, I can identify the root cause and provide a solution.\n\n## 1. Analysis of the Failure Cause\n\nThe CI workflow is failing because of **flake8 errors** related to line length violations:\n- Two lines in `import_export/admin.py` exceed the maximum allowed line length of 88 characters\n- Line 749: 96 characters (8 characters over the limit)\n- Line 756: 98 characters (10 characters over the limit)\n\nThis is a code style enforcement issue where the flake8 linter is catching lines that are too long according to PEP 8 standards.\n\n## 2. Specific Changes Needed\n\nThere are two approaches to fix this:\n\n**Option A:** Fix the actual code by shortening the long lines\n**Option B:** Update the flake8 configuration to allow longer lines\n\nGiven that this is a well-established project, Option A is preferred to maintain code quality standards.\n\n## 3. Modified Code\n\nThe file `import_export/admin.py` needs to be modified to fix the line length violations. Here are the specific lines that need to be shortened:\n\n**Lines 749 and 756** in `import_export/admin.py` need to be reformatted to comply with the 88-character limit.\n\nSince I don't have access to the exact content of these lines, here's the general approach for fixing them:\n\n```python\n# Example of how to fix long lines - BEFORE:\nvery_long_variable_name = some_function_call(with_a_very_long_parameter_name, another_long_parameter)\n\n# Example of how to fix long lines - AFTER:\nvery_long_variable_name = some_function_call(\n    with_a_very_long_parameter_name, \n    another_long_parameter\n)\n\n# Or alternatively:\nresult = some_function_call(\n    with_a_very_long_parameter_name,\n    another_long_parameter\n)\n```\n\n**Alternative Solution - Configuration Approach:**\n\nIf modifying the code isn't preferred, you could update the flake8 configuration in `setup.cfg`, `tox.ini`, or `.flake8` file:\n\n```ini\n[flake8]\nmax-line-length = 100\n```\n\nHowever, the recommended approach is to fix the actual code violations to maintain consistency with the project's coding standards.\n\nThe most appropriate fix would be to modify `import_export/admin.py` lines 749 and 756 to break up the long lines into multiple shorter lines, following Python's PEP 8 guidelines.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6442121658986175,
+    "explanation": "Similarity: 0.407, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.4070202764976959,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "import_export/admin.py": [
+          "# Example of how to fix long lines - BEFORE:\nvery_long_variable_name = some_function_call(with_a_very_long_parameter_name, another_long_parameter)\n\n# Example of how to fix long lines - AFTER:\nvery_long_variable_name = some_function_call(\n    with_a_very_long_parameter_name, \n    another_long_parameter\n)\n\n# Or alternatively:\nresult = some_function_call(\n    with_a_very_long_parameter_name,\n    another_long_parameter\n)",
+          "[flake8]\nmax-line-length = 100"
+        ],
+        "setup.cfg": [
+          "# Example of how to fix long lines - BEFORE:\nvery_long_variable_name = some_function_call(with_a_very_long_parameter_name, another_long_parameter)\n\n# Example of how to fix long lines - AFTER:\nvery_long_variable_name = some_function_call(\n    with_a_very_long_parameter_name, \n    another_long_parameter\n)\n\n# Or alternatively:\nresult = some_function_call(\n    with_a_very_long_parameter_name,\n    another_long_parameter\n)",
+          "[flake8]\nmax-line-length = 100"
+        ],
+        "tox.ini": [
+          "# Example of how to fix long lines - BEFORE:\nvery_long_variable_name = some_function_call(with_a_very_long_parameter_name, another_long_parameter)\n\n# Example of how to fix long lines - AFTER:\nvery_long_variable_name = some_function_call(\n    with_a_very_long_parameter_name, \n    another_long_parameter\n)\n\n# Or alternatively:\nresult = some_function_call(\n    with_a_very_long_parameter_name,\n    another_long_parameter\n)",
+          "[flake8]\nmax-line-length = 100"
+        ]
+      },
+      "target_changes": {
+        "import_export/admin.py": "index a1b288e9..8bb2db67 100644\n--- a/import_export/admin.py\n+++ b/import_export/admin.py\n@@ -746,14 +746,16 @@ class ExportMixin(BaseExportMixin, ImportExportMixinBase):\n             def get_results(self, request):\n                 \"\"\"\n                 We override this method because we only call ChangeList.get_queryset()\n-                so we don't need anything from this method. The get_results() gets called during\n-                ChangeList.__init__() and we do want to avoid unnecessary COUNT queries.\n+                so we don't need anything from this method.\n+                The get_results() gets called during ChangeList.__init__()\n+                and we do want to avoid unnecessary COUNT queries.\n                 \"\"\"\n                 pass\n \n         cl = ExportChangeList(**changelist_kwargs)\n \n-        # get_queryset() is already called during initialization, it is enough to get it's results\n+        # get_queryset() is already called during initialization,\n+        # it is enough to get it's results\n         if hasattr(cl, \"queryset\"):\n             return cl.queryset\n \n"
+      },
+      "difficulty": 0
+    }
+  }
+}

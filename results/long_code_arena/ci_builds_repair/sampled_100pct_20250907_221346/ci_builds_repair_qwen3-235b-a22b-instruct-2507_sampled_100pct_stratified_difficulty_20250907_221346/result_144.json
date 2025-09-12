@@ -1,0 +1,51 @@
+{
+  "timestamp": "2025-09-07T22:38:57.373478",
+  "sample_info": {
+    "index": 52,
+    "original_index": 52,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 144,
+  "repo_owner": "encode",
+  "repo_name": "starlette",
+  "difficulty": 2,
+  "generation_time": 15.712633848190308,
+  "prediction": "### 1. **Analysis of the Failure Cause**\n\nThe test failures occur in `tests/test_responses.py` in the function `test_file_response_with_pathsend`, and they are **identical** for both `asyncio` and `trio` backends.\n\nThe error is:\n```python\nTypeError: unhashable type: 'dict'\n```\n\nThis happens at the following line:\n```python\n{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}}\n```\n\n#### Root Cause:\nThe issue is in this part:\n```python\n\"extensions\": {\"http.response.pathsend\", {}}\n```\n\nHere, a **set** is being used (`{...}`), and it contains two elements:\n- The string `\"http.response.pathsend\"`\n- An empty dictionary `{}`\n\nHowever, **dictionaries are mutable and unhashable**, so they **cannot be members of a set** in Python. This causes the `TypeError: unhashable type: 'dict'`.\n\nThis is a **code bug in the test**, not a CI configuration issue.\n\nThe intent of the code is clearly to indicate that the ASGI connection supports the `\"http.response.pathsend\"` extension. According to the ASGI specification, `extensions` should be a dictionary (not a set), where the keys are extension names and the values are configuration dictionaries.\n\nFor example:\n```python\n\"extensions\": {\"http.response.pathsend\": {}}\n```\n\nThis is valid ASGI — it declares support for the `pathsend` extension with an empty config.\n\nSo the bug is:\n- ❌ Wrong: `\"extensions\": {\"http.response.pathsend\", {}}` → this is a set with a dict, which is invalid.\n- ✅ Correct: `\"extensions\": {\"http.response.pathsend\": {}}` → this is a dict.\n\n---\n\n### 2. **Specific Changes Needed**\n\nFix the test in `tests/test_responses.py` by replacing the malformed `extensions` set with a proper dictionary.\n\n---\n\n### 3. **Modified Code**\n\n#### ✅ File: `tests/test_responses.py`\n\n```diff\n--- a/tests/test_responses.py\n+++ b/tests/test_responses.py\n@@ -355,7 +355,7 @@ async def test_file_response_with_pathsend(tmpdir: Path):\n     # Since the TestClient doesn't support `pathsend`, we need to test this directly.\n     await app(\n-        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n+        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\": {}}},\n         receive,\n         send,\n     )\n```\n\n---\n\n### ✅ Summary\n\n- **Root Cause**: A malformed `extensions` field in the ASGI scope used in the test — incorrectly using a set containing a dictionary, which is invalid in Python.\n- **Fix**: Change `{\"http.response.pathsend\", {}}` to `{\"http.response.pathsend\": {}}`.\n- **Impact**: This is a trivial but critical syntax fix. The test will then correctly declare ASGI extension support and pass.\n- **No CI Configuration Changes Needed**: The `.github/workflows/test-suite.yml` is correct and does not need modification.\n\nAfter this fix, the two failing tests will pass, and the CI should go green.",
+  "evaluation": {
+    "success": true,
+    "score": 0.9310777202072539,
+    "explanation": "Similarity: 0.885, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.8851295336787565,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "{\"http.response.pathsend": [
+          "TypeError: unhashable type: 'dict'",
+          "{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}}",
+          "\"extensions\": {\"http.response.pathsend\", {}}",
+          "\"extensions\": {\"http.response.pathsend\": {}}",
+          "--- a/tests/test_responses.py\n+++ b/tests/test_responses.py\n@@ -355,7 +355,7 @@ async def test_file_response_with_pathsend(tmpdir: Path):\n     # Since the TestClient doesn't support `pathsend`, we need to test this directly.\n     await app(\n-        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n+        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\": {}}},\n         receive,\n         send,\n     )"
+        ],
+        "tests/test_responses.py": [
+          "TypeError: unhashable type: 'dict'",
+          "{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}}",
+          "\"extensions\": {\"http.response.pathsend\", {}}",
+          "\"extensions\": {\"http.response.pathsend\": {}}",
+          "--- a/tests/test_responses.py\n+++ b/tests/test_responses.py\n@@ -355,7 +355,7 @@ async def test_file_response_with_pathsend(tmpdir: Path):\n     # Since the TestClient doesn't support `pathsend`, we need to test this directly.\n     await app(\n-        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n+        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\": {}}},\n         receive,\n         send,\n     )"
+        ],
+        ".github/workflows/test-suite.yml": [
+          "TypeError: unhashable type: 'dict'",
+          "{\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}}",
+          "\"extensions\": {\"http.response.pathsend\", {}}",
+          "\"extensions\": {\"http.response.pathsend\": {}}",
+          "--- a/tests/test_responses.py\n+++ b/tests/test_responses.py\n@@ -355,7 +355,7 @@ async def test_file_response_with_pathsend(tmpdir: Path):\n     # Since the TestClient doesn't support `pathsend`, we need to test this directly.\n     await app(\n-        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n+        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\": {}}},\n         receive,\n         send,\n     )"
+        ]
+      },
+      "target_changes": {
+        "tests/test_responses.py": "index 8106fad..625a129 100644\n--- a/tests/test_responses.py\n+++ b/tests/test_responses.py\n@@ -355,7 +355,7 @@ async def test_file_response_with_pathsend(tmpdir: Path):\n \n     # Since the TestClient doesn't support `pathsend`, we need to test this directly.\n     await app(\n-        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n+        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\": {}}},\n         receive,\n         send,\n     )\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

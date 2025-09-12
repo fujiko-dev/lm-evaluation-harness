@@ -1,0 +1,48 @@
+{
+  "model": "gpt-4.1",
+  "timestamp": "20250911_192536",
+  "summary": {
+    "total_samples": 3,
+    "exact_match": 0.0,
+    "edit_distance": 30.333333333333332,
+    "bleu_score": 0.38888888888888884
+  },
+  "results": [
+    {
+      "sample_id": 0,
+      "repo": "ossf__fuzz-introspector",
+      "filename": "src/fuzz_introspector/data_loader.py",
+      "line_number": 75,
+      "line_type": "commited",
+      "prediction": "func, reached_funcs = None, []",
+      "target": "    merged_profile_old: project_profile.MergedProjectProfile,",
+      "exact_match": 0.0,
+      "edit_distance": 50,
+      "bleu_score": 0.0
+    },
+    {
+      "sample_id": 1,
+      "repo": "ossf__fuzz-introspector",
+      "filename": "src/fuzz_introspector/datatypes/fuzzer_profile.py",
+      "line_number": 99,
+      "line_type": "common",
+      "prediction": "html_data = json.load(jf)",
+      "target": "                data = json.load(jf)",
+      "exact_match": 0.0,
+      "edit_distance": 5,
+      "bleu_score": 0.6666666666666666
+    },
+    {
+      "sample_id": 2,
+      "repo": "ossf__fuzz-introspector",
+      "filename": "src/fuzz_introspector/datatypes/project_profile.py",
+      "line_number": 74,
+      "line_type": "commited",
+      "prediction": "if fd.function_name in profile2.all_class_functions:",
+      "target": "                    if profile2.reaches(fd.function_name):",
+      "exact_match": 0.0,
+      "edit_distance": 36,
+      "bleu_score": 0.5
+    }
+  ]
+}

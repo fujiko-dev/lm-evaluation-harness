@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-09-07T22:28:55.480167",
+  "sample_info": {
+    "index": 31,
+    "original_index": 31,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 85,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 15.014025926589966,
+  "prediction": "Looking at the CI failure logs, I can identify the root cause and provide a solution.\n\n## Analysis of the Failure Cause\n\nThe CI workflow is failing because **flake8** is reporting a style violation:\n- **File**: `import_export/resources.py`\n- **Line**: 1360\n- **Column**: 89\n- **Error**: `E501` - line too long (101 > 88 characters)\n\nThis is a code style issue where a line exceeds the maximum allowed length of 88 characters (likely configured for this project).\n\n## Specific Changes Needed\n\nTo fix this issue, we need to modify the failing line in `import_export/resources.py` at line 1360 to comply with the 88-character limit.\n\nHowever, since I don't have access to the actual content of that line, I'll also provide an alternative approach that's more robust for the workflow configuration.\n\n## Modified Code/Configuration\n\n### Option 1: Fix the underlying code issue (recommended)\nSince I cannot see the exact line, you would need to edit `import_export/resources.py` around line 1360 and either:\n- Break the long line into multiple lines\n- Shorten variable names or restructure the code to fit within 88 characters\n\nExample of how to fix a long line:\n```python\n# Before (example of problematic line):\nvery_long_variable_name = some_function_with_long_name(parameter_one, parameter_two, parameter_three, parameter_four)\n\n# After (broken into multiple lines):\nvery_long_variable_name = some_function_with_long_name(\n    parameter_one, parameter_two, parameter_three, parameter_four\n)\n```\n\n### Option 2: Update the workflow configuration (if you want to adjust flake8 settings)\n\nIf the project intends to use different line length limits, you could modify the flake8 configuration. However, based on the successful commit, it appears the standard is 88 characters, so fixing the code is the proper approach.\n\n### Option 3: Temporary workflow adjustment to identify the exact issue\n\n```yaml\non:\n  pull_request:\n  push:\n    branches:\n      - main\n\njobs:\n  main:\n    runs-on: ubuntu-latest\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    steps:\n    - uses: actions/checkout@v3\n    - uses: actions/setup-python@v4\n      with:\n        python-version: 3.x\n    - name: Install dependencies\n      run: |\n        python -m pip install --upgrade pip\n        python -m pip install flake8\n    - name: Check flake8 violation details\n      run: |\n        # This will help identify the exact line causing issues\n        flake8 import_export/resources.py || true\n    - uses: pre-commit/action@v3.0.0\n    - uses: pre-commit-ci/lite-action@v1.0.1\n      if: always()\n\nenv:\n  PIP_INDEX_URL: http://localhost:8629/2023-11-22\n  UV_INDEX_URL: http://localhost:8629/2023-11-22\n```\n\n## Recommended Solution\n\nThe primary fix should be to modify `import_export/resources.py` line 1360 to ensure it doesn't exceed 88 characters. The most appropriate fix would be to break the line into multiple lines following Python's PEP 8 guidelines for line continuation.\n\nIf you need help with the exact line modification, please share the content of line 1360 in `import_export/resources.py`, and I can provide the specific fix.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6508960397680199,
+    "explanation": "Similarity: 0.418, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.41816006628003316,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "import_export/resources.py": [
+          "# Before (example of problematic line):\nvery_long_variable_name = some_function_with_long_name(parameter_one, parameter_two, parameter_three, parameter_four)\n\n# After (broken into multiple lines):\nvery_long_variable_name = some_function_with_long_name(\n    parameter_one, parameter_two, parameter_three, parameter_four\n)",
+          "on:\n  pull_request:\n  push:\n    branches:\n      - main\n\njobs:\n  main:\n    runs-on: ubuntu-latest\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    steps:\n    - uses: actions/checkout@v3\n    - uses: actions/setup-python@v4\n      with:\n        python-version: 3.x\n    - name: Install dependencies\n      run: |\n        python -m pip install --upgrade pip\n        python -m pip install flake8\n    - name: Check flake8 violation details\n      run: |\n        # This will help identify the exact line causing issues\n        flake8 import_export/resources.py || true\n    - uses: pre-commit/action@v3.0.0\n    - uses: pre-commit-ci/lite-action@v1.0.1\n      if: always()\n\nenv:\n  PIP_INDEX_URL: http://localhost:8629/2023-11-22\n  UV_INDEX_URL: http://localhost:8629/2023-11-22"
+        ]
+      },
+      "target_changes": {
+        "import_export/resources.py": "index 7d7ad475..99c3fe91 100644\n--- a/import_export/resources.py\n+++ b/import_export/resources.py\n@@ -1357,7 +1357,8 @@ class ModelDeclarativeMetaclass(DeclarativeMetaclass):\n                     continue\n \n                 if f.name in declared_fields:\n-                    # If model field is declared in `ModelResource`, remove it from `declared_fields`\n+                    # If model field is declared in `ModelResource`,\n+                    # remove it from `declared_fields`\n                     # to keep exact order of model fields\n                     field = declared_fields.pop(f.name)\n                 else:\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

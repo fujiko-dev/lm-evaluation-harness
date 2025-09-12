@@ -1,0 +1,906 @@
+{
+  "summary": {
+    "error": "No valid results",
+    "model_key": "qwen3-30b-a22b-instruct-2507"
+  },
+  "detailed_results": [
+    {
+      "text_id": "thealgorithms/python/295/289",
+      "repo_owner": "thealgorithms",
+      "repo_name": "python",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "Project Euler/Problem 01/sol2.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 1,
+      "inference_time": 56.820618867874146,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "keras-team/keras/15943/15942",
+      "repo_owner": "keras-team",
+      "repo_name": "keras",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "keras/layers/convolutional/base_conv.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 2,
+      "inference_time": 56.93179225921631,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "serverless/serverless/5500/5499",
+      "repo_owner": "serverless",
+      "repo_name": "serverless",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "lib/plugins/aws/invokeLocal/invoke.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 3,
+      "inference_time": 56.85476207733154,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "textualize/rich/2212/2197",
+      "repo_owner": "textualize",
+      "repo_name": "rich",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "rich/__init__.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 4,
+      "inference_time": 57.71345901489258,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "mitmproxy/mitmproxy/4298/3994",
+      "repo_owner": "mitmproxy",
+      "repo_name": "mitmproxy",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "mitmproxy/net/tls.py",
+        "test/mitmproxy/net/test_tls.py",
+        "setup.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 5,
+      "inference_time": 57.06199669837952,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "hpcaitech/colossalai/3621/3620",
+      "repo_owner": "hpcaitech",
+      "repo_name": "colossalai",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "applications/Chat/examples/train_prompts.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 6,
+      "inference_time": 57.00152921676636,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "docker/compose/8158/8136",
+      "repo_owner": "docker",
+      "repo_name": "compose",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "compose/cli/main.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 7,
+      "inference_time": 56.77711582183838,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "ccxt/ccxt/18301/18192",
+      "repo_owner": "ccxt",
+      "repo_name": "ccxt",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "python/ccxt/pro/__init__.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 8,
+      "inference_time": 56.825292110443115,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "microsoft/deepspeed/4084/4083",
+      "repo_owner": "microsoft",
+      "repo_name": "deepspeed",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "deepspeed/runtime/engine.py",
+        "deepspeed/runtime/zero/stage_1_and_2.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 9,
+      "inference_time": 56.88023090362549,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "streamlit/streamlit/6459/6440",
+      "repo_owner": "streamlit",
+      "repo_name": "streamlit",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "lib/tests/streamlit/runtime/caching/hashing_test.py",
+        "lib/streamlit/runtime/caching/hashing.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 10,
+      "inference_time": 57.33882999420166,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "huggingface/pytorch-image-models/1351/1348",
+      "repo_owner": "huggingface",
+      "repo_name": "pytorch-image-models",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "timm/models/hub.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 11,
+      "inference_time": 56.75284790992737,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "dokku/dokku/2452/2445",
+      "repo_owner": "dokku",
+      "repo_name": "dokku",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "contrib/dokku-installer.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 12,
+      "inference_time": 56.997488260269165,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "google/jax/15796/15782",
+      "repo_owner": "google",
+      "repo_name": "jax",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "tests/pjit_test.py",
+        "jax/_src/sharding_impls.py",
+        "jax/_src/interpreters/pxla.py",
+        "jax/_src/pjit.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 13,
+      "inference_time": 56.66453409194946,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "google/jax/1039/1033",
+      "repo_owner": "google",
+      "repo_name": "jax",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "jax/random.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 14,
+      "inference_time": 56.89612603187561,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "pypa/pipenv/1767/1750",
+      "repo_owner": "pypa",
+      "repo_name": "pipenv",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "pipenv/core.py",
+        "tests/test_pipenv.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 15,
+      "inference_time": 56.86147689819336,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "stevenblack/hosts/112/107",
+      "repo_owner": "stevenblack",
+      "repo_name": "hosts",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "updateHostsFile.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 16,
+      "inference_time": 57.02475905418396,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "openbb-finance/openbbterminal/410/409",
+      "repo_owner": "openbb-finance",
+      "repo_name": "openbbterminal",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "gamestonk_terminal/fundamental_analysis/market_watch_model.py",
+        "gamestonk_terminal/fundamental_analysis/market_watch_view.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 17,
+      "inference_time": 56.722989082336426,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "textualize/textual/1653/1634",
+      "repo_owner": "textualize",
+      "repo_name": "textual",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "src/textual/app.py",
+        "tests/test_widget.py",
+        "src/textual/await_remove.py",
+        "src/textual/message_pump.py",
+        "src/textual/_context.py",
+        "src/textual/widget.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 18,
+      "inference_time": 56.774808168411255,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "jerryjliu/llama_index/6630/6629",
+      "repo_owner": "jerryjliu",
+      "repo_name": "llama_index",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "llama_index/readers/file/ipynb_reader.py",
+        "llama_index/readers/file/markdown_reader.py",
+        "llama_index/readers/file/docs_reader.py",
+        "llama_index/readers/file/tabular_reader.py",
+        "llama_index/readers/file/video_audio_reader.py",
+        "llama_index/readers/file/slides_reader.py",
+        "llama_index/readers/file/epub_reader.py",
+        "llama_index/readers/file/mbox_reader.py",
+        "llama_index/readers/file/base.py",
+        "llama_index/readers/file/image_vision_llm_reader.py",
+        "llama_index/readers/file/image_reader.py",
+        "llama_index/readers/file/image_caption_reader.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 19,
+      "inference_time": 56.727761030197144,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "wekan/wekan/3889/3884",
+      "repo_owner": "wekan",
+      "repo_name": "wekan",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "openapi/generate_openapi.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 20,
+      "inference_time": 56.727932929992676,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "sanic-org/sanic/1327/1323",
+      "repo_owner": "sanic-org",
+      "repo_name": "sanic",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "sanic/response.py",
+        "sanic/exceptions.py",
+        "sanic/http.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 21,
+      "inference_time": 57.26280689239502,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "huggingface/datasets/4828/4796",
+      "repo_owner": "huggingface",
+      "repo_name": "datasets",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "src/datasets/arrow_dataset.py",
+        "tests/test_arrow_dataset.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 22,
+      "inference_time": 56.9077250957489,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "rasahq/rasa/4035/4015",
+      "repo_owner": "rasahq",
+      "repo_name": "rasa",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "rasa/cli/x.py",
+        "rasa/core/utils.py",
+        "rasa/core/run.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 23,
+      "inference_time": 57.62466812133789,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "pulumi/pulumi/11541/11542",
+      "repo_owner": "pulumi",
+      "repo_name": "pulumi",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "sdk/python/lib/pulumi/runtime/rpc.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 24,
+      "inference_time": 56.66978907585144,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "archivebox/archivebox/822/821",
+      "repo_owner": "archivebox",
+      "repo_name": "archivebox",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "archivebox/parsers/pinboard_rss.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 25,
+      "inference_time": 56.651631116867065,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "microsoft/recommenders/804/746",
+      "repo_owner": "microsoft",
+      "repo_name": "recommenders",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "reco_utils/nni/svd_training.py",
+        "tests/integration/test_notebooks_python.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 26,
+      "inference_time": 56.96633815765381,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "joke2k/faker/671/667",
+      "repo_owner": "joke2k",
+      "repo_name": "faker",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "tests/providers/test_date_time.py",
+        "faker/providers/date_time/__init__.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 27,
+      "inference_time": 56.8469979763031,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "manimcommunity/manim/229/228",
+      "repo_owner": "manimcommunity",
+      "repo_name": "manim",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "manim/config.py",
+        "manim/camera/camera.py",
+        "manim/scene/scene_file_writer.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 28,
+      "inference_time": 56.88458204269409,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "pydantic/pydantic/6541/6525",
+      "repo_owner": "pydantic",
+      "repo_name": "pydantic",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "tests/test_discriminated_union.py",
+        "pydantic/_internal/_discriminated_union.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 29,
+      "inference_time": 56.822919845581055,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "mlflow/mlflow/5720/5713",
+      "repo_owner": "mlflow",
+      "repo_name": "mlflow",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "mlflow/tracking/fluent.py",
+        "tests/tracking/fluent/test_fluent.py",
+        "mlflow/utils/validation.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 30,
+      "inference_time": 57.375105142593384,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "plotly/plotly.py/2208/2167",
+      "repo_owner": "plotly",
+      "repo_name": "plotly.py",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "packages/python/plotly/plotly/graph_objs/_figurewidget.py",
+        "packages/python/plotly/plotly/graph_objs/_figure.py",
+        "packages/python/plotly/codegen/figure.py",
+        "packages/python/plotly/plotly/tests/test_core/test_update_objects/test_update_annotations.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 31,
+      "inference_time": 57.245298862457275,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "rapptz/discord.py/1967/1862",
+      "repo_owner": "rapptz",
+      "repo_name": "discord.py",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "discord/client.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 32,
+      "inference_time": 56.831202268600464,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "netbox-community/netbox/10187/9895",
+      "repo_owner": "netbox-community",
+      "repo_name": "netbox",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "netbox/ipam/api/serializers.py",
+        "netbox/utilities/custom_inspectors.py",
+        "netbox/dcim/api/serializers.py",
+        "netbox/netbox/api/serializers/generic.py",
+        "netbox/dcim/api/nested_serializers.py",
+        "netbox/extras/api/serializers.py",
+        "netbox/netbox/settings.py",
+        "netbox/tenancy/api/serializers.py",
+        "netbox/virtualization/api/serializers.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 33,
+      "inference_time": 56.77876591682434,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "nltk/nltk/3042/3041",
+      "repo_owner": "nltk",
+      "repo_name": "nltk",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "nltk/tokenize/sonority_sequencing.py",
+        "nltk/test/unit/test_tokenize.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 34,
+      "inference_time": 56.95361399650574,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "spotdl/spotify-downloader/380/370",
+      "repo_owner": "spotdl",
+      "repo_name": "spotify-downloader",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "spotdl/spotdl.py",
+        "test/test_internals.py",
+        "spotdl/internals.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 35,
+      "inference_time": 56.758750915527344,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "iterative/dvc/1870/1869",
+      "repo_owner": "iterative",
+      "repo_name": "dvc",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "dvc/remote/local.py",
+        "dvc/remote/ssh/__init__.py",
+        "dvc/remote/http.py",
+        "dvc/remote/s3.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 36,
+      "inference_time": 56.64818501472473,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "beetbox/beets/3238/2790",
+      "repo_owner": "beetbox",
+      "repo_name": "beets",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "beets/dbcore/types.py",
+        "beetsplug/acousticbrainz.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 37,
+      "inference_time": 56.88159704208374,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "mikubill/sd-webui-controlnet/321/307",
+      "repo_owner": "mikubill",
+      "repo_name": "sd-webui-controlnet",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "scripts/controlnet.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 38,
+      "inference_time": 56.9698371887207,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "microsoft/qlib/357/356",
+      "repo_owner": "microsoft",
+      "repo_name": "qlib",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "scripts/data_collector/yahoo/collector.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 39,
+      "inference_time": 57.04195284843445,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "edgedb/edgedb/5785/5725",
+      "repo_owner": "edgedb",
+      "repo_name": "edgedb",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "edb/edgeql/declarative.py",
+        "tests/test_schema.py",
+        "edb/edgeql/tracer.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 40,
+      "inference_time": 57.081913232803345,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "chia-network/chia-blockchain/16110/16039",
+      "repo_owner": "chia-network",
+      "repo_name": "chia-blockchain",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "chia/cmds/data_funcs.py",
+        "chia/cmds/data.py",
+        "chia/rpc/data_layer_rpc_client.py",
+        "chia/rpc/data_layer_rpc_api.py",
+        "tests/core/data_layer/test_data_rpc.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 41,
+      "inference_time": 57.231362104415894,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "chia-network/chia-blockchain/11764/11628",
+      "repo_owner": "chia-network",
+      "repo_name": "chia-blockchain",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "chia/rpc/rpc_server.py",
+        "chia/server/server.py",
+        "chia/util/network.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 42,
+      "inference_time": 56.96187686920166,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "pre-commit/pre-commit/1668/1658",
+      "repo_owner": "pre-commit",
+      "repo_name": "pre-commit",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "pre_commit/languages/ruby.py",
+        "pre_commit/languages/node.py",
+        "tests/languages/helpers_test.py",
+        "pre_commit/languages/helpers.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 43,
+      "inference_time": 57.02925109863281,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "aws/chalice/504/501",
+      "repo_owner": "aws",
+      "repo_name": "chalice",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "tests/functional/test_package.py",
+        "chalice/deploy/packager.py",
+        "tests/unit/deploy/test_packager.py",
+        "chalice/compat.py",
+        "chalice/utils.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 44,
+      "inference_time": 56.825754165649414,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "tweepy/tweepy/1262/1261",
+      "repo_owner": "tweepy",
+      "repo_name": "tweepy",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "tweepy/binder.py",
+        "tweepy/parsers.py",
+        "tweepy/cursor.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 45,
+      "inference_time": 57.168797969818115,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "openmined/pysyft/1908/1896",
+      "repo_owner": "openmined",
+      "repo_name": "pysyft",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "syft/frameworks/torch/hook.py",
+        "syft/frameworks/torch/torch_attributes.py",
+        "syft/workers/base.py",
+        "test/torch/tensors/test_gc.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 46,
+      "inference_time": 57.124736070632935,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "pypa/pip/12140/12138",
+      "repo_owner": "pypa",
+      "repo_name": "pip",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "src/pip/_internal/commands/download.py",
+        "src/pip/_internal/commands/wheel.py",
+        "src/pip/_internal/resolution/resolvelib/resolver.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 47,
+      "inference_time": 77.46843814849854,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "modin-project/modin/1657/1656",
+      "repo_owner": "modin-project",
+      "repo_name": "modin",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "modin/pandas/dataframe.py",
+        "modin/backends/pandas/query_compiler.py",
+        "modin/pandas/test/test_dataframe.py",
+        "modin/pandas/base.py",
+        "modin/pandas/series.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 48,
+      "inference_time": 57.04962205886841,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "dagger/dagger/3814/3813",
+      "repo_owner": "dagger",
+      "repo_name": "dagger",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "sdk/python/src/dagger/connectors/docker.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 49,
+      "inference_time": 57.01259088516235,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "paddlepaddle/paddlespeech/1432/1426",
+      "repo_owner": "paddlepaddle",
+      "repo_name": "paddlespeech",
+      "error": "401, message='Unauthorized', url='https://qianfan.baidubce.com/v2/chat/completions'",
+      "predicted_files": [],
+      "target_files": [
+        "paddlespeech/cli/asr/infer.py",
+        "paddlespeech/vector/exps/ge2e/audio_processor.py",
+        "paddlespeech/s2t/transform/perturb.py",
+        "paddlespeech/s2t/transform/spectrogram.py"
+      ],
+      "bug_loc_f1": 0.0,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "sample_index": 50,
+      "inference_time": 56.79563093185425,
+      "model_key": "qwen3-30b-a22b-instruct-2507"
+    }
+  ],
+  "model_config": {
+    "model_name": "openai-chat-completions",
+    "model_args": {
+      "model": "qwen3-30b-a22b-instruct-2507",
+      "base_url": "https://qianfan.baidubce.com/v2/chat/completions",
+      "num_concurrent": 5,
+      "max_retries": 10,
+      "tokenized_requests": false,
+      "stop": "<|endoftext|>",
+      "timeout": 120,
+      "apply_chat_template": true
+    },
+    "description": "Qwen3-30B via Baidu Qianfan API"
+  }
+}

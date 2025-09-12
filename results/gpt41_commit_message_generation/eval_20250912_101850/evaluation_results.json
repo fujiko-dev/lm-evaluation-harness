@@ -1,0 +1,98 @@
+{
+  "results": {
+    "lca_commit_message_generation": {
+      "commit_bleu": 0.7694084760615567,
+      "commit_rouge1": 8.708965103789374,
+      "commit_rouge2": 1.2121212121212122,
+      "commit_rougeL": 8.708965103789374,
+      "commit_bert_f1": 0.0,
+      "length_ratio": 0.36656336618477836,
+      "valid_samples": 5,
+      "total_samples": 5
+    }
+  },
+  "samples": {
+    "lca_commit_message_generation": [
+      {
+        "idx": 0,
+        "repo": "cupy/cupy",
+        "commit_sha": "",
+        "prediction_text": "Refactor memory pool tests and update docstrings for clarity",
+        "predicted_message": "Refactor memory pool tests and update docstrings for clarity",
+        "target_message": "Support CUDA stream on memory pool\n\nNow, memory pool will have an arena (bins) for each stream\nto avoid concurrent streams touch the same memory block",
+        "commit_bleu": 1.143572021850398,
+        "commit_rouge1": 17.142857142857146,
+        "commit_rouge2": 6.0606060606060606,
+        "commit_rougeL": 17.142857142857146,
+        "commit_bert_f1": 0.0,
+        "predicted_length": 60,
+        "target_length": 150,
+        "length_ratio": 0.4
+      },
+      {
+        "idx": 1,
+        "repo": "cupy/cupy",
+        "commit_sha": "",
+        "prediction_text": "Fix typo in error message for invalid array shape validation",
+        "predicted_message": "Fix typo in error message for invalid array shape validation",
+        "target_message": "Complete overhaul of filter testing.\n\nThese tests are much more flexible now for when additional filters are added.",
+        "commit_bleu": 1.5436644068195333,
+        "commit_rouge1": 7.142857142857142,
+        "commit_rouge2": 0.0,
+        "commit_rougeL": 7.142857142857142,
+        "commit_bert_f1": 0.0,
+        "predicted_length": 60,
+        "target_length": 115,
+        "length_ratio": 0.5217391304347826
+      },
+      {
+        "idx": 2,
+        "repo": "cupy/cupy",
+        "commit_sha": "",
+        "prediction_text": "Refactor codebase to replace six usage with Python 3 built-ins",
+        "predicted_message": "Refactor codebase to replace six usage with Python 3 built-ins",
+        "target_message": "Use \"import numpy as np\" in the array_api submodule\n\nThis avoids importing everything inside the individual functions, but still is\npreferred over importing the functions used explicitly, as most of them clash\nwith the wrapper function names.",
+        "commit_bleu": 0.14003807555238304,
+        "commit_rouge1": 4.081632653061225,
+        "commit_rouge2": 0.0,
+        "commit_rougeL": 4.081632653061225,
+        "commit_bert_f1": 0.0,
+        "predicted_length": 62,
+        "target_length": 242,
+        "length_ratio": 0.256198347107438
+      },
+      {
+        "idx": 3,
+        "repo": "cupy/cupy",
+        "commit_sha": "",
+        "prediction_text": "Refactor codebase to replace six usage with Python 3 built-ins",
+        "predicted_message": "Refactor codebase to replace six usage with Python 3 built-ins",
+        "target_message": "Use _implementation on all functions that have it in the array API submodule\n\nThat way they only work on actual ndarray inputs, not array-like, which is\nmore inline with the spec.",
+        "commit_bleu": 0.3444380863090734,
+        "commit_rouge1": 4.651162790697675,
+        "commit_rouge2": 0.0,
+        "commit_rougeL": 4.651162790697675,
+        "commit_bert_f1": 0.0,
+        "predicted_length": 62,
+        "target_length": 179,
+        "length_ratio": 0.3463687150837989
+      },
+      {
+        "idx": 4,
+        "repo": "cupy/cupy",
+        "commit_sha": "",
+        "prediction_text": "Refactor tests to use pytest.skip for unsupported features",
+        "predicted_message": "Refactor tests to use pytest.skip for unsupported features",
+        "target_message": "Use better type signatures in the array API module\n\nThis includes returning custom dataclasses for finfo and iinfo that only\ncontain the properties required by the array API specification.",
+        "commit_bleu": 0.675329789776396,
+        "commit_rouge1": 10.526315789473683,
+        "commit_rouge2": 0.0,
+        "commit_rougeL": 10.526315789473683,
+        "commit_bert_f1": 0.0,
+        "predicted_length": 58,
+        "target_length": 188,
+        "length_ratio": 0.30851063829787234
+      }
+    ]
+  }
+}

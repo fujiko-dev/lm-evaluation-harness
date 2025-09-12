@@ -1,0 +1,148 @@
+{
+  "overall_summary": {
+    "total_models": 6,
+    "successful_models": 6,
+    "failed_models": 0,
+    "total_evaluation_time_minutes": 9.640223848819733
+  },
+  "model_summaries": {
+    "qwen3-235b-a22b-instruct-2507": {
+      "model_key": "qwen3-235b-a22b-instruct-2507",
+      "evaluation_summary": {
+        "total_samples": 50,
+        "successful_samples": 50,
+        "failed_samples": 0,
+        "success_rate": 1.0
+      },
+      "performance_metrics": {
+        "avg_f1_score": 0.4562356532356532,
+        "avg_precision": 0.5456666666666666,
+        "avg_recall": 0.46966666666666657,
+        "all_correct_rate": 0.2,
+        "at_least_one_correct_rate": 0.72,
+        "all_incorrect_rate": 0.26
+      },
+      "timing_statistics": {
+        "total_evaluation_time_minutes": 1.3414911826451619,
+        "avg_inference_time_seconds": 1.245488338470459,
+        "min_inference_time_seconds": 0.5289521217346191,
+        "max_inference_time_seconds": 3.170938014984131
+      }
+    },
+    "qwen3-30b-a3b-instruct-2507": {
+      "model_key": "qwen3-30b-a3b-instruct-2507",
+      "evaluation_summary": {
+        "total_samples": 50,
+        "successful_samples": 50,
+        "failed_samples": 0,
+        "success_rate": 1.0
+      },
+      "performance_metrics": {
+        "avg_f1_score": 0.4613174603174602,
+        "avg_precision": 0.5223333333333333,
+        "avg_recall": 0.4696666666666666,
+        "all_correct_rate": 0.22,
+        "at_least_one_correct_rate": 0.74,
+        "all_incorrect_rate": 0.24
+      },
+      "timing_statistics": {
+        "total_evaluation_time_minutes": 1.6940070986747742,
+        "avg_inference_time_seconds": 1.6294044303894042,
+        "min_inference_time_seconds": 0.44165611267089844,
+        "max_inference_time_seconds": 17.464555978775024
+      }
+    },
+    "qwen3-coder-30b-a3b-instruct": {
+      "model_key": "qwen3-coder-30b-a3b-instruct",
+      "evaluation_summary": {
+        "total_samples": 50,
+        "successful_samples": 50,
+        "failed_samples": 0,
+        "success_rate": 1.0
+      },
+      "performance_metrics": {
+        "avg_f1_score": 0.47542857142857137,
+        "avg_precision": 0.49333333333333335,
+        "avg_recall": 0.5536666666666666,
+        "all_correct_rate": 0.18,
+        "at_least_one_correct_rate": 0.82,
+        "all_incorrect_rate": 0.18
+      },
+      "timing_statistics": {
+        "total_evaluation_time_minutes": 1.524161950747172,
+        "avg_inference_time_seconds": 1.4122651481628419,
+        "min_inference_time_seconds": 0.39914703369140625,
+        "max_inference_time_seconds": 18.27777409553528
+      }
+    },
+    "qwen3-coder-480b-a35b-instruct": {
+      "model_key": "qwen3-coder-480b-a35b-instruct",
+      "evaluation_summary": {
+        "total_samples": 50,
+        "successful_samples": 50,
+        "failed_samples": 0,
+        "success_rate": 1.0
+      },
+      "performance_metrics": {
+        "avg_f1_score": 0.45071428571428557,
+        "avg_precision": 0.4599999999999999,
+        "avg_recall": 0.5159999999999999,
+        "all_correct_rate": 0.18,
+        "at_least_one_correct_rate": 0.8,
+        "all_incorrect_rate": 0.2
+      },
+      "timing_statistics": {
+        "total_evaluation_time_minutes": 1.7855087359746298,
+        "avg_inference_time_seconds": 1.7232896709442138,
+        "min_inference_time_seconds": 0.5835461616516113,
+        "max_inference_time_seconds": 5.696110248565674
+      }
+    },
+    "deepseek-v3": {
+      "model_key": "deepseek-v3",
+      "evaluation_summary": {
+        "total_samples": 50,
+        "successful_samples": 50,
+        "failed_samples": 0,
+        "success_rate": 1.0
+      },
+      "performance_metrics": {
+        "avg_f1_score": 0.0,
+        "avg_precision": 0.0,
+        "avg_recall": 0.0,
+        "all_correct_rate": 0.0,
+        "at_least_one_correct_rate": 0.0,
+        "all_incorrect_rate": 0.0
+      },
+      "timing_statistics": {
+        "total_evaluation_time_minutes": 1.0924179156621296,
+        "avg_inference_time_seconds": 0.8758970403671265,
+        "min_inference_time_seconds": 0.5054910182952881,
+        "max_inference_time_seconds": 2.487091064453125
+      }
+    },
+    "kimi-k2-instruct": {
+      "model_key": "kimi-k2-instruct",
+      "evaluation_summary": {
+        "total_samples": 50,
+        "successful_samples": 50,
+        "failed_samples": 0,
+        "success_rate": 1.0
+      },
+      "performance_metrics": {
+        "avg_f1_score": 0.5247012987012986,
+        "avg_precision": 0.600936507936508,
+        "avg_recall": 0.5787777777777777,
+        "all_correct_rate": 0.18,
+        "at_least_one_correct_rate": 0.92,
+        "all_incorrect_rate": 0.08
+      },
+      "timing_statistics": {
+        "total_evaluation_time_minutes": 1.9369439204533896,
+        "avg_inference_time_seconds": 1.8580872774124146,
+        "min_inference_time_seconds": 1.007279872894287,
+        "max_inference_time_seconds": 5.071177959442139
+      }
+    }
+  }
+}

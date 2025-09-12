@@ -1,0 +1,17 @@
+{
+  "model_key": "deepseek-v3",
+  "model_name": "openai-chat-completions",
+  "model_args": {
+    "model": "deepseek-v3",
+    "base_url": "https://qianfan.baidubce.com/v2/chat/completions",
+    "num_concurrent": 5,
+    "max_retries": 10,
+    "tokenized_requests": false,
+    "stop": "<|endoftext|>",
+    "timeout": 120,
+    "apply_chat_template": true
+  },
+  "description": "DeepSeek V3 via Baidu Qianfan API",
+  "total_samples": 50,
+  "start_time": "2025-09-07T23:35:33.128292"
+}

@@ -1,0 +1,5 @@
+task: lca_bug_localization_py
+description: |
+  Bug localization task for Python projects from Long Code Arena benchmark.
+  Given a bug issue description and repository file list,
+  identify Python files that need to be modified to fix the bug.

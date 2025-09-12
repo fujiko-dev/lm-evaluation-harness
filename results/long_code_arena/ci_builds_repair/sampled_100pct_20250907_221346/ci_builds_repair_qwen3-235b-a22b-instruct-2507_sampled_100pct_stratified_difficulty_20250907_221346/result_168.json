@@ -1,0 +1,56 @@
+{
+  "timestamp": "2025-09-07T22:43:04.632275",
+  "sample_info": {
+    "index": 60,
+    "original_index": 60,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 168,
+  "repo_owner": "pwndbg",
+  "repo_name": "pwndbg",
+  "difficulty": 2,
+  "generation_time": 24.906003952026367,
+  "prediction": "# CI Workflow Fix Analysis and Solution\n\n## 1. Analysis of the Failure Cause\n\nAfter analyzing the logs from both Ubuntu 22.04 and 20.04 runs, I can identify two distinct issues:\n\n### Issue 1: Python Version Compatibility (Ubuntu 20.04)\nThe Ubuntu 20.04 job fails during test collection with a `TypeError: unsupported operand type(s) for |: 'type' and 'NoneType'`. This error occurs in `pwndbg/gdblib/heap_tracking.py` at line 88 in the function definition:\n```python\ndef resolve_address(name: str) -> int | None:\n```\n\nThis syntax uses the Python 3.10+ union type operator `|`, which is not supported in Python 3.8.10 (the version used in Ubuntu 20.04). In earlier Python versions, you need to use `typing.Union[int, None]` or `Optional[int]` instead.\n\n### Issue 2: Test Failure in Context Commands (Ubuntu 22.04)\nThe Ubuntu 22.04 job runs successfully but fails 5 tests related to `test_empty_context_sections`. The failure shows that the actual value of `context_sections` includes an extra `heap-tracker` section that's not in the expected default value. This suggests that the `heap-tracker` section is being added to the default context sections, but the test expects it not to be there.\n\n## 2. Specific Changes Needed\n\n1. Fix the Python type annotation in `heap_tracking.py` to be compatible with Python 3.8\n2. Update the test expectation in `test_context_commands.py` to account for the `heap-tracker` section\n\n## 3. Modified Code/Configuration\n\n### Fix 1: Update type annotation in heap_tracking.py\n```python\n# File: pwndbg/gdblib/heap_tracking.py\n# Change line 88 from:\ndef resolve_address(name: str) -> int | None:\n\n# To:\ndef resolve_address(name: str) -> Optional[int]:\n```\n\nAnd ensure `Optional` is imported at the top of the file:\n```python\nfrom typing import Optional\n```\n\n### Fix 2: Update the test expectation in test_context_commands.py\n```python\n# File: tests/gdb-tests/tests/test_context_commands.py\n# Change line 85 from:\ndefault_ctx_sects = \"regs disasm code ghidra stack backtrace expressions threads\"\n\n# To:\ndefault_ctx_sects = \"regs disasm code ghidra stack backtrace expressions threads heap-tracker\"\n```\n\nThese changes will:\n1. Make the code compatible with Python 3.8 by using `Optional[int]` instead of the newer `int | None` syntax\n2. Update the test to expect the `heap-tracker` section that is now part of the default context sections\n\nThe CI workflow itself doesn't need modification - the issue is in the code and tests, not the workflow configuration.",
+  "evaluation": {
+    "success": true,
+    "score": 0.5787205211618464,
+    "explanation": "Similarity: 0.298, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.29786753526974385,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "pwndbg/gdblib/heap_tracking.py": [
+          "def resolve_address(name: str) -> int | None:",
+          "# File: pwndbg/gdblib/heap_tracking.py\n# Change line 88 from:\ndef resolve_address(name: str) -> int | None:\n\n# To:\ndef resolve_address(name: str) -> Optional[int]:",
+          "from typing import Optional",
+          "# File: tests/gdb-tests/tests/test_context_commands.py\n# Change line 85 from:\ndefault_ctx_sects = \"regs disasm code ghidra stack backtrace expressions threads\"\n\n# To:\ndefault_ctx_sects = \"regs disasm code ghidra stack backtrace expressions threads heap-tracker\""
+        ],
+        "tests/gdb-tests/tests/test_context_commands.py": [
+          "def resolve_address(name: str) -> int | None:",
+          "# File: pwndbg/gdblib/heap_tracking.py\n# Change line 88 from:\ndef resolve_address(name: str) -> int | None:\n\n# To:\ndef resolve_address(name: str) -> Optional[int]:",
+          "from typing import Optional",
+          "# File: tests/gdb-tests/tests/test_context_commands.py\n# Change line 85 from:\ndefault_ctx_sects = \"regs disasm code ghidra stack backtrace expressions threads\"\n\n# To:\ndefault_ctx_sects = \"regs disasm code ghidra stack backtrace expressions threads heap-tracker\""
+        ],
+        "heap_tracking.py": [
+          "def resolve_address(name: str) -> int | None:",
+          "# File: pwndbg/gdblib/heap_tracking.py\n# Change line 88 from:\ndef resolve_address(name: str) -> int | None:\n\n# To:\ndef resolve_address(name: str) -> Optional[int]:",
+          "from typing import Optional",
+          "# File: tests/gdb-tests/tests/test_context_commands.py\n# Change line 85 from:\ndefault_ctx_sects = \"regs disasm code ghidra stack backtrace expressions threads\"\n\n# To:\ndefault_ctx_sects = \"regs disasm code ghidra stack backtrace expressions threads heap-tracker\""
+        ],
+        "test_context_commands.py": [
+          "def resolve_address(name: str) -> int | None:",
+          "# File: pwndbg/gdblib/heap_tracking.py\n# Change line 88 from:\ndef resolve_address(name: str) -> int | None:\n\n# To:\ndef resolve_address(name: str) -> Optional[int]:",
+          "from typing import Optional",
+          "# File: tests/gdb-tests/tests/test_context_commands.py\n# Change line 85 from:\ndefault_ctx_sects = \"regs disasm code ghidra stack backtrace expressions threads\"\n\n# To:\ndefault_ctx_sects = \"regs disasm code ghidra stack backtrace expressions threads heap-tracker\""
+        ]
+      },
+      "target_changes": {
+        "pwndbg/commands/heap_tracking.py": "index 6eb993d8..b1af239a 100644\n--- a/pwndbg/commands/heap_tracking.py\n+++ b/pwndbg/commands/heap_tracking.py\n@@ -1,3 +1,5 @@\n+from __future__ import annotations\n+\n import argparse\n \n import pwndbg.chain\n@@ -29,6 +31,7 @@ parser.add_argument(\n \n \n @pwndbg.commands.ArgparsedCommand(parser, command_name=\"enable-heap-tracker\")\n+@pwndbg.commands.OnlyWhenRunning\n def enable_tracker(use_hardware_breakpoints=False) -> None:\n     pwndbg.gdblib.heap_tracking.install()\n \n@@ -37,14 +40,18 @@ parser = argparse.ArgumentParser(description=\"Disables the heap tracker.\")\n \n \n @pwndbg.commands.ArgparsedCommand(parser, command_name=\"disable-heap-tracker\")\n+@pwndbg.commands.OnlyWhenRunning\n def disable_tracker() -> None:\n     pwndbg.gdblib.heap_tracking.uninstall()\n \n \n-parser = argparse.ArgumentParser(description=\"Toggles whether possible UAF conditions will pause execution.\")\n+parser = argparse.ArgumentParser(\n+    description=\"Toggles whether possible UAF conditions will pause execution.\"\n+)\n \n \n @pwndbg.commands.ArgparsedCommand(parser, command_name=\"toggle-heap-tracker-break\")\n+@pwndbg.commands.OnlyWhenRunning\n def toggle_tracker_break() -> None:\n     pwndbg.gdblib.heap_tracking.stop_on_error = not pwndbg.gdblib.heap_tracking.stop_on_error\n     if pwndbg.gdblib.heap_tracking.stop_on_error:",
+        "pwndbg/gdblib/heap_tracking.py": "index 915046dc..5b763aff 100644\n--- a/pwndbg/gdblib/heap_tracking.py\n+++ b/pwndbg/gdblib/heap_tracking.py\n@@ -47,7 +47,8 @@ that were not made explicit.\n \n \"\"\"\n \n-import itertools\n+from __future__ import annotations\n+\n import gdb\n from sortedcontainers import SortedDict\n \n@@ -65,6 +66,7 @@ last_issue = None\n # Useful to track possbile collision errors.\n PRINT_DEBUG = False\n \n+\n def is_enabled() -> bool:\n     \"\"\"\n     Whether the heap tracker in enabled.\n@@ -79,19 +81,21 @@ def is_enabled() -> bool:\n \n     return any(installed)\n \n+\n def _basename(val):\n     \"\"\"\n     Returns the last component of a path.\n     \"\"\"\n     val.split(\"/\")[-1]\n \n+\n def resolve_address(name: str) -> int | None:\n     \"\"\"\n     Checks whether a given symbol is available and part of libc, and returns its\n     address.\n     \"\"\"\n     # If that fails, try to query for it by using the less precise pwndbg API.\n-    address = pwndbg.gdblib.symbol.address(name) \n+    address = pwndbg.gdblib.symbol.address(name)\n     if not address:\n         # Nothing that we can do here.\n         return None\n@@ -109,11 +113,16 @@ def resolve_address(name: str) -> int | None:\n     info = gdb.execute(f\"info symbol {address:#x}\", to_string=True, from_tty=False)\n     info = info.split(\" of \")[-1].split(\"/\")[-1]\n     if not info or LIBC_NAME not in info:\n-        print(message.warn(f\"Instance of symbol {name} that was found does not seem to belong to an instance of libc whose name is in the form {LIBC_NAME}. Refusing to use.\"))\n+        print(\n+            message.warn(\n+                f'Found \"{name}\" that does not seem to belong to {LIBC_NAME}. Refusing to use.'\n+            )\n+        )\n         return None\n-    \n+\n     return address\n \n+\n class FreeChunkWatchpoint(gdb.Breakpoint):\n     def __init__(self, chunk, tracker):\n         self.chunk = chunk\n@@ -140,7 +149,9 @@ class FreeChunkWatchpoint(gdb.Breakpoint):\n             # We explicitly allow this operation.\n             return False\n \n-        print(f\"[!] Possible use-after-free in {self.chunk.size}-byte chunk at address {self.chunk.address:#x}\")\n+        print(\n+            f\"[!] Possible use-after-free in {self.chunk.size}-byte chunk at address {self.chunk.address:#x}\"\n+        )\n \n         global stop_on_error\n         if stop_on_error:\n@@ -497,7 +508,7 @@ class FreeExitBreakpoint(gdb.FinishBreakpoint):\n         if not self.tracker.free(self.ptr):\n             # This is a chunk we'd never seen before.\n             self.tracker.exit_memory_management()\n-            \n+\n             print(f\"[!] free() with previously unknown pointer {self.freed_ptr:#x}\")\n             global stop_on_error\n             return stop_on_error\n@@ -535,6 +546,7 @@ free_enter = None\n # Whether the inferior should be stopped when an error is detected.\n stop_on_error = True\n \n+\n def install(disable_hardware_whatchpoints=True):\n     global malloc_enter\n     global calloc_enter\n@@ -553,6 +565,7 @@ def install(disable_hardware_whatchpoints=True):\n         print(message.error(\"The following required symbols are not available:\"))\n         for name in (x[0] for x in zip(required_symbols, available) if not x[1]):\n             print(message.error(f\"    - {name}\"))\n+        print(message.error(f\"Make sure {LIBC_NAME} has already been loaded.\"))\n \n         return\n ",
+        "tests/gdb-tests/tests/test_context_commands.py": "index c1997971..8620b3f2 100644\n--- a/tests/gdb-tests/tests/test_context_commands.py\n+++ b/tests/gdb-tests/tests/test_context_commands.py\n@@ -81,7 +81,7 @@ def test_empty_context_sections(start_binary, sections):\n     start_binary(USE_FDS_BINARY)\n \n     # Sanity check\n-    default_ctx_sects = \"regs disasm code ghidra stack backtrace expressions threads\"\n+    default_ctx_sects = \"regs disasm code ghidra stack backtrace expressions threads heap-tracker\"\n     assert pwndbg.gdblib.config.context_sections.value == default_ctx_sects\n     assert gdb.execute(\"context\", to_string=True) != \"\"\n \n"
+      },
+      "difficulty": 2
+    }
+  }
+}

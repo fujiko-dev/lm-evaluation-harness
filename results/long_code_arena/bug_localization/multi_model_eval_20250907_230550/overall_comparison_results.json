@@ -1,0 +1,79 @@
+{
+  "overall_summary": {
+    "total_models": 3,
+    "successful_models": 3,
+    "failed_models": 0,
+    "total_evaluation_time_minutes": 1.359547499815623
+  },
+  "model_summaries": {
+    "qwen3-235b-a22b-instruct-2507": {
+      "model_key": "qwen3-235b-a22b-instruct-2507",
+      "evaluation_summary": {
+        "total_samples": 5,
+        "successful_samples": 5,
+        "failed_samples": 0,
+        "success_rate": 1.0
+      },
+      "performance_metrics": {
+        "avg_f1_score": 0.6,
+        "avg_precision": 0.6,
+        "avg_recall": 0.6,
+        "all_correct_rate": 0.6,
+        "at_least_one_correct_rate": 0.6,
+        "all_incorrect_rate": 0.4
+      },
+      "timing_statistics": {
+        "total_evaluation_time_minutes": 0.4498074491818746,
+        "avg_inference_time_seconds": 1.1552481651306152,
+        "min_inference_time_seconds": 0.6115550994873047,
+        "max_inference_time_seconds": 1.7405169010162354
+      }
+    },
+    "deepseek-v3": {
+      "model_key": "deepseek-v3",
+      "evaluation_summary": {
+        "total_samples": 5,
+        "successful_samples": 5,
+        "failed_samples": 0,
+        "success_rate": 1.0
+      },
+      "performance_metrics": {
+        "avg_f1_score": 0.0,
+        "avg_precision": 0.0,
+        "avg_recall": 0.0,
+        "all_correct_rate": 0.0,
+        "at_least_one_correct_rate": 0.0,
+        "all_incorrect_rate": 0.0
+      },
+      "timing_statistics": {
+        "total_evaluation_time_minutes": 0.3472395181655884,
+        "avg_inference_time_seconds": 0.6831791400909424,
+        "min_inference_time_seconds": 0.5875289440155029,
+        "max_inference_time_seconds": 0.9157929420471191
+      }
+    },
+    "kimi-k2-instruct": {
+      "model_key": "kimi-k2-instruct",
+      "evaluation_summary": {
+        "total_samples": 5,
+        "successful_samples": 5,
+        "failed_samples": 0,
+        "success_rate": 1.0
+      },
+      "performance_metrics": {
+        "avg_f1_score": 0.6666666666666667,
+        "avg_precision": 0.6666666666666667,
+        "avg_recall": 0.6666666666666667,
+        "all_correct_rate": 0.6,
+        "at_least_one_correct_rate": 0.8,
+        "all_incorrect_rate": 0.2
+      },
+      "timing_statistics": {
+        "total_evaluation_time_minutes": 0.44386498133341473,
+        "avg_inference_time_seconds": 1.8380873680114747,
+        "min_inference_time_seconds": 1.1607129573822021,
+        "max_inference_time_seconds": 2.491170883178711
+      }
+    }
+  }
+}

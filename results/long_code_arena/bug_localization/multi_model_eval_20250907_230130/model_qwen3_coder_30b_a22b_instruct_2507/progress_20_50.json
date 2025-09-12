@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-09-08T00:10:16.460256",
+  "model_key": "qwen3-coder-30b-a22b-instruct-2507",
+  "progress": {
+    "current_sample": 20,
+    "total_samples": 50,
+    "completion_rate": 0.4
+  },
+  "statistics": {
+    "total_processed": 20,
+    "successful": 0,
+    "failed": 20,
+    "success_rate": 0.0
+  }
+}

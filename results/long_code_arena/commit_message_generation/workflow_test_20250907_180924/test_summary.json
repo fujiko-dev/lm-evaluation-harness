@@ -1,0 +1,14 @@
+{
+  "test_status": "SUCCESS",
+  "timestamp": "20250907_180924",
+  "samples_processed": 5,
+  "output_directory": "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/results/long_code_arena/commit_message_generation/workflow_test_20250907_180924",
+  "key_metrics": {
+    "cmg_bleu": 0.0013760998800317788,
+    "cmg_chrf": 7.597864779260911,
+    "cmg_rouge1": 1.1111111111111112,
+    "cmg_rouge2": 0.0,
+    "cmg_rougeL": 1.1111111111111112,
+    "cmg_bnorm": 0.00020344269711427472
+  }
+}

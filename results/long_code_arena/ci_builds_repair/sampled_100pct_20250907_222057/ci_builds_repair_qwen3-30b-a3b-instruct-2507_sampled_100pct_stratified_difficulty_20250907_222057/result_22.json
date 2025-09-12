@@ -1,0 +1,49 @@
+{
+  "timestamp": "2025-09-07T22:21:50.486679",
+  "sample_info": {
+    "index": 3,
+    "original_index": 3,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 22,
+  "repo_owner": "sanic-org",
+  "repo_name": "sanic",
+  "difficulty": 2,
+  "generation_time": 18.932387828826904,
+  "prediction": "# Analysis of the Failure Cause\n\nThe CI workflow is failing due to **test failures in the `test_websockets.py` file**, specifically in the `test_ws_frame_put_message_into_queue` test. The error occurs when trying to use `has_calls()` on an `AsyncMock` object:\n\n```\nAttributeError: 'has_calls' is not a valid assertion. Use a spec for the mock if 'has_calls' is meant to be an attribute.\n```\n\nThis error is caused by a **breaking change in Python 3.12's `unittest.mock` module**. In Python 3.12, `AsyncMock` objects no longer support the `has_calls()` method directly. The `has_calls()` method is not a valid attribute on `AsyncMock` objects, and attempting to access it raises an `AttributeError`.\n\nThe test code in `tests/test_websockets.py` is trying to use:\n```python\nassembler.chunks_queue.put.has_calls(\n    call(b\"foo\"),\n    call(None),\n)\n```\n\nThis pattern was previously working in older Python versions but is now broken in Python 3.12 due to changes in the `unittest.mock` module.\n\n## Root Cause\n\nThe root cause is a **compatibility issue with Python 3.12's `unittest.mock` module**. The `AsyncMock` class in Python 3.12 no longer allows direct access to `has_calls()` as a method. This is a breaking change that affects tests using `AsyncMock` with `has_calls()` assertions.\n\n## Solution\n\nThe fix is to **replace the `has_calls()` assertion with a proper `assert_has_calls()` method call**. The `assert_has_calls()` method is the correct way to verify call history on mock objects in Python 3.12.\n\n## Specific Changes Needed\n\n1. Modify the `test_websockets.py` file to use `assert_has_calls()` instead of `has_calls()`\n2. Ensure the test is properly structured to use the correct assertion method\n\n## Modified Code\n\nHere's the fix for the failing test in `tests/test_websockets.py`:\n\n```python\n# Before (failing):\nassembler.chunks_queue.put.has_calls(\n    call(b\"foo\"),\n    call(None),\n)\n\n# After (fixed):\nassembler.chunks_queue.put.assert_has_calls(\n    [call(b\"foo\"), call(None)],\n)\n```\n\nThe key changes are:\n1. Replace `has_calls()` with `assert_has_calls()`\n2. Wrap the calls in a list `[]` as required by `assert_has_calls()`\n\n## Complete Fix for the Test\n\n```python\n@pytest.mark.asyncio\n@pytest.mark.parametrize(\"opcode\", DATA_OPCODES)\nasync def test_ws_frame_put_message_into_queue(opcode):\n    assembler = WebsocketFrameAssembler(Mock())\n    assembler.chunks_queue = AsyncMock(spec=Queue)\n    assembler.message_fetched = AsyncMock()\n    assembler.message_fetched.is_set = Mock(return_value=False)\n    \n    await assembler.put(Frame(opcode, b\"foo\"))\n    \n    # Fixed: Use assert_has_calls() with a list of calls\n    assembler.chunks_queue.put.assert_has_calls(\n        [call(b\"foo\"), call(None)],\n        any_order=True  # Optional: if order doesn't matter\n    )\n```\n\n## Additional Considerations\n\n1. **Check for other similar issues**: Search the codebase for other instances of `has_calls()` on `AsyncMock` objects that might be affected by this change.\n\n2. **Update test documentation**: If this is a common pattern, consider adding a comment to explain the change.\n\n3. **Verify the fix**: After making the change, run the tests locally with Python 3.12 to ensure the issue is resolved.\n\n## Summary\n\nThe CI failure is caused by a breaking change in Python 3.12's `unittest.mock` module that prevents direct access to `has_calls()` on `AsyncMock` objects. The fix is to replace `has_calls()` with `assert_has_calls()` and wrap the calls in a list. This is a straightforward code change that will restore test compatibility with Python 3.12.",
+  "evaluation": {
+    "success": false,
+    "score": 0.47115404098549396,
+    "explanation": "Similarity: 0.285, Key fixes: 0.750",
+    "details": {
+      "similarity_score": 0.28525673497582316,
+      "key_fixes_score": 0.75,
+      "predicted_changes": {
+        "test_websockets.py": [
+          "AttributeError: 'has_calls' is not a valid assertion. Use a spec for the mock if 'has_calls' is meant to be an attribute.",
+          "assembler.chunks_queue.put.has_calls(\n    call(b\"foo\"),\n    call(None),\n)",
+          "# Before (failing):\nassembler.chunks_queue.put.has_calls(\n    call(b\"foo\"),\n    call(None),\n)\n\n# After (fixed):\nassembler.chunks_queue.put.assert_has_calls(\n    [call(b\"foo\"), call(None)],\n)",
+          "@pytest.mark.asyncio\n@pytest.mark.parametrize(\"opcode\", DATA_OPCODES)\nasync def test_ws_frame_put_message_into_queue(opcode):\n    assembler = WebsocketFrameAssembler(Mock())\n    assembler.chunks_queue = AsyncMock(spec=Queue)\n    assembler.message_fetched = AsyncMock()\n    assembler.message_fetched.is_set = Mock(return_value=False)\n    \n    await assembler.put(Frame(opcode, b\"foo\"))\n    \n    # Fixed: Use assert_has_calls() with a list of calls\n    assembler.chunks_queue.put.assert_has_calls(\n        [call(b\"foo\"), call(None)],\n        any_order=True  # Optional: if order doesn't matter\n    )"
+        ],
+        "unittest.mock": [
+          "AttributeError: 'has_calls' is not a valid assertion. Use a spec for the mock if 'has_calls' is meant to be an attribute.",
+          "assembler.chunks_queue.put.has_calls(\n    call(b\"foo\"),\n    call(None),\n)",
+          "# Before (failing):\nassembler.chunks_queue.put.has_calls(\n    call(b\"foo\"),\n    call(None),\n)\n\n# After (fixed):\nassembler.chunks_queue.put.assert_has_calls(\n    [call(b\"foo\"), call(None)],\n)",
+          "@pytest.mark.asyncio\n@pytest.mark.parametrize(\"opcode\", DATA_OPCODES)\nasync def test_ws_frame_put_message_into_queue(opcode):\n    assembler = WebsocketFrameAssembler(Mock())\n    assembler.chunks_queue = AsyncMock(spec=Queue)\n    assembler.message_fetched = AsyncMock()\n    assembler.message_fetched.is_set = Mock(return_value=False)\n    \n    await assembler.put(Frame(opcode, b\"foo\"))\n    \n    # Fixed: Use assert_has_calls() with a list of calls\n    assembler.chunks_queue.put.assert_has_calls(\n        [call(b\"foo\"), call(None)],\n        any_order=True  # Optional: if order doesn't matter\n    )"
+        ],
+        "tests/test_websockets.py": [
+          "AttributeError: 'has_calls' is not a valid assertion. Use a spec for the mock if 'has_calls' is meant to be an attribute.",
+          "assembler.chunks_queue.put.has_calls(\n    call(b\"foo\"),\n    call(None),\n)",
+          "# Before (failing):\nassembler.chunks_queue.put.has_calls(\n    call(b\"foo\"),\n    call(None),\n)\n\n# After (fixed):\nassembler.chunks_queue.put.assert_has_calls(\n    [call(b\"foo\"), call(None)],\n)",
+          "@pytest.mark.asyncio\n@pytest.mark.parametrize(\"opcode\", DATA_OPCODES)\nasync def test_ws_frame_put_message_into_queue(opcode):\n    assembler = WebsocketFrameAssembler(Mock())\n    assembler.chunks_queue = AsyncMock(spec=Queue)\n    assembler.message_fetched = AsyncMock()\n    assembler.message_fetched.is_set = Mock(return_value=False)\n    \n    await assembler.put(Frame(opcode, b\"foo\"))\n    \n    # Fixed: Use assert_has_calls() with a list of calls\n    assembler.chunks_queue.put.assert_has_calls(\n        [call(b\"foo\"), call(None)],\n        any_order=True  # Optional: if order doesn't matter\n    )"
+        ]
+      },
+      "target_changes": {
+        "sanic/__version__.py": "index 1cea76e9..5e62ad89 100644\n--- a/sanic/__version__.py\n+++ b/sanic/__version__.py\n@@ -1 +1 @@\n-__version__ = \"23.12.0\"\n+__version__ = \"23.12.1\"",
+        "tests/test_websockets.py": "index dd8413b9..5809cfc0 100644\n--- a/tests/test_websockets.py\n+++ b/tests/test_websockets.py\n@@ -5,7 +5,7 @@ from unittest.mock import Mock, call\n \n import pytest\n \n-from websockets.frames import CTRL_OPCODES, DATA_OPCODES, Frame\n+from websockets.frames import CTRL_OPCODES, DATA_OPCODES, Frame, OP_TEXT\n \n from sanic.exceptions import ServerError\n from sanic.server.websockets.frame import WebsocketFrameAssembler\n@@ -210,17 +210,14 @@ async def test_ws_frame_put_message_complete(opcode):\n @pytest.mark.asyncio\n @pytest.mark.parametrize(\"opcode\", DATA_OPCODES)\n async def test_ws_frame_put_message_into_queue(opcode):\n+    foo = 'foo' if (opcode == OP_TEXT) else b\"foo\"\n     assembler = WebsocketFrameAssembler(Mock())\n     assembler.chunks_queue = AsyncMock(spec=Queue)\n     assembler.message_fetched = AsyncMock()\n     assembler.message_fetched.is_set = Mock(return_value=False)\n-\n     await assembler.put(Frame(opcode, b\"foo\"))\n \n-    assembler.chunks_queue.put.has_calls(\n-        call(b\"foo\"),\n-        call(None),\n-    )\n+    assert assembler.chunks_queue.put.call_args_list == [call(foo), call(None)]\n \n \n @pytest.mark.asyncio\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

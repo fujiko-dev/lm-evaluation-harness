@@ -1,0 +1,20 @@
+{
+  "timestamp": "2025-09-07T23:16:05.773503",
+  "model_key": "deepseek-v3",
+  "progress": {
+    "current_sample": 30,
+    "total_samples": 50,
+    "completion_rate": 0.6
+  },
+  "statistics": {
+    "total_processed": 30,
+    "successful": 30,
+    "failed": 0,
+    "success_rate": 1.0
+  },
+  "current_metrics": {
+    "avg_f1_score": 0.0,
+    "avg_precision": 0.0,
+    "avg_recall": 0.0
+  }
+}

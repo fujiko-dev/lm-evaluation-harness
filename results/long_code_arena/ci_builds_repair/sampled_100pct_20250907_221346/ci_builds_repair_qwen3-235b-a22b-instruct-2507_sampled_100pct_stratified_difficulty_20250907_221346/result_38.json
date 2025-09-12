@@ -1,0 +1,45 @@
+{
+  "timestamp": "2025-09-07T22:22:28.175072",
+  "sample_info": {
+    "index": 15,
+    "original_index": 15,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 38,
+  "repo_owner": "beetbox",
+  "repo_name": "beets",
+  "difficulty": 0,
+  "generation_time": 29.509526014328003,
+  "prediction": "### 1. **Analysis of the Failure Cause**\n\nThe CI workflow fails during the **formatting check** step with the following key error:\n\n```\nERROR: /home/runner/work/beets/beets/beetsplug/edit.py Imports are incorrectly sorted and/or formatted.\n```\n\nThis indicates that the `isort` tool (which checks import sorting in Python files) detected that the imports in `beetsplug/edit.py` are not properly sorted.\n\nThe workflow uses `tox` with the environment `format_check`, which runs:\n```bash\nisort beets beetsplug test --check\n```\n\nThe `--check` flag means \"verify formatting without making changes\" — so if any file has unsorted imports, it fails.\n\nAdditionally, we observe:\n- The cache was restored successfully, but tox recreated the environment due to a `virtualenv` version change (from 20.24.5 to 20.25.0). This is normal and not the root cause.\n- No issues with dependency installation; `tox`, `isort`, and `black` were installed correctly.\n- The failure is **not** in `black` (which would report \"would reformat\"), but specifically in `isort`.\n\nThus, the root cause is:  \n> **One or more Python files (specifically `beetsplug/edit.py`) have incorrectly sorted imports, violating the project's `isort` configuration.**\n\nThis likely happened because:\n- A recent commit (`0d26cc1482ff5080ec579b17b29f22657a20c562`) introduced unsorted imports.\n- The developer did not run `isort` locally before pushing.\n- The CI enforces import sorting via `isort --check`, and it failed.\n\n---\n\n### 2. **Specific Changes Needed to Fix the Issue**\n\nThere are **two possible approaches**:\n\n#### ✅ **Recommended Fix: Re-run `isort` on the affected file(s) and commit the changes**\nWe should format the file(s) using `isort` so that the CI passes.\n\nSince the error points to `beetsplug/edit.py`, we need to run:\n```bash\nisort beetsplug/edit.py\n```\n\nThen commit the reformatted file.\n\nHowever, since we're only allowed to modify the **workflow configuration** (as per the task), and **not the source code**, we must consider whether the workflow itself is at fault.\n\nBut wait: the **workflow is correct** — it's doing its job by catching a formatting issue.\n\nSo unless we want to **disable** the check (not recommended), the real fix is to **reformat the code**.\n\nBut the task says: *\"fixing a failing GitHub Actions CI workflow\"*, implying we can change the workflow config.\n\nSo if we **cannot modify source code**, the only acceptable workaround is to **ensure consistency in formatting tools**, possibly by pinning versions or using cached tools.\n\nHowever, in this case, the failure is **not due to a workflow misconfiguration**, but due to **dirty code**.\n\nBut let's double-check: could this be a **non-deterministic failure** due to dependency drift?\n\nLooking at logs:\n- `isort` was installed as a transitive dependency of `tox`, but **not pinned**.\n- The version of `isort` may vary depending on when the environment is built.\n- A newer version of `isort` might sort imports differently based on updated rules.\n\nWait — in the log:\n```bash\npython -I -m pip install black isort\n```\nThis installs the **latest** versions of `black` and `isort`.\n\nThis is risky: if `isort` changes its default behavior (e.g., in how it groups imports), previously valid files may now fail.\n\nHence, **lack of version pinning** could cause **non-deterministic CI failures**.\n\nBut in this case, the previous commit (`828c6e7d`) passed, and the current one failed — and the only change is the source code.\n\nSo unless the cache was missed or a new `isort` version was pulled, it's likely the **code change** is at fault.\n\nBut to **prevent future drift**, we should **pin** `black` and `isort` versions in the `tox.ini` or at least in the workflow.\n\nHowever, the workflow doesn't control that directly — it just runs `tox` with `tox_env: format_check`, which presumably defines the deps.\n\nSo the **best fix within the workflow** is to ensure **deterministic dependency resolution**.\n\nBut we already have:\n```yaml\nenv:\n  PIP_INDEX_URL: http://localhost:8629/2023-12-23\n  UV_INDEX_URL: http://localhost:86",
+  "evaluation": {
+    "success": false,
+    "score": 0.46328637785572097,
+    "explanation": "Similarity: 0.105, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.10547729642620154,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "beetsplug/edit.py": [
+          "ERROR: /home/runner/work/beets/beets/beetsplug/edit.py Imports are incorrectly sorted and/or formatted.",
+          "isort beets beetsplug test --check",
+          "isort beetsplug/edit.py",
+          "python -I -m pip install black isort"
+        ],
+        "tox.ini": [
+          "ERROR: /home/runner/work/beets/beets/beetsplug/edit.py Imports are incorrectly sorted and/or formatted.",
+          "isort beets beetsplug test --check",
+          "isort beetsplug/edit.py",
+          "python -I -m pip install black isort"
+        ]
+      },
+      "target_changes": {
+        "beetsplug/advancedrewrite.py": "index 639aa5247..20f2b7e03 100644\n--- a/beetsplug/advancedrewrite.py\n+++ b/beetsplug/advancedrewrite.py\n@@ -161,7 +161,7 @@ class AdvancedRewritePlugin(BeetsPlugin):\n                             )\n                     elif isinstance(replacement, str):\n                         if Item._fields[fieldname] is MULTI_VALUE_DSV:\n-                            replacement = list(replacement)\n+                            replacement = [replacement]\n                     else:\n                         raise UserError(\n                             f\"Invalid type of replacement {replacement} \"",
+        "beetsplug/edit.py": "index 8a07fccaa..323dd9e41 100644\n--- a/beetsplug/edit.py\n+++ b/beetsplug/edit.py\n@@ -23,7 +23,7 @@ from tempfile import NamedTemporaryFile\n \n import yaml\n \n-from beets import plugins, ui, util, config\n+from beets import plugins, ui, util\n from beets.dbcore import types\n from beets.importer import action\n from beets.ui.commands import PromptChoice, _do_query\n@@ -155,8 +155,6 @@ class EditPlugin(plugins.BeetsPlugin):\n             }\n         )\n \n-        self.has_shown_ui = False\n-\n         self.register_listener(\n             \"before_choose_candidate\", self.before_choose_candidate_listener\n         )\n@@ -238,23 +236,11 @@ class EditPlugin(plugins.BeetsPlugin):\n         # Get the content to edit as raw data structures.\n         old_data = [flatten(o, fields) for o in objs]\n \n-        # take set fields into account\n-        set_fields = config[\"import\"][\"set_fields\"]\n-        if set_fields and not self.has_shown_ui:\n-            old_str = \"\\n\\n# note: the following fields will be reset to their current values:\\n\"\n-            for key in set_fields:\n-                old_str += f\"# - {key}\\n\"\n-            for obj in old_data:\n-                # those values will be enforced later anyway\n-                obj.update({k:v.get() for k,v in set_fields.items()})\n-        else:\n-            old_str = \"\"\n-\n         # Set up a temporary file with the initial data for editing.\n         new = NamedTemporaryFile(\n             mode=\"w\", suffix=\".yaml\", delete=False, encoding=\"utf-8\"\n         )\n-        old_str = dump(old_data) + old_str\n+        old_str = dump(old_data)\n         new.write(old_str)\n         new.close()\n \n@@ -263,7 +249,6 @@ class EditPlugin(plugins.BeetsPlugin):\n             while True:\n                 # Ask the user to edit the data.\n                 edit(new.name, self._log)\n-                self.has_shown_ui = True\n \n                 # Read the data back after editing and check whether anything\n                 # changed.",
+        "beetsplug/web/__init__.py": "index cebb0be0a..cd7e8a3fc 100644\n--- a/beetsplug/web/__init__.py\n+++ b/beetsplug/web/__init__.py\n@@ -336,7 +336,6 @@ def item_file(item_id):\n     response = flask.send_file(\n         item_path, as_attachment=True, download_name=safe_filename\n     )\n-    response.headers[\"Content-Length\"] = os.path.getsize(item_path)\n     return response\n \n ",
+        "docs/changelog.rst": "index 73cc10f3d..b3b63f1c2 100644\n--- a/docs/changelog.rst\n+++ b/docs/changelog.rst\n@@ -279,6 +279,8 @@ Bug fixes:\n   :bug:`4973`\n * Fix bug regarding displaying tracks that have been changed not being\n   displayed unless the detail configuration is enabled.\n+* :doc:`/plugins/web`: Fix range request support, allowing to play large audio/\n+  opus files using e.g. a browser/firefox or gstreamer/mopidy directly.\n \n For plugin developers:\n \n"
+      },
+      "difficulty": 0
+    }
+  }
+}

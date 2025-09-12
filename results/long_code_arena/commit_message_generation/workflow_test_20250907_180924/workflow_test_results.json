@@ -1,0 +1,98 @@
+{
+  "test_info": {
+    "model": "qwen3-235b-a22b-instruct-2507 (模拟)",
+    "api_provider": "qianfan (模拟)",
+    "task": "lca_commit_message_generation",
+    "num_samples": 5,
+    "timestamp": "20250907_180924"
+  },
+  "average_metrics": {
+    "cmg_bleu": 0.0013760998800317788,
+    "cmg_chrf": 7.597864779260911,
+    "cmg_rouge1": 1.1111111111111112,
+    "cmg_rouge2": 0.0,
+    "cmg_rougeL": 1.1111111111111112,
+    "cmg_bnorm": 0.00020344269711427472
+  },
+  "detailed_results": [
+    {
+      "prediction": "Add new feature implementation",
+      "reference": "Support CUDA stream on memory pool\n\nNow, memory pool will have an arena (bins) for each stream\nto avoid concurrent streams touch the same memory block",
+      "hash": "c27d31c06520c3df4c820ea10d5d16316f4d88cb",
+      "repo": "cupy/cupy",
+      "cmg_bleu": 0.0,
+      "cmg_chrf": 5.754738389821619,
+      "cmg_bertscore": 0.0,
+      "cmg_bnorm": 0.00013673111219580488,
+      "cmg_rouge1": 0.0,
+      "cmg_rouge2": 0.0,
+      "cmg_rougeL": 0.0
+    },
+    {
+      "prediction": "Add new feature implementation",
+      "reference": "Complete overhaul of filter testing.\n\nThese tests are much more flexible now for when additional filters are added.",
+      "hash": "6683a9aa7bae67e855cd9d1f17fdc49eb3f6dea0",
+      "repo": "cupy/cupy",
+      "cmg_bleu": 0.0,
+      "cmg_chrf": 8.899921768485479,
+      "cmg_bertscore": 0.0,
+      "cmg_bnorm": 0.0007868332241352184,
+      "cmg_rouge1": 0.0,
+      "cmg_rouge2": 0.0,
+      "cmg_rougeL": 0.0
+    },
+    {
+      "prediction": "Add new feature implementation",
+      "reference": "Use \"import numpy as np\" in the array_api submodule\n\nThis avoids importing everything inside the individual functions, but still is\npreferred over importing the functions used explicitly, as most of them clash\nwith the wrapper function names.",
+      "hash": "dad51485282b6e05c4993b0733bd54aa3c0bacef",
+      "repo": "cupy/cupy",
+      "cmg_bleu": 0.0,
+      "cmg_chrf": 4.441533605796369,
+      "cmg_bertscore": 0.0,
+      "cmg_bnorm": 5.3016405613426395e-06,
+      "cmg_rouge1": 0.0,
+      "cmg_rouge2": 0.0,
+      "cmg_rougeL": 0.0
+    },
+    {
+      "prediction": "Add new feature implementation",
+      "reference": "Use _implementation on all functions that have it in the array API submodule\n\nThat way they only work on actual ndarray inputs, not array-like, which is\nmore inline with the spec.",
+      "hash": "76eb888612183768d9e1b0c818fcf5416c5f28c7",
+      "repo": "cupy/cupy",
+      "cmg_bleu": 0.006880499400158894,
+      "cmg_chrf": 12.438128929652148,
+      "cmg_bertscore": 0.0,
+      "cmg_bnorm": 2.3760304558630268e-05,
+      "cmg_rouge1": 5.555555555555555,
+      "cmg_rouge2": 0.0,
+      "cmg_rougeL": 5.555555555555555
+    },
+    {
+      "prediction": "Add new feature implementation",
+      "reference": "Use better type signatures in the array API module\n\nThis includes returning custom dataclasses for finfo and iinfo that only\ncontain the properties required by the array API specification.",
+      "hash": "994ce07595026d5de54f52ef5748b578f9fae1bc",
+      "repo": "cupy/cupy",
+      "cmg_bleu": 0.0,
+      "cmg_chrf": 6.455001202548938,
+      "cmg_bertscore": 0.0,
+      "cmg_bnorm": 6.458720412037727e-05,
+      "cmg_rouge1": 0.0,
+      "cmg_rouge2": 0.0,
+      "cmg_rougeL": 0.0
+    }
+  ],
+  "predictions": [
+    "Add new feature implementation",
+    "Add new feature implementation",
+    "Add new feature implementation",
+    "Add new feature implementation",
+    "Add new feature implementation"
+  ],
+  "references": [
+    "Support CUDA stream on memory pool\n\nNow, memory pool will have an arena (bins) for each stream\nto avoid concurrent streams touch the same memory block",
+    "Complete overhaul of filter testing.\n\nThese tests are much more flexible now for when additional filters are added.",
+    "Use \"import numpy as np\" in the array_api submodule\n\nThis avoids importing everything inside the individual functions, but still is\npreferred over importing the functions used explicitly, as most of them clash\nwith the wrapper function names.",
+    "Use _implementation on all functions that have it in the array API submodule\n\nThat way they only work on actual ndarray inputs, not array-like, which is\nmore inline with the spec.",
+    "Use better type signatures in the array API module\n\nThis includes returning custom dataclasses for finfo and iinfo that only\ncontain the properties required by the array API specification."
+  ]
+}

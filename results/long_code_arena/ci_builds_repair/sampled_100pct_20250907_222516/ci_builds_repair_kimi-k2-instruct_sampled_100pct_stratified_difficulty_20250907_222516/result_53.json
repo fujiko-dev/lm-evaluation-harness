@@ -1,0 +1,54 @@
+{
+  "timestamp": "2025-09-07T22:34:29.978940",
+  "sample_info": {
+    "index": 22,
+    "original_index": 22,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 53,
+  "repo_owner": "yt-dlp",
+  "repo_name": "yt-dlp",
+  "difficulty": 1,
+  "generation_time": 25.515422105789185,
+  "prediction": "## Analysis of the Failure Cause\n\nThe CI workflow is failing because there's a missing Python module: `yt_dlp.extractor.elevensports`. The error occurs in both the \"Linter\" and \"Core Test\" jobs when trying to import from `yt_dlp.extractor._extractors.py`, which attempts to import `ElevenSportsIE` from `.elevensports`.\n\nLooking at the error traceback:\n1. `devscripts/make_lazy_extractors.py` tries to import from `yt_dlp.extractor.extractors`\n2. `yt_dlp/extractor/extractors.py` imports from `._extractors`\n3. `yt_dlp/extractor/_extractors.py` line 544 tries to import `from .elevensports import ElevenSportsIE`\n4. The module `yt_dlp/extractor/elevensports.py` is missing\n\nThis suggests that the `elevensports.py` file was either:\n- Accidentally deleted in the failed commit (e29a1f6d5a51a55349b025c23fa01bddb8858a71)\n- Not properly included in the repository\n- Has a naming issue (wrong filename or case sensitivity issue)\n\n## Specific Changes Needed\n\nThe fix is to restore the missing `elevensports.py` file in the `yt_dlp/extractor/` directory. Based on the import statement, this file should contain the `ElevenSportsIE` class.\n\nSince we don't have access to the actual file content from the success commit (96e3af9c5cdc78606196e9b04023eb263f85821a), we need to create a minimal valid extractor file that satisfies the import requirement.\n\n## Modified Code/Configuration\n\nCreate the missing file `yt_dlp/extractor/elevensports.py` with the following content:\n\n```python\n# yt_dlp/extractor/elevensports.py\n\nfrom .common import InfoExtractor\n\n\nclass ElevenSportsIE(InfoExtractor):\n    _VALID_URL = r'https?://(?:www\\.)?elevensports\\.com/view\\?[^#]*(?:id=(?P<id>\\d+))'\n    _TESTS = []\n\n    def _real_extract(self, url):\n        # Minimal implementation to satisfy the import\n        video_id = self._match_id(url)\n        return {\n            'id': video_id,\n            'title': 'Eleven Sports Video',\n            'url': url,\n        }\n```\n\nThis is a minimal implementation that:\n1. Defines the required `ElevenSportsIE` class\n2. Inherits from `InfoExtractor` (following yt-dlp's pattern)\n3. Includes basic structure with `_VALID_URL`, `_TESTS`, and `_real_extract`\n4. Will allow the imports to succeed without causing additional errors\n\nThe actual implementation can be enhanced later with proper extraction logic, but this minimal version should resolve the immediate CI failure.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6700582100412321,
+    "explanation": "Similarity: 0.450, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.4500970167353869,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "yt_dlp/extractor/elevensports.py": [
+          "# yt_dlp/extractor/elevensports.py\n\nfrom .common import InfoExtractor\n\n\nclass ElevenSportsIE(InfoExtractor):\n    _VALID_URL = r'https?://(?:www\\.)?elevensports\\.com/view\\?[^#]*(?:id=(?P<id>\\d+))'\n    _TESTS = []\n\n    def _real_extract(self, url):\n        # Minimal implementation to satisfy the import\n        video_id = self._match_id(url)\n        return {\n            'id': video_id,\n            'title': 'Eleven Sports Video',\n            'url': url,\n        }"
+        ],
+        "yt_dlp.extractor.elevensports": [
+          "# yt_dlp/extractor/elevensports.py\n\nfrom .common import InfoExtractor\n\n\nclass ElevenSportsIE(InfoExtractor):\n    _VALID_URL = r'https?://(?:www\\.)?elevensports\\.com/view\\?[^#]*(?:id=(?P<id>\\d+))'\n    _TESTS = []\n\n    def _real_extract(self, url):\n        # Minimal implementation to satisfy the import\n        video_id = self._match_id(url)\n        return {\n            'id': video_id,\n            'title': 'Eleven Sports Video',\n            'url': url,\n        }"
+        ],
+        "yt_dlp.extractor._extractors.py": [
+          "# yt_dlp/extractor/elevensports.py\n\nfrom .common import InfoExtractor\n\n\nclass ElevenSportsIE(InfoExtractor):\n    _VALID_URL = r'https?://(?:www\\.)?elevensports\\.com/view\\?[^#]*(?:id=(?P<id>\\d+))'\n    _TESTS = []\n\n    def _real_extract(self, url):\n        # Minimal implementation to satisfy the import\n        video_id = self._match_id(url)\n        return {\n            'id': video_id,\n            'title': 'Eleven Sports Video',\n            'url': url,\n        }"
+        ],
+        "devscripts/make_lazy_extractors.py": [
+          "# yt_dlp/extractor/elevensports.py\n\nfrom .common import InfoExtractor\n\n\nclass ElevenSportsIE(InfoExtractor):\n    _VALID_URL = r'https?://(?:www\\.)?elevensports\\.com/view\\?[^#]*(?:id=(?P<id>\\d+))'\n    _TESTS = []\n\n    def _real_extract(self, url):\n        # Minimal implementation to satisfy the import\n        video_id = self._match_id(url)\n        return {\n            'id': video_id,\n            'title': 'Eleven Sports Video',\n            'url': url,\n        }"
+        ],
+        "yt_dlp.extractor.extractors": [
+          "# yt_dlp/extractor/elevensports.py\n\nfrom .common import InfoExtractor\n\n\nclass ElevenSportsIE(InfoExtractor):\n    _VALID_URL = r'https?://(?:www\\.)?elevensports\\.com/view\\?[^#]*(?:id=(?P<id>\\d+))'\n    _TESTS = []\n\n    def _real_extract(self, url):\n        # Minimal implementation to satisfy the import\n        video_id = self._match_id(url)\n        return {\n            'id': video_id,\n            'title': 'Eleven Sports Video',\n            'url': url,\n        }"
+        ],
+        "yt_dlp/extractor/extractors.py": [
+          "# yt_dlp/extractor/elevensports.py\n\nfrom .common import InfoExtractor\n\n\nclass ElevenSportsIE(InfoExtractor):\n    _VALID_URL = r'https?://(?:www\\.)?elevensports\\.com/view\\?[^#]*(?:id=(?P<id>\\d+))'\n    _TESTS = []\n\n    def _real_extract(self, url):\n        # Minimal implementation to satisfy the import\n        video_id = self._match_id(url)\n        return {\n            'id': video_id,\n            'title': 'Eleven Sports Video',\n            'url': url,\n        }"
+        ],
+        "yt_dlp/extractor/_extractors.py": [
+          "# yt_dlp/extractor/elevensports.py\n\nfrom .common import InfoExtractor\n\n\nclass ElevenSportsIE(InfoExtractor):\n    _VALID_URL = r'https?://(?:www\\.)?elevensports\\.com/view\\?[^#]*(?:id=(?P<id>\\d+))'\n    _TESTS = []\n\n    def _real_extract(self, url):\n        # Minimal implementation to satisfy the import\n        video_id = self._match_id(url)\n        return {\n            'id': video_id,\n            'title': 'Eleven Sports Video',\n            'url': url,\n        }"
+        ],
+        "elevensports.py": [
+          "# yt_dlp/extractor/elevensports.py\n\nfrom .common import InfoExtractor\n\n\nclass ElevenSportsIE(InfoExtractor):\n    _VALID_URL = r'https?://(?:www\\.)?elevensports\\.com/view\\?[^#]*(?:id=(?P<id>\\d+))'\n    _TESTS = []\n\n    def _real_extract(self, url):\n        # Minimal implementation to satisfy the import\n        video_id = self._match_id(url)\n        return {\n            'id': video_id,\n            'title': 'Eleven Sports Video',\n            'url': url,\n        }"
+        ]
+      },
+      "target_changes": {
+        "yt_dlp/extractor/_extractors.py": "index e5c6b219e..0667a5255 100644\n--- a/yt_dlp/extractor/_extractors.py\n+++ b/yt_dlp/extractor/_extractors.py\n@@ -541,12 +541,6 @@\n from .einthusan import EinthusanIE\n from .eitb import EitbIE\n from .elemental_tv import ElementalTVIE\n-from .elevensports import ElevenSportsIE\n-from .ellentube import (\n-    EllenTubeIE,\n-    EllenTubeVideoIE,\n-    EllenTubePlaylistIE,\n-)\n from .elonet import ElonetIE\n from .elpais import ElPaisIE\n from .eltrecetv import ElTreceTVIE\n"
+      },
+      "difficulty": 1
+    }
+  }
+}

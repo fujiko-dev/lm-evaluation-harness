@@ -1,0 +1,300 @@
+{
+  "evaluation_summary": {
+    "total_models": 2,
+    "successful_models": 2,
+    "failed_models": 0,
+    "total_time_minutes": 0.4139302690823873,
+    "timestamp": "2025-09-07T23:24:50.101293",
+    "output_directory": "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/results/long_code_arena/commit_message_generation/multi_model_eval_20250907_232425"
+  },
+  "model_summaries": [
+    {
+      "model_name": "qwen3-235b-a22b-instruct-2507",
+      "display_name": "Qwen3-235B",
+      "success_rate": 100.0,
+      "total_time_minutes": 0.26291491587956745,
+      "metrics": {
+        "cmg_bleu": 3.996716974148929,
+        "cmg_chrf": 36.43607510229633,
+        "cmg_rouge1": 32.30086105702907,
+        "cmg_rouge2": 10.073368924801304,
+        "cmg_rougeL": 23.457428271845302,
+        "cmg_bnorm": 0.028002815565157123
+      }
+    },
+    {
+      "model_name": "qwen3-30b-a3b-instruct-2507",
+      "display_name": "Qwen3-30B",
+      "success_rate": 100.0,
+      "total_time_minutes": 0.15101535320281984,
+      "metrics": {
+        "cmg_bleu": 2.2119704889516507,
+        "cmg_chrf": 33.93743174939973,
+        "cmg_rouge1": 22.836860838993793,
+        "cmg_rouge2": 5.678088278858497,
+        "cmg_rougeL": 17.045655954294418,
+        "cmg_bnorm": 0.012749741081604574
+      }
+    }
+  ],
+  "detailed_results": {
+    "qwen3-235b-a22b-instruct-2507": {
+      "evaluation_info": {
+        "model": "qwen3-235b-a22b-instruct-2507",
+        "display_name": "Qwen3-235B",
+        "api_provider": "qianfan",
+        "task": "lca_commit_message_generation",
+        "total_samples": 5,
+        "successful_samples": 5,
+        "failed_samples": 0,
+        "success_rate": 100.0,
+        "total_time_minutes": 0.26291491587956745,
+        "avg_time_per_sample_seconds": 3.1549789905548096,
+        "timestamp": "2025-09-07T23:24:41.037888"
+      },
+      "final_metrics": {
+        "cmg_bleu": 3.996716974148929,
+        "cmg_chrf": 36.43607510229633,
+        "cmg_rouge1": 32.30086105702907,
+        "cmg_rouge2": 10.073368924801304,
+        "cmg_rougeL": 23.457428271845302,
+        "cmg_bnorm": 0.028002815565157123
+      },
+      "detailed_results": [
+        {
+          "prediction": "Add stream-aware memory pooling\n\nMemory allocation and deallocation now track the current CUDA stream. Free lists are maintained per stream to avoid synchronization issues. Allocations on different streams do not reuse memory from each other, improving concurrency in multi-stream applications.",
+          "reference": "Support CUDA stream on memory pool\n\nNow, memory pool will have an arena (bins) for each stream\nto avoid concurrent streams touch the same memory block",
+          "hash": "c27d31c06520c3df4c820ea10d5d16316f4d88cb",
+          "repo": "cupy/cupy",
+          "cmg_bleu": 4.848189163173709,
+          "cmg_chrf": 42.49657417430631,
+          "cmg_bertscore": 0.0,
+          "cmg_bnorm": 0.03477230085728423,
+          "cmg_rouge1": 44.11764705882353,
+          "cmg_rouge2": 12.121212121212121,
+          "cmg_rougeL": 26.47058823529412,
+          "sample_index": 1,
+          "api_duration_seconds": 2.765547752380371,
+          "input_length": 29661,
+          "prediction_length": 294,
+          "reference_length": 150
+        },
+        {
+          "prediction": "Refactor filter tests to use a common base class\n\nIntroduce a shared base class for parameterized filter tests to reduce code duplication and improve maintainability. The base class provides utility methods and properties that handle common test setup, parameter processing, and filtering operations across different types of filters (convolve, correlate, minimum, maximum). Test configurations are reorganized into reusable parameter sets, and redundant test classes are eliminated. Special cases and error conditions are preserved while simplifying the overall test structure.",
+          "reference": "Complete overhaul of filter testing.\n\nThese tests are much more flexible now for when additional filters are added.",
+          "hash": "6683a9aa7bae67e855cd9d1f17fdc49eb3f6dea0",
+          "repo": "cupy/cupy",
+          "cmg_bleu": 0.6842684067636229,
+          "cmg_chrf": 24.896344677467436,
+          "cmg_bertscore": 0.0,
+          "cmg_bnorm": 0.003526075591070847,
+          "cmg_rouge1": 16.49484536082474,
+          "cmg_rouge2": 4.2105263157894735,
+          "cmg_rougeL": 12.371134020618557,
+          "sample_index": 2,
+          "api_duration_seconds": 4.123222589492798,
+          "input_length": 26283,
+          "prediction_length": 578,
+          "reference_length": 115
+        },
+        {
+          "prediction": "Use numpy namespace directly in array API functions\n\nAvoids relative imports from parent modules by importing numpy as np at the top of each file and using np.func() directly. This simplifies the code and makes the source of each function more explicit.",
+          "reference": "Use \"import numpy as np\" in the array_api submodule\n\nThis avoids importing everything inside the individual functions, but still is\npreferred over importing the functions used explicitly, as most of them clash\nwith the wrapper function names.",
+          "hash": "dad51485282b6e05c4993b0733bd54aa3c0bacef",
+          "repo": "cupy/cupy",
+          "cmg_bleu": 4.233459940459164,
+          "cmg_chrf": 36.28179697354772,
+          "cmg_bertscore": 0.0,
+          "cmg_bnorm": 0.014075201396928742,
+          "cmg_rouge1": 44.44444444444444,
+          "cmg_rouge2": 10.126582278481013,
+          "cmg_rougeL": 29.629629629629633,
+          "sample_index": 3,
+          "api_duration_seconds": 2.3880577087402344,
+          "input_length": 19000,
+          "prediction_length": 253,
+          "reference_length": 242
+        },
+        {
+          "prediction": "Use _implementation attribute for NumPy function calls\n\nAll function calls in the array API module now use the `_implementation` attribute instead of calling the functions directly. This change ensures consistent dispatch behavior and proper handling of array-like objects through NumPy's dispatch mechanism.",
+          "reference": "Use _implementation on all functions that have it in the array API submodule\n\nThat way they only work on actual ndarray inputs, not array-like, which is\nmore inline with the spec.",
+          "hash": "76eb888612183768d9e1b0c818fcf5416c5f28c7",
+          "repo": "cupy/cupy",
+          "cmg_bleu": 7.709809119483252,
+          "cmg_chrf": 40.39771540312884,
+          "cmg_bertscore": 0.0,
+          "cmg_bnorm": 0.07519167501083591,
+          "cmg_rouge1": 28.947368421052634,
+          "cmg_rouge2": 16.216216216216218,
+          "cmg_rougeL": 26.31578947368421,
+          "sample_index": 4,
+          "api_duration_seconds": 2.1192986965179443,
+          "input_length": 12075,
+          "prediction_length": 308,
+          "reference_length": 179
+        },
+        {
+          "prediction": "Add type hints and array API compliance improvements\n\n- Added return type annotations to Array class properties and methods\n- Updated asarray to accept Array as input type\n- Added finfo_object and iinfo_object dataclasses to comply with array API spec\n- Modified concat and stack to accept both tuples and lists of arrays",
+          "reference": "Use better type signatures in the array API module\n\nThis includes returning custom dataclasses for finfo and iinfo that only\ncontain the properties required by the array API specification.",
+          "hash": "994ce07595026d5de54f52ef5748b578f9fae1bc",
+          "repo": "cupy/cupy",
+          "cmg_bleu": 2.507858240864897,
+          "cmg_chrf": 38.107944283031344,
+          "cmg_bertscore": 0.0,
+          "cmg_bnorm": 0.012448824969665883,
+          "cmg_rouge1": 27.500000000000004,
+          "cmg_rouge2": 7.692307692307692,
+          "cmg_rougeL": 22.500000000000004,
+          "sample_index": 5,
+          "api_duration_seconds": 2.5440120697021484,
+          "input_length": 6025,
+          "prediction_length": 321,
+          "reference_length": 188
+        }
+      ],
+      "predictions": [
+        "Add stream-aware memory pooling\n\nMemory allocation and deallocation now track the current CUDA stream. Free lists are maintained per stream to avoid synchronization issues. Allocations on different streams do not reuse memory from each other, improving concurrency in multi-stream applications.",
+        "Refactor filter tests to use a common base class\n\nIntroduce a shared base class for parameterized filter tests to reduce code duplication and improve maintainability. The base class provides utility methods and properties that handle common test setup, parameter processing, and filtering operations across different types of filters (convolve, correlate, minimum, maximum). Test configurations are reorganized into reusable parameter sets, and redundant test classes are eliminated. Special cases and error conditions are preserved while simplifying the overall test structure.",
+        "Use numpy namespace directly in array API functions\n\nAvoids relative imports from parent modules by importing numpy as np at the top of each file and using np.func() directly. This simplifies the code and makes the source of each function more explicit.",
+        "Use _implementation attribute for NumPy function calls\n\nAll function calls in the array API module now use the `_implementation` attribute instead of calling the functions directly. This change ensures consistent dispatch behavior and proper handling of array-like objects through NumPy's dispatch mechanism.",
+        "Add type hints and array API compliance improvements\n\n- Added return type annotations to Array class properties and methods\n- Updated asarray to accept Array as input type\n- Added finfo_object and iinfo_object dataclasses to comply with array API spec\n- Modified concat and stack to accept both tuples and lists of arrays"
+      ],
+      "references": [
+        "Support CUDA stream on memory pool\n\nNow, memory pool will have an arena (bins) for each stream\nto avoid concurrent streams touch the same memory block",
+        "Complete overhaul of filter testing.\n\nThese tests are much more flexible now for when additional filters are added.",
+        "Use \"import numpy as np\" in the array_api submodule\n\nThis avoids importing everything inside the individual functions, but still is\npreferred over importing the functions used explicitly, as most of them clash\nwith the wrapper function names.",
+        "Use _implementation on all functions that have it in the array API submodule\n\nThat way they only work on actual ndarray inputs, not array-like, which is\nmore inline with the spec.",
+        "Use better type signatures in the array API module\n\nThis includes returning custom dataclasses for finfo and iinfo that only\ncontain the properties required by the array API specification."
+      ]
+    },
+    "qwen3-30b-a3b-instruct-2507": {
+      "evaluation_info": {
+        "model": "qwen3-30b-a3b-instruct-2507",
+        "display_name": "Qwen3-30B",
+        "api_provider": "qianfan",
+        "task": "lca_commit_message_generation",
+        "total_samples": 5,
+        "successful_samples": 5,
+        "failed_samples": 0,
+        "success_rate": 100.0,
+        "total_time_minutes": 0.15101535320281984,
+        "avg_time_per_sample_seconds": 1.8121842384338378,
+        "timestamp": "2025-09-07T23:24:50.100820"
+      },
+      "final_metrics": {
+        "cmg_bleu": 2.2119704889516507,
+        "cmg_chrf": 33.93743174939973,
+        "cmg_rouge1": 22.836860838993793,
+        "cmg_rouge2": 5.678088278858497,
+        "cmg_rougeL": 17.045655954294418,
+        "cmg_bnorm": 0.012749741081604574
+      },
+      "detailed_results": [
+        {
+          "prediction": "Add stream-aware memory pool with per-stream free lists\n\nThe change enables per-stream memory management in the memory pool by tracking stream pointers in chunks and organizing free lists per stream. This ensures memory allocations and deallocations are properly isolated per CUDA stream, preventing interference between concurrent operations on different streams. The implementation uses unordered_map to efficiently map stream handles to their respective free lists and index structures.",
+          "reference": "Support CUDA stream on memory pool\n\nNow, memory pool will have an arena (bins) for each stream\nto avoid concurrent streams touch the same memory block",
+          "hash": "c27d31c06520c3df4c820ea10d5d16316f4d88cb",
+          "repo": "cupy/cupy",
+          "cmg_bleu": 2.117321899866829,
+          "cmg_chrf": 35.277128348626434,
+          "cmg_bertscore": 0.0,
+          "cmg_bnorm": 0.011684012343962281,
+          "cmg_rouge1": 26.804123711340207,
+          "cmg_rouge2": 6.31578947368421,
+          "cmg_rougeL": 18.556701030927833,
+          "sample_index": 1,
+          "api_duration_seconds": 1.8073928356170654,
+          "input_length": 29661,
+          "prediction_length": 489,
+          "reference_length": 150
+        },
+        {
+          "prediction": "Refactor filter tests to use shared base class\n\nSimplify test code by extracting common functionality into a base test class.\nSupports testing across multiple filter types with consistent parameter handling.\nImproves maintainability and reduces code duplication.",
+          "reference": "Complete overhaul of filter testing.\n\nThese tests are much more flexible now for when additional filters are added.",
+          "hash": "6683a9aa7bae67e855cd9d1f17fdc49eb3f6dea0",
+          "repo": "cupy/cupy",
+          "cmg_bleu": 1.4104555382959003,
+          "cmg_chrf": 31.832381627125194,
+          "cmg_bertscore": 0.0,
+          "cmg_bnorm": 0.007110445841799621,
+          "cmg_rouge1": 14.814814814814813,
+          "cmg_rouge2": 3.8461538461538463,
+          "cmg_rougeL": 14.814814814814813,
+          "sample_index": 2,
+          "api_duration_seconds": 1.3885798454284668,
+          "input_length": 26283,
+          "prediction_length": 262,
+          "reference_length": 115
+        },
+        {
+          "prediction": "Replace internal imports with numpy module functions\n\nReplace all internal imports from `..` with direct calls to equivalent numpy functions, simplifying the codebase and improving performance by eliminating unnecessary indirection. The changes are consistent across all array API function modules, ensuring uniform behavior and reducing code complexity.",
+          "reference": "Use \"import numpy as np\" in the array_api submodule\n\nThis avoids importing everything inside the individual functions, but still is\npreferred over importing the functions used explicitly, as most of them clash\nwith the wrapper function names.",
+          "hash": "dad51485282b6e05c4993b0733bd54aa3c0bacef",
+          "repo": "cupy/cupy",
+          "cmg_bleu": 2.014497422069854,
+          "cmg_chrf": 35.01772882645695,
+          "cmg_bertscore": 0.0,
+          "cmg_bnorm": 0.01097844706897414,
+          "cmg_rouge1": 26.190476190476193,
+          "cmg_rouge2": 2.4390243902439024,
+          "cmg_rougeL": 16.666666666666664,
+          "sample_index": 3,
+          "api_duration_seconds": 1.3917198181152344,
+          "input_length": 19000,
+          "prediction_length": 354,
+          "reference_length": 242
+        },
+        {
+          "prediction": "Use implementation methods instead of direct numpy calls\n\nReplace direct calls to numpy functions with their `_implementation` counterparts to ensure consistent behavior and proper integration with the array API specification. This change centralizes the logic and avoids potential discrepancies between the public API and underlying implementations.",
+          "reference": "Use _implementation on all functions that have it in the array API submodule\n\nThat way they only work on actual ndarray inputs, not array-like, which is\nmore inline with the spec.",
+          "hash": "76eb888612183768d9e1b0c818fcf5416c5f28c7",
+          "repo": "cupy/cupy",
+          "cmg_bleu": 4.273297457822545,
+          "cmg_chrf": 34.49842394050914,
+          "cmg_bertscore": 0.0,
+          "cmg_bnorm": 0.027672537635680124,
+          "cmg_rouge1": 20.51282051282051,
+          "cmg_rouge2": 10.526315789473683,
+          "cmg_rougeL": 17.94871794871795,
+          "sample_index": 4,
+          "api_duration_seconds": 1.5524311065673828,
+          "input_length": 12075,
+          "prediction_length": 350,
+          "reference_length": 179
+        },
+        {
+          "prediction": "Add type hints and improve type safety in array API implementation\n\n- Added explicit type hints to properties and methods in Array class (dtype, device, ndim, shape, size, T)\n- Updated __len__ to include return type hint\n- Enhanced creation functions by including Array in type union for asarray\n- Improved type safety in manipulation functions by accepting both List and Tuple for arrays\n- Introduced dataclass-based finfo_object and iinfo_object for spec-compliant return types\n- Removed direct NumPy finfo/iinfo returns in favor of custom objects with proper typing",
+          "reference": "Use better type signatures in the array API module\n\nThis includes returning custom dataclasses for finfo and iinfo that only\ncontain the properties required by the array API specification.",
+          "hash": "994ce07595026d5de54f52ef5748b578f9fae1bc",
+          "repo": "cupy/cupy",
+          "cmg_bleu": 1.2442801267031234,
+          "cmg_chrf": 33.06149600428092,
+          "cmg_bertscore": 0.0,
+          "cmg_bnorm": 0.006303262517606707,
+          "cmg_rouge1": 25.862068965517242,
+          "cmg_rouge2": 5.2631578947368425,
+          "cmg_rougeL": 17.24137931034483,
+          "sample_index": 5,
+          "api_duration_seconds": 2.003222703933716,
+          "input_length": 6025,
+          "prediction_length": 568,
+          "reference_length": 188
+        }
+      ],
+      "predictions": [
+        "Add stream-aware memory pool with per-stream free lists\n\nThe change enables per-stream memory management in the memory pool by tracking stream pointers in chunks and organizing free lists per stream. This ensures memory allocations and deallocations are properly isolated per CUDA stream, preventing interference between concurrent operations on different streams. The implementation uses unordered_map to efficiently map stream handles to their respective free lists and index structures.",
+        "Refactor filter tests to use shared base class\n\nSimplify test code by extracting common functionality into a base test class.\nSupports testing across multiple filter types with consistent parameter handling.\nImproves maintainability and reduces code duplication.",
+        "Replace internal imports with numpy module functions\n\nReplace all internal imports from `..` with direct calls to equivalent numpy functions, simplifying the codebase and improving performance by eliminating unnecessary indirection. The changes are consistent across all array API function modules, ensuring uniform behavior and reducing code complexity.",
+        "Use implementation methods instead of direct numpy calls\n\nReplace direct calls to numpy functions with their `_implementation` counterparts to ensure consistent behavior and proper integration with the array API specification. This change centralizes the logic and avoids potential discrepancies between the public API and underlying implementations.",
+        "Add type hints and improve type safety in array API implementation\n\n- Added explicit type hints to properties and methods in Array class (dtype, device, ndim, shape, size, T)\n- Updated __len__ to include return type hint\n- Enhanced creation functions by including Array in type union for asarray\n- Improved type safety in manipulation functions by accepting both List and Tuple for arrays\n- Introduced dataclass-based finfo_object and iinfo_object for spec-compliant return types\n- Removed direct NumPy finfo/iinfo returns in favor of custom objects with proper typing"
+      ],
+      "references": [
+        "Support CUDA stream on memory pool\n\nNow, memory pool will have an arena (bins) for each stream\nto avoid concurrent streams touch the same memory block",
+        "Complete overhaul of filter testing.\n\nThese tests are much more flexible now for when additional filters are added.",
+        "Use \"import numpy as np\" in the array_api submodule\n\nThis avoids importing everything inside the individual functions, but still is\npreferred over importing the functions used explicitly, as most of them clash\nwith the wrapper function names.",
+        "Use _implementation on all functions that have it in the array API submodule\n\nThat way they only work on actual ndarray inputs, not array-like, which is\nmore inline with the spec.",
+        "Use better type signatures in the array API module\n\nThis includes returning custom dataclasses for finfo and iinfo that only\ncontain the properties required by the array API specification."
+      ]
+    }
+  }
+}

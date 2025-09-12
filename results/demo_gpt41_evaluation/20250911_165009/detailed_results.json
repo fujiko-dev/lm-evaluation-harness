@@ -1,0 +1,167 @@
+[
+  {
+    "text_id": "thealgorithms/python/295/289",
+    "repo_owner": "thealgorithms",
+    "repo_name": "python",
+    "prediction_text": "{\n  \"files\": [\n    \"Project Euler/Problem 01/sol2.py\"\n  ]\n}",
+    "predicted_files": [
+      "Project Euler/Problem 01/sol2.py"
+    ],
+    "target_files": [
+      "Project Euler/Problem 01/sol2.py"
+    ],
+    "all_files_count": 195,
+    "target_files_count": 1,
+    "predicted_files_count": 1,
+    "bug_loc_precision": 1.0,
+    "bug_loc_recall": 1.0,
+    "bug_loc_f1": 1.0,
+    "bug_loc_fpr": 0.0,
+    "bug_loc_all_correct": 1,
+    "bug_loc_at_least_one_correct": 1,
+    "bug_loc_all_incorrect": 0,
+    "bug_loc_target_files_rate": 0.005128205128205128,
+    "expected_files_count": 1,
+    "true_positives": 1,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "true_negatives": 194,
+    "inference_time": 2.3227341175079346
+  },
+  {
+    "text_id": "keras-team/keras/15943/15942",
+    "repo_owner": "keras-team",
+    "repo_name": "keras",
+    "prediction_text": "{\n  \"files\": [\n    \"keras/layers/convolutional.py\"\n  ]\n}",
+    "predicted_files": [
+      "keras/layers/convolutional.py"
+    ],
+    "target_files": [
+      "keras/layers/convolutional/base_conv.py"
+    ],
+    "all_files_count": 309,
+    "target_files_count": 1,
+    "predicted_files_count": 1,
+    "bug_loc_precision": 0.0,
+    "bug_loc_recall": 0.0,
+    "bug_loc_f1": 0.0,
+    "bug_loc_fpr": 0.003236245954692557,
+    "bug_loc_all_correct": 0,
+    "bug_loc_at_least_one_correct": 0,
+    "bug_loc_all_incorrect": 1,
+    "bug_loc_target_files_rate": 0.003236245954692557,
+    "expected_files_count": 1,
+    "true_positives": 0,
+    "false_positives": 1,
+    "false_negatives": 1,
+    "true_negatives": 308,
+    "inference_time": 3.082432985305786
+  },
+  {
+    "text_id": "serverless/serverless/5500/5499",
+    "repo_owner": "serverless",
+    "repo_name": "serverless",
+    "prediction_text": "{\n  \"files\": [\n    \"lib/plugins/aws/invokeLocal/invoke.py\"\n  ]\n}",
+    "predicted_files": [
+      "lib/plugins/aws/invokeLocal/invoke.py"
+    ],
+    "target_files": [
+      "lib/plugins/aws/invokeLocal/invoke.py"
+    ],
+    "all_files_count": 10,
+    "target_files_count": 1,
+    "predicted_files_count": 1,
+    "bug_loc_precision": 1.0,
+    "bug_loc_recall": 1.0,
+    "bug_loc_f1": 1.0,
+    "bug_loc_fpr": 0.0,
+    "bug_loc_all_correct": 1,
+    "bug_loc_at_least_one_correct": 1,
+    "bug_loc_all_incorrect": 0,
+    "bug_loc_target_files_rate": 0.1,
+    "expected_files_count": 1,
+    "true_positives": 1,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "true_negatives": 9,
+    "inference_time": 2.5591580867767334
+  },
+  {
+    "text_id": "textualize/rich/2212/2197",
+    "repo_owner": "textualize",
+    "repo_name": "rich",
+    "prediction_text": "{\n  \"files\": [\n    \"rich/__init__.py\",\n    \"rich/console.py\",\n    \"rich/_win32_console.py\",\n    \"rich/_windows.py\",\n    \"rich/_windows_renderer.py\"\n  ]\n}",
+    "predicted_files": [
+      "rich/__init__.py",
+      "rich/console.py",
+      "rich/_win32_console.py",
+      "rich/_windows.py",
+      "rich/_windows_renderer.py"
+    ],
+    "target_files": [
+      "rich/__init__.py"
+    ],
+    "all_files_count": 121,
+    "target_files_count": 1,
+    "predicted_files_count": 5,
+    "bug_loc_precision": 0.2,
+    "bug_loc_recall": 1.0,
+    "bug_loc_f1": 0.33333333333333337,
+    "bug_loc_fpr": 0.03333333333333333,
+    "bug_loc_all_correct": 0,
+    "bug_loc_at_least_one_correct": 1,
+    "bug_loc_all_incorrect": 0,
+    "bug_loc_target_files_rate": 0.04132231404958678,
+    "expected_files_count": 1,
+    "true_positives": 1,
+    "false_positives": 4,
+    "false_negatives": 0,
+    "true_negatives": 116,
+    "inference_time": 3.2370431423187256
+  },
+  {
+    "text_id": "mitmproxy/mitmproxy/4298/3994",
+    "repo_owner": "mitmproxy",
+    "repo_name": "mitmproxy",
+    "prediction_text": "{\n  \"files\": [\n    \"mitmproxy/addons/export.py\",\n    \"mitmproxy/flow.py\",\n    \"mitmproxy/http.py\",\n    \"mitmproxy/connection.py\",\n    \"mitmproxy/command.py\",\n    \"mitmproxy/command_lexer.py\",\n    \"mitmproxy/flowfilter.py\",\n    \"mitmproxy/utils/data.py\",\n    \"mitmproxy/utils/typecheck.py\",\n    \"mitmproxy/ctx.py\",\n    \"mitmproxy/controller.py\",\n    \"mitmproxy/master.py\",\n    \"mitmproxy/options.py\",\n    \"mitmproxy/optmanager.py\",\n    \"mitmproxy/version.py\"\n  ]\n}",
+    "predicted_files": [
+      "mitmproxy/addons/export.py",
+      "mitmproxy/flow.py",
+      "mitmproxy/http.py",
+      "mitmproxy/connection.py",
+      "mitmproxy/command.py",
+      "mitmproxy/command_lexer.py",
+      "mitmproxy/flowfilter.py",
+      "mitmproxy/utils/data.py",
+      "mitmproxy/utils/typecheck.py",
+      "mitmproxy/ctx.py",
+      "mitmproxy/controller.py",
+      "mitmproxy/master.py",
+      "mitmproxy/options.py",
+      "mitmproxy/optmanager.py",
+      "mitmproxy/version.py"
+    ],
+    "target_files": [
+      "mitmproxy/net/tls.py",
+      "test/mitmproxy/net/test_tls.py",
+      "setup.py"
+    ],
+    "all_files_count": 294,
+    "target_files_count": 3,
+    "predicted_files_count": 15,
+    "bug_loc_precision": 0.0,
+    "bug_loc_recall": 0.0,
+    "bug_loc_f1": 0.0,
+    "bug_loc_fpr": 0.051194539249146756,
+    "bug_loc_all_correct": 0,
+    "bug_loc_at_least_one_correct": 0,
+    "bug_loc_all_incorrect": 1,
+    "bug_loc_target_files_rate": 0.05102040816326531,
+    "expected_files_count": 3,
+    "true_positives": 0,
+    "false_positives": 15,
+    "false_negatives": 3,
+    "true_negatives": 278,
+    "inference_time": 3.572713851928711
+  }
+]

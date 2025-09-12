@@ -1,0 +1,36 @@
+{
+  "dataset_path": "/Users/xiaoyunting/Documents/ModelDev/working_path/datasets/long_code_arena/datasets/lca_project_level_code_completion",
+  "output_dir": "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/results/gpt41_project_level_code_completion",
+  "context_size": "small_context",
+  "split": "test",
+  "batch_size": 1,
+  "limit": 3,
+  "max_context_length": 8000,
+  "include_metadata": true,
+  "max_completion_length": 200,
+  "model_name": "openai-chat-completions",
+  "model_params": {
+    "model": "gpt-4.1",
+    "base_url": "http://211.23.3.237:27544/v1/chat/completions",
+    "temperature": 0.8,
+    "top_p": 0.5,
+    "max_tokens": 200,
+    "max_retries": 10,
+    "timeout": 120,
+    "apply_chat_template": true
+  },
+  "qianfan_params": {
+    "model": "qwen3-235b-a22b-instruct-2507",
+    "base_url": "https://qianfan.baidubce.com/v2/chat/completions",
+    "api_key": null,
+    "max_tokens": 200,
+    "temperature": 0.1,
+    "num_concurrent": 5,
+    "max_retries": 10,
+    "timeout": 120,
+    "stop": "<|endoftext|>",
+    "apply_chat_template": true
+  },
+  "evaluation_duration": 10.537527084350586,
+  "timestamp": "2025-09-12T10:19:47.729670"
+}

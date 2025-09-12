@@ -1,0 +1,38 @@
+{
+  "timestamp": "2025-09-07T22:38:21.808890",
+  "sample_info": {
+    "index": 33,
+    "original_index": 33,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 87,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 18.48823881149292,
+  "prediction": "## Analysis of the Failure Cause\n\nThe CI workflow is failing because the `black` pre-commit hook is making formatting changes to the code. Specifically, it's adding a blank line in `import_export/admin.py` at line 750. This is a common issue when code formatting tools like `black` detect that the current code doesn't match the expected formatting standards.\n\nThe workflow itself is working correctly - it's running pre-commit hooks as intended. The failure occurs because the code in the repository doesn't match the formatting standards enforced by the pre-commit configuration.\n\n## Specific Changes Needed\n\nThe fix is simple: we need to apply the formatting changes that `black` is suggesting. This involves adding a blank line in the `ExportMixin` class in the `admin.py` file.\n\n## The Modified Code\n\nThe change needed is in `import_export/admin.py`. Here's the specific modification:\n\n```python\n# In import_export/admin.py, around line 747-750\nclass ExportMixin(BaseExportMixin, ImportExportMixinBase):\n    # ... existing code ...\n\n    class FakePaginator:\n        count = 0\n\n    # The blank line above (line 750) needs to be added\n    original_get_paginator = self.get_paginator\n    self.get_paginator = lambda request, queryset, per_page: FakePaginator()\n    cl = ChangeList(**changelist_kwargs)\n```\n\nThe fix is to commit this formatting change to the repository. This is not a workflow configuration issue, but rather a code formatting issue that needs to be resolved by running the pre-commit hooks locally and committing the changes.\n\n## How to Fix Locally\n\nTo fix this locally and push the corrected code:\n\n```bash\n# Run pre-commit locally to apply all formatting fixes\npre-commit run --all-files\n\n# Or if pre-commit is installed as a git hook\ngit add .\ngit commit -m \"Apply black formatting fixes\"\ngit push\n```\n\nThe workflow configuration itself is correct and doesn't need any changes. The issue is simply that the code needs to be formatted according to the project's standards before the CI will pass.",
+  "evaluation": {
+    "success": true,
+    "score": 0.8201668920224068,
+    "explanation": "Similarity: 0.700, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.700278153370678,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "import_export/admin.py": [
+          "# In import_export/admin.py, around line 747-750\nclass ExportMixin(BaseExportMixin, ImportExportMixinBase):\n    # ... existing code ...\n\n    class FakePaginator:\n        count = 0\n\n    # The blank line above (line 750) needs to be added\n    original_get_paginator = self.get_paginator\n    self.get_paginator = lambda request, queryset, per_page: FakePaginator()\n    cl = ChangeList(**changelist_kwargs)",
+          "# Run pre-commit locally to apply all formatting fixes\npre-commit run --all-files\n\n# Or if pre-commit is installed as a git hook\ngit add .\ngit commit -m \"Apply black formatting fixes\"\ngit push"
+        ],
+        "admin.py": [
+          "# In import_export/admin.py, around line 747-750\nclass ExportMixin(BaseExportMixin, ImportExportMixinBase):\n    # ... existing code ...\n\n    class FakePaginator:\n        count = 0\n\n    # The blank line above (line 750) needs to be added\n    original_get_paginator = self.get_paginator\n    self.get_paginator = lambda request, queryset, per_page: FakePaginator()\n    cl = ChangeList(**changelist_kwargs)",
+          "# Run pre-commit locally to apply all formatting fixes\npre-commit run --all-files\n\n# Or if pre-commit is installed as a git hook\ngit add .\ngit commit -m \"Apply black formatting fixes\"\ngit push"
+        ]
+      },
+      "target_changes": {
+        "import_export/admin.py": "index c5151ef2..a39508d3 100644\n--- a/import_export/admin.py\n+++ b/import_export/admin.py\n@@ -747,6 +747,7 @@ class ExportMixin(BaseExportMixin, ImportExportMixinBase):\n \n         class FakePaginator:\n             count = 0\n+\n         original_get_paginator = self.get_paginator\n         self.get_paginator = lambda request, queryset, per_page: FakePaginator()\n         cl = ChangeList(**changelist_kwargs)\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

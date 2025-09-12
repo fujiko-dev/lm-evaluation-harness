@@ -1,0 +1,40 @@
+{
+  "timestamp": "2025-09-07T22:25:19.266142",
+  "sample_info": {
+    "index": 14,
+    "original_index": 14,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 37,
+  "repo_owner": "skypilot-org",
+  "repo_name": "skypilot",
+  "difficulty": 0,
+  "generation_time": 8.131291151046753,
+  "prediction": "Looking at the CI failure logs, I can see that the `yapf` formatting check is failing because there's a formatting inconsistency in `./sky/resources.py`. The issue is with a conditional expression that yapf wants to reformat for better readability.\n\n## Analysis of the Failure Cause\n\nThe root cause is that the current code in `sky/resources.py` has a conditional expression that doesn't match yapf's formatting expectations. Specifically, yapf wants to reformat this line:\n\n```python\nsize_comp = ('larger than' if image_size > self.disk_size else 'equal to')\n```\n\nto be split across multiple lines for better readability:\n\n```python\nsize_comp = ('larger than'\n             if image_size > self.disk_size else 'equal to')\n```\n\nThe CI workflow runs `yapf --diff --recursive ./` which checks for formatting differences, and since the current code doesn't match yapf's expected format, it fails with exit code 1.\n\n## Specific Changes Needed\n\nThe file `sky/resources.py` needs to be updated to match yapf's formatting requirements for the conditional expression on line 839.\n\n## Modified Code\n\nHere's the specific change needed in `sky/resources.py`:\n\n```python\n# Before (lines 839-840):\nsize_comp = ('larger than' if image_size > self.disk_size\n             else 'equal to')\n\n# After (lines 839-840):\nsize_comp = ('larger than'\n             if image_size > self.disk_size else 'equal to')\n```\n\nThis change moves the `if` condition to the second line, which is what yapf expects for proper formatting of multi-line conditional expressions.\n\nTo fix this issue, you should:\n1. Apply the above formatting change to `sky/resources.py`\n2. Commit the formatted file\n3. Push the changes to resolve the CI failure\n\nAlternatively, you could run `yapf --in-place ./sky/resources.py` to automatically apply the formatting fix.",
+  "evaluation": {
+    "success": true,
+    "score": 0.7106894545454545,
+    "explanation": "Similarity: 0.518, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.5178157575757576,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "sky/resources.py": [
+          "size_comp = ('larger than' if image_size > self.disk_size else 'equal to')",
+          "size_comp = ('larger than'\n             if image_size > self.disk_size else 'equal to')",
+          "# Before (lines 839-840):\nsize_comp = ('larger than' if image_size > self.disk_size\n             else 'equal to')\n\n# After (lines 839-840):\nsize_comp = ('larger than'\n             if image_size > self.disk_size else 'equal to')"
+        ],
+        "./sky/resources.py": [
+          "size_comp = ('larger than' if image_size > self.disk_size else 'equal to')",
+          "size_comp = ('larger than'\n             if image_size > self.disk_size else 'equal to')",
+          "# Before (lines 839-840):\nsize_comp = ('larger than' if image_size > self.disk_size\n             else 'equal to')\n\n# After (lines 839-840):\nsize_comp = ('larger than'\n             if image_size > self.disk_size else 'equal to')"
+        ]
+      },
+      "target_changes": {
+        "sky/resources.py": "index b965401b..01cb9cce 100644\n--- a/sky/resources.py\n+++ b/sky/resources.py\n@@ -836,8 +836,8 @@ class Resources:\n             image_size = self.cloud.get_image_size(image_id, region)\n             if image_size >= self.disk_size:\n                 with ux_utils.print_exception_no_traceback():\n-                    size_comp = ('larger than' if image_size > self.disk_size\n-                                 else 'equal to')\n+                    size_comp = ('larger than'\n+                                 if image_size > self.disk_size else 'equal to')\n                     raise ValueError(\n                         f'Image {image_id!r} is {image_size}GB, which is '\n                         f'{size_comp} the specified disk_size: '\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

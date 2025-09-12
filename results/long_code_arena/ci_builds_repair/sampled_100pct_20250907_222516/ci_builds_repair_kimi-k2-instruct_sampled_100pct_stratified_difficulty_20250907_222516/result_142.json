@@ -1,0 +1,74 @@
+{
+  "timestamp": "2025-09-07T22:47:16.527536",
+  "sample_info": {
+    "index": 50,
+    "original_index": 50,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 142,
+  "repo_owner": "encode",
+  "repo_name": "starlette",
+  "difficulty": 2,
+  "generation_time": 38.70412874221802,
+  "prediction": "## Analysis of the Failure Cause\n\nThe CI workflow is failing during the linting checks (`scripts/check`) across all Python versions (3.8, 3.9, 3.10, 3.11). The errors are:\n\n1. **starlette/concurrency.py:32**: \"Need more than 1 value to unpack (2 expected)\" - This suggests a tuple unpacking issue\n2. **starlette/_utils.py:77** and **starlette/exceptions.py**: Multiple errors about \"X | Y syntax for unions requires Python 3.10\" - This indicates the use of Python 3.10+ union syntax (`|` operator) which is not compatible with Python 3.8 and 3.9\n3. **starlette/exceptions.py**: Errors about \"dict\" and \"list\" not being subscriptable - This indicates the use of built-in generic types (`dict`, `list`) instead of their typing module equivalents (`typing.Dict`, `typing.List`) for Python 3.8 compatibility\n\nThe root cause is that the codebase is using Python 3.10+ syntax and features while still supporting Python 3.8 and 3.9 in the CI matrix.\n\n## Specific Changes Needed\n\n### 1. Fix starlette/concurrency.py:32\nThe error suggests an unpacking issue, likely related to tuple unpacking in a context where mypy expects 2 values but gets 1.\n\n### 2. Fix starlette/_utils.py:77\nReplace `X | Y` union syntax with `typing.Union[X, Y]` or `typing.Optional[X]` where appropriate.\n\n### 3. Fix starlette/exceptions.py\n- Replace `X | Y` union syntax with `typing.Union[X, Y]`\n- Replace `dict[...]` with `typing.Dict[...]`\n- Replace `list[...]` with `typing.List[...]`\n\n## Modified Code\n\nHere are the specific changes needed:\n\n### 1. starlette/concurrency.py\n```python\n# Line 32 - Fix the unpacking issue\n# Before (likely):\n# result, = await run_in_threadpool(func, *args, **kwargs)\n\n# After:\nresult = await run_in_threadpool(func, *args, **kwargs)\n# OR if it's a tuple unpacking issue:\nresult, _ = await run_in_threadpool(func, *args, **kwargs)\n```\n\n### 2. starlette/_utils.py\n```python\n# Line 77 - Replace | union syntax\n# Before:\n# def some_func(param: str | None) -> dict[str, Any]:\n\n# After:\nfrom typing import Union, Dict, Any\n\ndef some_func(param: Union[str, None]) -> Dict[str, Any]:\n```\n\n### 3. starlette/exceptions.py\n```python\n# Add these imports at the top\nfrom typing import Union, Dict, List, Any, Optional\n\n# Replace all occurrences:\n# Before:\n# def some_func() -> dict[str, str] | None:\n\n# After:\ndef some_func() -> Optional[Dict[str, str]]:\n\n# Before:\n# def another_func(items: list[str]) -> dict[str, Any] | list[str]:\n\n# After:\ndef another_func(items: List[str]) -> Union[Dict[str, Any], List[str]]:\n```\n\n### 4. Alternative: Update mypy configuration\nIf you want to keep the modern syntax, you can update the mypy configuration to use `--python-version 3.10` for all checks, but this would be inconsistent with supporting Python 3.8/3.9.\n\n### 5. Update pyproject.toml or setup.cfg\nAdd or update mypy configuration to handle Python version compatibility:\n\n```toml\n[tool.mypy]\npython_version = \"3.8\"\nwarn_return_any = true\nwarn_unused_configs = true\n```\n\n## Complete Solution\n\nThe most appropriate fix is to maintain backward compatibility by using the typing module imports for Python 3.8/3.9 support. The specific files need to be updated to use:\n\n1. `typing.Union` instead of `|` operator\n2. `typing.Dict` instead of `dict[...]`\n3. `typing.List` instead of `list[...]`\n4. `typing.Optional` instead of `... | None`\n\nThese changes will make the codebase compatible with Python 3.8+ while maintaining the same functionality.",
+  "evaluation": {
+    "success": true,
+    "score": 0.5569255440529055,
+    "explanation": "Similarity: 0.452, Key fixes: 0.714",
+    "details": {
+      "similarity_score": 0.4520187638976995,
+      "key_fixes_score": 0.7142857142857143,
+      "predicted_changes": {
+        "starlette/concurrency.py": [
+          "# Line 32 - Fix the unpacking issue\n# Before (likely):\n# result, = await run_in_threadpool(func, *args, **kwargs)\n\n# After:\nresult = await run_in_threadpool(func, *args, **kwargs)\n# OR if it's a tuple unpacking issue:\nresult, _ = await run_in_threadpool(func, *args, **kwargs)",
+          "# Line 77 - Replace | union syntax\n# Before:\n# def some_func(param: str | None) -> dict[str, Any]:\n\n# After:\nfrom typing import Union, Dict, Any\n\ndef some_func(param: Union[str, None]) -> Dict[str, Any]:",
+          "# Add these imports at the top\nfrom typing import Union, Dict, List, Any, Optional\n\n# Replace all occurrences:\n# Before:\n# def some_func() -> dict[str, str] | None:\n\n# After:\ndef some_func() -> Optional[Dict[str, str]]:\n\n# Before:\n# def another_func(items: list[str]) -> dict[str, Any] | list[str]:\n\n# After:\ndef another_func(items: List[str]) -> Union[Dict[str, Any], List[str]]:",
+          "[tool.mypy]\npython_version = \"3.8\"\nwarn_return_any = true\nwarn_unused_configs = true"
+        ],
+        "starlette/_utils.py": [
+          "# Line 32 - Fix the unpacking issue\n# Before (likely):\n# result, = await run_in_threadpool(func, *args, **kwargs)\n\n# After:\nresult = await run_in_threadpool(func, *args, **kwargs)\n# OR if it's a tuple unpacking issue:\nresult, _ = await run_in_threadpool(func, *args, **kwargs)",
+          "# Line 77 - Replace | union syntax\n# Before:\n# def some_func(param: str | None) -> dict[str, Any]:\n\n# After:\nfrom typing import Union, Dict, Any\n\ndef some_func(param: Union[str, None]) -> Dict[str, Any]:",
+          "# Add these imports at the top\nfrom typing import Union, Dict, List, Any, Optional\n\n# Replace all occurrences:\n# Before:\n# def some_func() -> dict[str, str] | None:\n\n# After:\ndef some_func() -> Optional[Dict[str, str]]:\n\n# Before:\n# def another_func(items: list[str]) -> dict[str, Any] | list[str]:\n\n# After:\ndef another_func(items: List[str]) -> Union[Dict[str, Any], List[str]]:",
+          "[tool.mypy]\npython_version = \"3.8\"\nwarn_return_any = true\nwarn_unused_configs = true"
+        ],
+        "starlette/exceptions.py": [
+          "# Line 32 - Fix the unpacking issue\n# Before (likely):\n# result, = await run_in_threadpool(func, *args, **kwargs)\n\n# After:\nresult = await run_in_threadpool(func, *args, **kwargs)\n# OR if it's a tuple unpacking issue:\nresult, _ = await run_in_threadpool(func, *args, **kwargs)",
+          "# Line 77 - Replace | union syntax\n# Before:\n# def some_func(param: str | None) -> dict[str, Any]:\n\n# After:\nfrom typing import Union, Dict, Any\n\ndef some_func(param: Union[str, None]) -> Dict[str, Any]:",
+          "# Add these imports at the top\nfrom typing import Union, Dict, List, Any, Optional\n\n# Replace all occurrences:\n# Before:\n# def some_func() -> dict[str, str] | None:\n\n# After:\ndef some_func() -> Optional[Dict[str, str]]:\n\n# Before:\n# def another_func(items: list[str]) -> dict[str, Any] | list[str]:\n\n# After:\ndef another_func(items: List[str]) -> Union[Dict[str, Any], List[str]]:",
+          "[tool.mypy]\npython_version = \"3.8\"\nwarn_return_any = true\nwarn_unused_configs = true"
+        ],
+        "typing.Dict": [
+          "# Line 32 - Fix the unpacking issue\n# Before (likely):\n# result, = await run_in_threadpool(func, *args, **kwargs)\n\n# After:\nresult = await run_in_threadpool(func, *args, **kwargs)\n# OR if it's a tuple unpacking issue:\nresult, _ = await run_in_threadpool(func, *args, **kwargs)",
+          "# Line 77 - Replace | union syntax\n# Before:\n# def some_func(param: str | None) -> dict[str, Any]:\n\n# After:\nfrom typing import Union, Dict, Any\n\ndef some_func(param: Union[str, None]) -> Dict[str, Any]:",
+          "# Add these imports at the top\nfrom typing import Union, Dict, List, Any, Optional\n\n# Replace all occurrences:\n# Before:\n# def some_func() -> dict[str, str] | None:\n\n# After:\ndef some_func() -> Optional[Dict[str, str]]:\n\n# Before:\n# def another_func(items: list[str]) -> dict[str, Any] | list[str]:\n\n# After:\ndef another_func(items: List[str]) -> Union[Dict[str, Any], List[str]]:",
+          "[tool.mypy]\npython_version = \"3.8\"\nwarn_return_any = true\nwarn_unused_configs = true"
+        ],
+        "typing.List": [
+          "# Line 32 - Fix the unpacking issue\n# Before (likely):\n# result, = await run_in_threadpool(func, *args, **kwargs)\n\n# After:\nresult = await run_in_threadpool(func, *args, **kwargs)\n# OR if it's a tuple unpacking issue:\nresult, _ = await run_in_threadpool(func, *args, **kwargs)",
+          "# Line 77 - Replace | union syntax\n# Before:\n# def some_func(param: str | None) -> dict[str, Any]:\n\n# After:\nfrom typing import Union, Dict, Any\n\ndef some_func(param: Union[str, None]) -> Dict[str, Any]:",
+          "# Add these imports at the top\nfrom typing import Union, Dict, List, Any, Optional\n\n# Replace all occurrences:\n# Before:\n# def some_func() -> dict[str, str] | None:\n\n# After:\ndef some_func() -> Optional[Dict[str, str]]:\n\n# Before:\n# def another_func(items: list[str]) -> dict[str, Any] | list[str]:\n\n# After:\ndef another_func(items: List[str]) -> Union[Dict[str, Any], List[str]]:",
+          "[tool.mypy]\npython_version = \"3.8\"\nwarn_return_any = true\nwarn_unused_configs = true"
+        ],
+        "typing.Union": [
+          "# Line 32 - Fix the unpacking issue\n# Before (likely):\n# result, = await run_in_threadpool(func, *args, **kwargs)\n\n# After:\nresult = await run_in_threadpool(func, *args, **kwargs)\n# OR if it's a tuple unpacking issue:\nresult, _ = await run_in_threadpool(func, *args, **kwargs)",
+          "# Line 77 - Replace | union syntax\n# Before:\n# def some_func(param: str | None) -> dict[str, Any]:\n\n# After:\nfrom typing import Union, Dict, Any\n\ndef some_func(param: Union[str, None]) -> Dict[str, Any]:",
+          "# Add these imports at the top\nfrom typing import Union, Dict, List, Any, Optional\n\n# Replace all occurrences:\n# Before:\n# def some_func() -> dict[str, str] | None:\n\n# After:\ndef some_func() -> Optional[Dict[str, str]]:\n\n# Before:\n# def another_func(items: list[str]) -> dict[str, Any] | list[str]:\n\n# After:\ndef another_func(items: List[str]) -> Union[Dict[str, Any], List[str]]:",
+          "[tool.mypy]\npython_version = \"3.8\"\nwarn_return_any = true\nwarn_unused_configs = true"
+        ],
+        "typing.Optional": [
+          "# Line 32 - Fix the unpacking issue\n# Before (likely):\n# result, = await run_in_threadpool(func, *args, **kwargs)\n\n# After:\nresult = await run_in_threadpool(func, *args, **kwargs)\n# OR if it's a tuple unpacking issue:\nresult, _ = await run_in_threadpool(func, *args, **kwargs)",
+          "# Line 77 - Replace | union syntax\n# Before:\n# def some_func(param: str | None) -> dict[str, Any]:\n\n# After:\nfrom typing import Union, Dict, Any\n\ndef some_func(param: Union[str, None]) -> Dict[str, Any]:",
+          "# Add these imports at the top\nfrom typing import Union, Dict, List, Any, Optional\n\n# Replace all occurrences:\n# Before:\n# def some_func() -> dict[str, str] | None:\n\n# After:\ndef some_func() -> Optional[Dict[str, str]]:\n\n# Before:\n# def another_func(items: list[str]) -> dict[str, Any] | list[str]:\n\n# After:\ndef another_func(items: List[str]) -> Union[Dict[str, Any], List[str]]:",
+          "[tool.mypy]\npython_version = \"3.8\"\nwarn_return_any = true\nwarn_unused_configs = true"
+        ]
+      },
+      "target_changes": {
+        "starlette/_utils.py": "index 2e7981f..42777c5 100644\n--- a/starlette/_utils.py\n+++ b/starlette/_utils.py\n@@ -1,3 +1,5 @@\n+from __future__ import annotations\n+\n import asyncio\n import functools\n import re",
+        "starlette/concurrency.py": "index e9ca46c..215e3a6 100644\n--- a/starlette/concurrency.py\n+++ b/starlette/concurrency.py\n@@ -16,7 +16,7 @@ P = ParamSpec(\"P\")\n T = typing.TypeVar(\"T\")\n \n \n-async def run_until_first_complete(*args: tuple[typing.Callable | dict]) -> None:  # type: ignore[type-arg]  # noqa: E501\n+async def run_until_first_complete(*args: tuple[typing.Callable, dict]) -> None:  # type: ignore[type-arg]  # noqa: E501\n     warnings.warn(\n         \"run_until_first_complete is deprecated \"\n         \"and will be removed in a future version.\",",
+        "starlette/exceptions.py": "index e6d0b8a..bd3352e 100644\n--- a/starlette/exceptions.py\n+++ b/starlette/exceptions.py\n@@ -1,3 +1,5 @@\n+from __future__ import annotations\n+\n import http\n import typing\n import warnings\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "timestamp": "2025-09-07T22:24:53.400979",
+  "sample_info": {
+    "index": 18,
+    "original_index": 18,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 41,
+  "repo_owner": "beetbox",
+  "repo_name": "beets",
+  "difficulty": 0,
+  "generation_time": 11.480922222137451,
+  "prediction": "## 1. Analysis of the Failure Cause\n\nThe CI workflow is failing because the `isort` tool detected that imports in the file `beetsplug/listenbrainz.py` are incorrectly sorted and/or formatted. The error message shows:\n\n```\nERROR: /home/runner/work/beets/beets/beetsplug/listenbrainz.py Imports are incorrectly sorted and/or formatted.\n```\n\nThis indicates that the import statements in this specific file don't conform to the project's import sorting rules defined by `isort`. The `isort` tool is run as part of the `format_check` tox environment and fails when it finds improperly sorted imports.\n\n## 2. Specific Changes Needed\n\nThe fix requires updating the import statements in `beetsplug/listenbrainz.py` to comply with the project's import sorting requirements. Since we can only see the error but not the actual content of the file, I'll need to make reasonable assumptions about what needs to be fixed based on typical Python import sorting conventions.\n\nLooking at the error, we need to:\n1. Sort the imports in the file according to `isort` rules\n2. Ensure proper grouping of standard library, third-party, and local imports\n\n## 3. Modified Code/Configuration\n\nSince we're fixing the actual code rather than the workflow configuration, here's what needs to be done to the file:\n\n**File: `beetsplug/listenbrainz.py`**\n\nThe fix involves reordering the import statements to follow proper `isort` conventions. Here's the corrected import section (assuming typical structure):\n\n```python\n# Standard library imports\nimport logging\nfrom typing import Any, Dict, List, Optional\n\n# Third-party imports\nimport requests\nfrom requests.exceptions import RequestException\n\n# Local imports\nfrom beets import util\nfrom beets.dbcore import types\nfrom beets.plugins import BeetsPlugin\nfrom beets.ui import Subcommand, UserError\n```\n\nHowever, since I cannot see the exact current content of the file, the most appropriate fix would be to run `isort` on the file to automatically correct the import order:\n\n```bash\nisort beetsplug/listenbrainz.py\n```\n\nOr if you want to run it in check mode first to see what would change:\n\n```bash\nisort beetsplug/listenbrainz.py --check-only\n```\n\nBut since this is a configuration fix request, and the workflow itself is properly configured, the real fix is to ensure the file passes the import sorting check. The workflow configuration itself is correct - it's just that the code doesn't meet the formatting requirements.\n\n**Note**: The workflow configuration itself is fine. The issue is purely with the code in `beetsplug/listenbrainz.py` needing to have its imports properly sorted. The fix should be applied to that specific file to make the imports compliant with the project's `isort` configuration.\n\nIf you need me to provide a more specific fix, I'd need to see the current content of the `listenbrainz.py` file to give precise import reordering instructions.",
+  "evaluation": {
+    "success": true,
+    "score": 0.5775989159891599,
+    "explanation": "Similarity: 0.429, Key fixes: 0.800",
+    "details": {
+      "similarity_score": 0.42933152664859986,
+      "key_fixes_score": 0.8,
+      "predicted_changes": {
+        "beetsplug/listenbrainz.py": [
+          "ERROR: /home/runner/work/beets/beets/beetsplug/listenbrainz.py Imports are incorrectly sorted and/or formatted.",
+          "# Standard library imports\nimport logging\nfrom typing import Any, Dict, List, Optional\n\n# Third-party imports\nimport requests\nfrom requests.exceptions import RequestException\n\n# Local imports\nfrom beets import util\nfrom beets.dbcore import types\nfrom beets.plugins import BeetsPlugin\nfrom beets.ui import Subcommand, UserError",
+          "isort beetsplug/listenbrainz.py",
+          "isort beetsplug/listenbrainz.py --check-only"
+        ],
+        "listenbrainz.py": [
+          "ERROR: /home/runner/work/beets/beets/beetsplug/listenbrainz.py Imports are incorrectly sorted and/or formatted.",
+          "# Standard library imports\nimport logging\nfrom typing import Any, Dict, List, Optional\n\n# Third-party imports\nimport requests\nfrom requests.exceptions import RequestException\n\n# Local imports\nfrom beets import util\nfrom beets.dbcore import types\nfrom beets.plugins import BeetsPlugin\nfrom beets.ui import Subcommand, UserError",
+          "isort beetsplug/listenbrainz.py",
+          "isort beetsplug/listenbrainz.py --check-only"
+        ]
+      },
+      "target_changes": {
+        "beetsplug/listenbrainz.py": "index bb5020902..a5595642f 100644\n--- a/beetsplug/listenbrainz.py\n+++ b/beetsplug/listenbrainz.py\n@@ -4,13 +4,15 @@ import datetime\n \n import musicbrainzngs\n import requests\n+\n from beets import config, ui\n from beets.plugins import BeetsPlugin\n from beetsplug.lastimport import process_tracks\n \n \n class ListenBrainzPlugin(BeetsPlugin):\n-    \"\"\" A Beets plugin for interacting with ListenBrainz.\"\"\"\n+    \"\"\"A Beets plugin for interacting with ListenBrainz.\"\"\"\n+\n     data_source = \"ListenBrainz\"\n     ROOT = \"http://api.listenbrainz.org/1/\"\n \n@@ -101,7 +103,6 @@ class ListenBrainzPlugin(BeetsPlugin):\n         else:\n             return None\n \n-\n     def get_tracks_from_listens(self, listens):\n         \"\"\"Returns a list of tracks from a list of listens.\"\"\"\n         tracks = []\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

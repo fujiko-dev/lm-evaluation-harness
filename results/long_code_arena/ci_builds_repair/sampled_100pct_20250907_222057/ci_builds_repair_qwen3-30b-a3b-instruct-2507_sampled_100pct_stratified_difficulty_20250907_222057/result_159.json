@@ -1,0 +1,50 @@
+{
+  "timestamp": "2025-09-07T22:32:19.104518",
+  "sample_info": {
+    "index": 56,
+    "original_index": 56,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 159,
+  "repo_owner": "mwaskom",
+  "repo_name": "seaborn",
+  "difficulty": 2,
+  "generation_time": 15.643726110458374,
+  "prediction": "# Analysis of the Failure Cause\n\nThe CI workflow is failing due to **three interconnected issues**:\n\n## Root Cause Summary\n\n1. **Critical Python Error**: The main failure is a `NameError: name 'get_layout_engine' is not defined` in `seaborn/_core/plot.py` at line 1815. This occurs when trying to finalize a figure layout.\n\n2. **Missing Import**: The function `get_layout_engine` is used but not imported from `matplotlib.figure`. This is the direct cause of the `NameError`.\n\n3. **Outdated Pandoc Version**: The CI logs show a warning about using an unsupported version of pandoc (2.9.2.1), which must be at least 2.14.2. This is not the primary cause of the failure but contributes to instability.\n\n4. **Flake8 and Test Failures**: The `flake8` check fails because of the undefined name `get_layout_engine`, and the tests fail because they expect this function to exist.\n\n## Detailed Breakdown\n\n- The `get_layout_engine` function was introduced in Matplotlib 3.6, but the code assumes it's available without proper import.\n- The `plot.py` file uses `get_layout_engine` but doesn't import it from `matplotlib.figure`.\n- The tests are correctly checking for this function but fail because it's not defined.\n- The documentation build fails because the notebook `objects.Plot.layout.ipynb` contains code that uses `get_layout_engine`, which is undefined.\n\n# Solution\n\n## 1. Fix the Missing Import in plot.py\n\nThe primary fix is to add the missing import for `get_layout_engine` from `matplotlib.figure`.\n\n### Modified File: `seaborn/_core/plot.py`\n\n```python\n# Add this import at the top of the file, near other matplotlib imports\nfrom matplotlib.figure import get_layout_engine, set_layout_engine\n```\n\n## 2. Update the Pandoc Version in CI\n\nThe outdated pandoc version (2.9.2.1) is causing warnings and potential instability. We need to update the installation step.\n\n### Modified File: `.github/workflows/ci.yaml`\n\n```yaml\n- name: Install pandoc\n  run: |\n    # Remove the old version and install a newer one\n    sudo apt-get remove -y pandoc\n    # Install pandoc 2.19.2 (latest stable as of 2024)\n    wget https://github.com/jgm/pandoc/releases/download/2.19.2/pandoc-2.19.2-1-amd64.deb\n    sudo dpkg -i pandoc-2.19.2-1-amd64.deb\n    # Verify installation\n    pandoc --version\n```\n\n## 3. Update the CI Workflow to Include the Fix\n\nThe workflow needs to be updated to ensure the fix is applied and tested.\n\n### Complete Modified Workflow: `.github/workflows/ci.yaml`\n\n```yaml\nname: CI\n\non:\n  push:\n    branches: [master, v0.*]\n  pull_request:\n    branches: master\n  schedule:\n    - cron:  '0 6 * * 1,4' # Each Monday and Thursday at 06:00 UTC\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nenv:\n  MPLBACKEND: Agg\n  NB_KERNEL: python\n  PIP_INDEX_URL: http://localhost:8629/2023-12-09\n  SEABORN_DATA: ${{ github.workspace }}/seaborn-data\n  UV_INDEX_URL: http://localhost:8629/2023-12-09\n\njobs:\n  build-docs:\n    runs-on: ubuntu-latest\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    steps:\n      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1\n\n      - name: Setup Python 3.11\n        uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236 # v4.7.1\n        with:\n          python-version: \"3.11\"\n\n      - name: Install seaborn\n        run: |\n          pip install --upgrade pip\n          pip install .[stats,docs]\n\n      - name: Install pandoc\n        run: |\n          # Remove the old version and install a newer one\n          sudo apt-get remove -",
+  "evaluation": {
+    "success": true,
+    "score": 0.5860136124752304,
+    "explanation": "Similarity: 0.421, Key fixes: 0.833",
+    "details": {
+      "similarity_score": 0.4211337985698286,
+      "key_fixes_score": 0.8333333333333334,
+      "predicted_changes": {
+        "seaborn/_core/plot.py": [
+          "# Add this import at the top of the file, near other matplotlib imports\nfrom matplotlib.figure import get_layout_engine, set_layout_engine",
+          "- name: Install pandoc\n  run: |\n    # Remove the old version and install a newer one\n    sudo apt-get remove -y pandoc\n    # Install pandoc 2.19.2 (latest stable as of 2024)\n    wget https://github.com/jgm/pandoc/releases/download/2.19.2/pandoc-2.19.2-1-amd64.deb\n    sudo dpkg -i pandoc-2.19.2-1-amd64.deb\n    # Verify installation\n    pandoc --version"
+        ],
+        ".github/workflows/ci.yaml": [
+          "# Add this import at the top of the file, near other matplotlib imports\nfrom matplotlib.figure import get_layout_engine, set_layout_engine",
+          "- name: Install pandoc\n  run: |\n    # Remove the old version and install a newer one\n    sudo apt-get remove -y pandoc\n    # Install pandoc 2.19.2 (latest stable as of 2024)\n    wget https://github.com/jgm/pandoc/releases/download/2.19.2/pandoc-2.19.2-1-amd64.deb\n    sudo dpkg -i pandoc-2.19.2-1-amd64.deb\n    # Verify installation\n    pandoc --version"
+        ],
+        "matplotlib.figure": [
+          "# Add this import at the top of the file, near other matplotlib imports\nfrom matplotlib.figure import get_layout_engine, set_layout_engine",
+          "- name: Install pandoc\n  run: |\n    # Remove the old version and install a newer one\n    sudo apt-get remove -y pandoc\n    # Install pandoc 2.19.2 (latest stable as of 2024)\n    wget https://github.com/jgm/pandoc/releases/download/2.19.2/pandoc-2.19.2-1-amd64.deb\n    sudo dpkg -i pandoc-2.19.2-1-amd64.deb\n    # Verify installation\n    pandoc --version"
+        ],
+        "plot.py": [
+          "# Add this import at the top of the file, near other matplotlib imports\nfrom matplotlib.figure import get_layout_engine, set_layout_engine",
+          "- name: Install pandoc\n  run: |\n    # Remove the old version and install a newer one\n    sudo apt-get remove -y pandoc\n    # Install pandoc 2.19.2 (latest stable as of 2024)\n    wget https://github.com/jgm/pandoc/releases/download/2.19.2/pandoc-2.19.2-1-amd64.deb\n    sudo dpkg -i pandoc-2.19.2-1-amd64.deb\n    # Verify installation\n    pandoc --version"
+        ],
+        "objects.Plot.layout.ipynb": [
+          "# Add this import at the top of the file, near other matplotlib imports\nfrom matplotlib.figure import get_layout_engine, set_layout_engine",
+          "- name: Install pandoc\n  run: |\n    # Remove the old version and install a newer one\n    sudo apt-get remove -y pandoc\n    # Install pandoc 2.19.2 (latest stable as of 2024)\n    wget https://github.com/jgm/pandoc/releases/download/2.19.2/pandoc-2.19.2-1-amd64.deb\n    sudo dpkg -i pandoc-2.19.2-1-amd64.deb\n    # Verify installation\n    pandoc --version"
+        ]
+      },
+      "target_changes": {
+        "seaborn/_core/plot.py": "index af4669c6..39ccd2e0 100644\n--- a/seaborn/_core/plot.py\n+++ b/seaborn/_core/plot.py\n@@ -40,7 +40,7 @@ from seaborn._core.typing import (\n )\n from seaborn._core.exceptions import PlotSpecError\n from seaborn._core.rules import categorical_order\n-from seaborn._compat import set_layout_engine\n+from seaborn._compat import get_layout_engine, set_layout_engine\n from seaborn.rcmod import axes_style, plotting_context\n from seaborn.palettes import color_palette\n \n"
+      },
+      "difficulty": 2
+    }
+  }
+}

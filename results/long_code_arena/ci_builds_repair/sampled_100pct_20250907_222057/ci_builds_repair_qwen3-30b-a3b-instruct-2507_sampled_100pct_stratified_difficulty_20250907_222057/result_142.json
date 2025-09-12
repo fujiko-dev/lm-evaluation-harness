@@ -1,0 +1,80 @@
+{
+  "timestamp": "2025-09-07T22:30:58.444551",
+  "sample_info": {
+    "index": 50,
+    "original_index": 50,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 142,
+  "repo_owner": "encode",
+  "repo_name": "starlette",
+  "difficulty": 2,
+  "generation_time": 11.3526132106781,
+  "prediction": "# Analysis of the Failure Cause\n\nThe CI workflow is failing during the \"Run linting checks\" step due to **mypy type checking errors** in multiple Python versions (3.8, 3.9, 3.10, 3.11, 3.12). The errors fall into two main categories:\n\n## Root Cause\n\n1. **Python 3.10+ syntax used in older Python versions**:\n   - `X | Y` syntax for unions is only valid in Python 3.10+\n   - This is being used in `starlette/_utils.py` and `starlette/exceptions.py`, but mypy is running on Python 3.8 and 3.9, which don't support this syntax.\n\n2. **Unsubscriptable built-in types**:\n   - Using `dict` and `list` directly as type hints (e.g., `dict[str, int]`) instead of `typing.Dict` and `typing.List`\n   - This is valid in Python 3.9+, but not in earlier versions.\n\n3. **Tuple unpacking error**:\n   - `starlette/concurrency.py:32: error: Need more than 1 value to unpack (2 expected)`\n   - This suggests a tuple unpacking operation that expects 2 values but receives fewer.\n\n## Key Insight\n\nThe issue is that the codebase is using Python 3.10+ syntax (union types with `|`) and built-in type subscripting, but the CI is running mypy on Python 3.8 and 3.9, which don't support these features. The `mypy` configuration likely doesn't account for the different Python versions.\n\nHowever, the more fundamental issue is that **the code is not compatible with Python 3.8 and 3.9** due to the use of newer syntax, even though the workflow matrix includes these versions.\n\n# Solution\n\nWe need to make the code compatible with Python 3.8 and 3.9 by:\n\n1. Replacing `X | Y` with `Union[X, Y]` for all union types\n2. Replacing `dict` and `list` with `typing.Dict` and `typing.List` where needed\n3. Fixing the tuple unpacking issue in `concurrency.py`\n\n## Specific Changes\n\n### 1. Fix `starlette/_utils.py` (line 77)\n```python\n# Before:\n# def some_function() -> dict[str, str] | None:\n#     ...\n\n# After:\nfrom typing import Dict, Union\n\ndef some_function() -> Union[Dict[str, str], None]:\n    ...\n```\n\n### 2. Fix `starlette/exceptions.py` (lines 12, 13, 30)\n```python\n# Before:\n# class CustomException(Exception):\n#     def __init__(self, message: str | None = None):\n#         ...\n\n# After:\nfrom typing import Union\n\nclass CustomException(Exception):\n    def __init__(self, message: Union[str, None] = None):\n        ...\n```\n\n### 3. Fix `starlette/exceptions.py` (line 59)\n```python\n# Before:\n# def get_errors() -> list[dict]:\n#     ...\n\n# After:\nfrom typing import List, Dict\n\ndef get_errors() -> List[Dict]:\n    ...\n```\n\n### 4. Fix `starlette/concurrency.py` (line 32)\n```python\n# Before:\n# a, b = some_function()\n\n# After:\n# Ensure the function returns exactly 2 values\n# or use tuple unpacking with proper handling\nresult = some_function()\nif len(result) < 2:\n    raise ValueError(\"Expected at least 2 values\")\na, b = result[:2]\n```\n\n## Modified Workflow Configuration\n\nThe workflow itself doesn't need to change, but we should ensure mypy is configured to handle different Python versions properly. However, the real fix is in the code.\n\n# Final Solution\n\nHere are the specific file modifications needed:\n\n## `starlette/_utils.py`\n```python\n# Replace line 77:\n# def get_version() -> dict[str, str] | None:\n# with:\nfrom typing import Dict, Union\n\ndef get_version() -> Union[Dict[str, str], None]:\n    # ... rest of function\n```\n\n## `starlette/exceptions.py`\n```python\n# Replace line 12:\n# class HTTPException(Exception):\n#     def __init__(self, status_code: int, detail: str | None = None):\n#         ...\n\n# with:\nfrom typing import Union\n\nclass HTTPException(Exception):\n    def __init__(self, status_code: int, detail: Union[str, None] = None):\n        # ... rest of function\n```\n\n```python\n# Replace line 13:\n# def __init__(self, status_code: int",
+  "evaluation": {
+    "success": true,
+    "score": 0.5533152002747133,
+    "explanation": "Similarity: 0.446, Key fixes: 0.714",
+    "details": {
+      "similarity_score": 0.4460015242673791,
+      "key_fixes_score": 0.7142857142857143,
+      "predicted_changes": {
+        "starlette/_utils.py": [
+          "# Before:\n# def some_function() -> dict[str, str] | None:\n#     ...\n\n# After:\nfrom typing import Dict, Union\n\ndef some_function() -> Union[Dict[str, str], None]:\n    ...",
+          "# Before:\n# class CustomException(Exception):\n#     def __init__(self, message: str | None = None):\n#         ...\n\n# After:\nfrom typing import Union\n\nclass CustomException(Exception):\n    def __init__(self, message: Union[str, None] = None):\n        ...",
+          "# Before:\n# def get_errors() -> list[dict]:\n#     ...\n\n# After:\nfrom typing import List, Dict\n\ndef get_errors() -> List[Dict]:\n    ...",
+          "# Before:\n# a, b = some_function()\n\n# After:\n# Ensure the function returns exactly 2 values\n# or use tuple unpacking with proper handling\nresult = some_function()\nif len(result) < 2:\n    raise ValueError(\"Expected at least 2 values\")\na, b = result[:2]",
+          "# Replace line 77:\n# def get_version() -> dict[str, str] | None:\n# with:\nfrom typing import Dict, Union\n\ndef get_version() -> Union[Dict[str, str], None]:\n    # ... rest of function",
+          "# Replace line 12:\n# class HTTPException(Exception):\n#     def __init__(self, status_code: int, detail: str | None = None):\n#         ...\n\n# with:\nfrom typing import Union\n\nclass HTTPException(Exception):\n    def __init__(self, status_code: int, detail: Union[str, None] = None):\n        # ... rest of function"
+        ],
+        "starlette/exceptions.py": [
+          "# Before:\n# def some_function() -> dict[str, str] | None:\n#     ...\n\n# After:\nfrom typing import Dict, Union\n\ndef some_function() -> Union[Dict[str, str], None]:\n    ...",
+          "# Before:\n# class CustomException(Exception):\n#     def __init__(self, message: str | None = None):\n#         ...\n\n# After:\nfrom typing import Union\n\nclass CustomException(Exception):\n    def __init__(self, message: Union[str, None] = None):\n        ...",
+          "# Before:\n# def get_errors() -> list[dict]:\n#     ...\n\n# After:\nfrom typing import List, Dict\n\ndef get_errors() -> List[Dict]:\n    ...",
+          "# Before:\n# a, b = some_function()\n\n# After:\n# Ensure the function returns exactly 2 values\n# or use tuple unpacking with proper handling\nresult = some_function()\nif len(result) < 2:\n    raise ValueError(\"Expected at least 2 values\")\na, b = result[:2]",
+          "# Replace line 77:\n# def get_version() -> dict[str, str] | None:\n# with:\nfrom typing import Dict, Union\n\ndef get_version() -> Union[Dict[str, str], None]:\n    # ... rest of function",
+          "# Replace line 12:\n# class HTTPException(Exception):\n#     def __init__(self, status_code: int, detail: str | None = None):\n#         ...\n\n# with:\nfrom typing import Union\n\nclass HTTPException(Exception):\n    def __init__(self, status_code: int, detail: Union[str, None] = None):\n        # ... rest of function"
+        ],
+        "starlette/concurrency.py": [
+          "# Before:\n# def some_function() -> dict[str, str] | None:\n#     ...\n\n# After:\nfrom typing import Dict, Union\n\ndef some_function() -> Union[Dict[str, str], None]:\n    ...",
+          "# Before:\n# class CustomException(Exception):\n#     def __init__(self, message: str | None = None):\n#         ...\n\n# After:\nfrom typing import Union\n\nclass CustomException(Exception):\n    def __init__(self, message: Union[str, None] = None):\n        ...",
+          "# Before:\n# def get_errors() -> list[dict]:\n#     ...\n\n# After:\nfrom typing import List, Dict\n\ndef get_errors() -> List[Dict]:\n    ...",
+          "# Before:\n# a, b = some_function()\n\n# After:\n# Ensure the function returns exactly 2 values\n# or use tuple unpacking with proper handling\nresult = some_function()\nif len(result) < 2:\n    raise ValueError(\"Expected at least 2 values\")\na, b = result[:2]",
+          "# Replace line 77:\n# def get_version() -> dict[str, str] | None:\n# with:\nfrom typing import Dict, Union\n\ndef get_version() -> Union[Dict[str, str], None]:\n    # ... rest of function",
+          "# Replace line 12:\n# class HTTPException(Exception):\n#     def __init__(self, status_code: int, detail: str | None = None):\n#         ...\n\n# with:\nfrom typing import Union\n\nclass HTTPException(Exception):\n    def __init__(self, status_code: int, detail: Union[str, None] = None):\n        # ... rest of function"
+        ],
+        "typing.Dict": [
+          "# Before:\n# def some_function() -> dict[str, str] | None:\n#     ...\n\n# After:\nfrom typing import Dict, Union\n\ndef some_function() -> Union[Dict[str, str], None]:\n    ...",
+          "# Before:\n# class CustomException(Exception):\n#     def __init__(self, message: str | None = None):\n#         ...\n\n# After:\nfrom typing import Union\n\nclass CustomException(Exception):\n    def __init__(self, message: Union[str, None] = None):\n        ...",
+          "# Before:\n# def get_errors() -> list[dict]:\n#     ...\n\n# After:\nfrom typing import List, Dict\n\ndef get_errors() -> List[Dict]:\n    ...",
+          "# Before:\n# a, b = some_function()\n\n# After:\n# Ensure the function returns exactly 2 values\n# or use tuple unpacking with proper handling\nresult = some_function()\nif len(result) < 2:\n    raise ValueError(\"Expected at least 2 values\")\na, b = result[:2]",
+          "# Replace line 77:\n# def get_version() -> dict[str, str] | None:\n# with:\nfrom typing import Dict, Union\n\ndef get_version() -> Union[Dict[str, str], None]:\n    # ... rest of function",
+          "# Replace line 12:\n# class HTTPException(Exception):\n#     def __init__(self, status_code: int, detail: str | None = None):\n#         ...\n\n# with:\nfrom typing import Union\n\nclass HTTPException(Exception):\n    def __init__(self, status_code: int, detail: Union[str, None] = None):\n        # ... rest of function"
+        ],
+        "typing.List": [
+          "# Before:\n# def some_function() -> dict[str, str] | None:\n#     ...\n\n# After:\nfrom typing import Dict, Union\n\ndef some_function() -> Union[Dict[str, str], None]:\n    ...",
+          "# Before:\n# class CustomException(Exception):\n#     def __init__(self, message: str | None = None):\n#         ...\n\n# After:\nfrom typing import Union\n\nclass CustomException(Exception):\n    def __init__(self, message: Union[str, None] = None):\n        ...",
+          "# Before:\n# def get_errors() -> list[dict]:\n#     ...\n\n# After:\nfrom typing import List, Dict\n\ndef get_errors() -> List[Dict]:\n    ...",
+          "# Before:\n# a, b = some_function()\n\n# After:\n# Ensure the function returns exactly 2 values\n# or use tuple unpacking with proper handling\nresult = some_function()\nif len(result) < 2:\n    raise ValueError(\"Expected at least 2 values\")\na, b = result[:2]",
+          "# Replace line 77:\n# def get_version() -> dict[str, str] | None:\n# with:\nfrom typing import Dict, Union\n\ndef get_version() -> Union[Dict[str, str], None]:\n    # ... rest of function",
+          "# Replace line 12:\n# class HTTPException(Exception):\n#     def __init__(self, status_code: int, detail: str | None = None):\n#         ...\n\n# with:\nfrom typing import Union\n\nclass HTTPException(Exception):\n    def __init__(self, status_code: int, detail: Union[str, None] = None):\n        # ... rest of function"
+        ],
+        "concurrency.py": [
+          "# Before:\n# def some_function() -> dict[str, str] | None:\n#     ...\n\n# After:\nfrom typing import Dict, Union\n\ndef some_function() -> Union[Dict[str, str], None]:\n    ...",
+          "# Before:\n# class CustomException(Exception):\n#     def __init__(self, message: str | None = None):\n#         ...\n\n# After:\nfrom typing import Union\n\nclass CustomException(Exception):\n    def __init__(self, message: Union[str, None] = None):\n        ...",
+          "# Before:\n# def get_errors() -> list[dict]:\n#     ...\n\n# After:\nfrom typing import List, Dict\n\ndef get_errors() -> List[Dict]:\n    ...",
+          "# Before:\n# a, b = some_function()\n\n# After:\n# Ensure the function returns exactly 2 values\n# or use tuple unpacking with proper handling\nresult = some_function()\nif len(result) < 2:\n    raise ValueError(\"Expected at least 2 values\")\na, b = result[:2]",
+          "# Replace line 77:\n# def get_version() -> dict[str, str] | None:\n# with:\nfrom typing import Dict, Union\n\ndef get_version() -> Union[Dict[str, str], None]:\n    # ... rest of function",
+          "# Replace line 12:\n# class HTTPException(Exception):\n#     def __init__(self, status_code: int, detail: str | None = None):\n#         ...\n\n# with:\nfrom typing import Union\n\nclass HTTPException(Exception):\n    def __init__(self, status_code: int, detail: Union[str, None] = None):\n        # ... rest of function"
+        ]
+      },
+      "target_changes": {
+        "starlette/_utils.py": "index 2e7981f..42777c5 100644\n--- a/starlette/_utils.py\n+++ b/starlette/_utils.py\n@@ -1,3 +1,5 @@\n+from __future__ import annotations\n+\n import asyncio\n import functools\n import re",
+        "starlette/concurrency.py": "index e9ca46c..215e3a6 100644\n--- a/starlette/concurrency.py\n+++ b/starlette/concurrency.py\n@@ -16,7 +16,7 @@ P = ParamSpec(\"P\")\n T = typing.TypeVar(\"T\")\n \n \n-async def run_until_first_complete(*args: tuple[typing.Callable | dict]) -> None:  # type: ignore[type-arg]  # noqa: E501\n+async def run_until_first_complete(*args: tuple[typing.Callable, dict]) -> None:  # type: ignore[type-arg]  # noqa: E501\n     warnings.warn(\n         \"run_until_first_complete is deprecated \"\n         \"and will be removed in a future version.\",",
+        "starlette/exceptions.py": "index e6d0b8a..bd3352e 100644\n--- a/starlette/exceptions.py\n+++ b/starlette/exceptions.py\n@@ -1,3 +1,5 @@\n+from __future__ import annotations\n+\n import http\n import typing\n import warnings\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

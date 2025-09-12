@@ -1,0 +1,41 @@
+[
+  {
+    "text_id": "thealgorithms/python/295/289",
+    "repo_owner": "thealgorithms",
+    "repo_name": "python",
+    "error": "chat-completions require the --apply_chat_template flag.",
+    "predicted_files": [],
+    "target_files": [
+      "Project Euler/Problem 01/sol2.py"
+    ],
+    "bug_loc_f1": 0.0,
+    "bug_loc_precision": 0.0,
+    "bug_loc_recall": 0.0
+  },
+  {
+    "text_id": "keras-team/keras/15943/15942",
+    "repo_owner": "keras-team",
+    "repo_name": "keras",
+    "error": "chat-completions require the --apply_chat_template flag.",
+    "predicted_files": [],
+    "target_files": [
+      "keras/layers/convolutional/base_conv.py"
+    ],
+    "bug_loc_f1": 0.0,
+    "bug_loc_precision": 0.0,
+    "bug_loc_recall": 0.0
+  },
+  {
+    "text_id": "serverless/serverless/5500/5499",
+    "repo_owner": "serverless",
+    "repo_name": "serverless",
+    "error": "chat-completions require the --apply_chat_template flag.",
+    "predicted_files": [],
+    "target_files": [
+      "lib/plugins/aws/invokeLocal/invoke.py"
+    ],
+    "bug_loc_f1": 0.0,
+    "bug_loc_precision": 0.0,
+    "bug_loc_recall": 0.0
+  }
+]

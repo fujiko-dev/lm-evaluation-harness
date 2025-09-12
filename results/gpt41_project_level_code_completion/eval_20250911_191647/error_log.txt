@@ -1,0 +1,10 @@
+Error: lm_eval.models.openai_completions.OpenAIChatCompletion() got multiple values for keyword argument 'apply_chat_template'
+
+Traceback (most recent call last):
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/tasks/long_code_arena/project_level_code_completion/run_project_level_code_completion_eval.py", line 102, in run_evaluation
+    model = self.create_model()
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/tasks/long_code_arena/project_level_code_completion/run_project_level_code_completion_eval.py", line 72, in create_model
+    model = get_model(self.config.model_name).create_from_arg_string(
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/api/model.py", line 155, in create_from_arg_string
+    return cls(**args, **args2)
+TypeError: lm_eval.models.openai_completions.OpenAIChatCompletion() got multiple values for keyword argument 'apply_chat_template'

@@ -1,0 +1,14 @@
+{
+  "model": "openai-chat-completions",
+  "split": "test",
+  "timestamp": "2025-09-11T18:53:47.847356",
+  "lca_module_summarization_metrics": {
+    "bleu": 0.09180059116452938,
+    "rouge_l": 0.09180059116452938,
+    "bert_score": 0.0911937980787894,
+    "semantic_sim": 0.0911937980787894,
+    "length_ratio": 1.3558797440678008,
+    "coverage": 0.21190592444929043
+  },
+  "total_samples": 3
+}

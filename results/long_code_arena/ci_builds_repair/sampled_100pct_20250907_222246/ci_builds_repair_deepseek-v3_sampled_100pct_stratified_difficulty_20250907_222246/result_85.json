@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-09-07T22:36:34.244274",
+  "sample_info": {
+    "index": 31,
+    "original_index": 31,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 85,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 24.403007984161377,
+  "prediction": "Based on the logs, the CI workflow is failing due to a flake8 error (E501 - line too long) in the file `import_export/resources.py`. The error indicates that line 1360 has 101 characters, which exceeds the default flake8 maximum line length of 88 characters.\n\n### Analysis:\n1. The failure occurs during the pre-commit hooks execution, specifically on the flake8 check\n2. The error is about line length exceeding the limit set by flake8\n3. The workflow itself is correctly configured - the failure is due to actual code style violation, not a workflow configuration issue\n\n### Solution Approaches:\n1. **Preferred solution**: Fix the line length issue in the source code by:\n   - Breaking the long line into multiple lines\n   - Refactoring the code to be more concise\n2. **Alternative**: Adjust flake8 configuration to allow longer lines (not recommended as it decreases code readability)\n\n### Recommended Solution:\nLet's fix the line length issue in the source code. Here's what needs to be modified:\n\n1. Open `import_export/resources.py`\n2. Locate line 1360 (the failing line)\n3. Break the line to fit within 88 characters\n\nSince we don't have the exact content of line 1360, here's a general example of how to break a long line:\n\nBefore:\n```python\nthis_is_a_very_long_function_call_or_assignment_with_many_parameters_that_is_making_the_line_too_long = some_value_or_function()\n```\n\nAfter:\n```python\nthis_is_a_very_long_function_call_or_assignment = (\n    some_value_or_function_with_parameters()\n)\n```\n\n### Modified Workflow Recommendation:\nWhile the workflow itself is correct, we could add a `flake8` configuration file to make line length expectations explicit. Create a `.flake8` file in the root directory with:\n\n```ini\n[flake8]\nmax-line-length = 88\nextend-ignore = E203\n```\n\nThis isn't strictly necessary for fixing the current issue but helps maintain consistent linting standards.\n\n### Final Steps:\n1. Modify `import_export/resources.py` to fix the long line\n2. Commit and push the changes\n3. The pre-commit checks should now pass\n\nThe workflow doesn't need modification since it's correctly identifying and enforcing the code style rules - the failure is indicating a legitimate issue that needs to be fixed in the source code.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6461600000000001,
+    "explanation": "Similarity: 0.410, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.41026666666666667,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "import_export/resources.py": [
+          "this_is_a_very_long_function_call_or_assignment_with_many_parameters_that_is_making_the_line_too_long = some_value_or_function()",
+          "this_is_a_very_long_function_call_or_assignment = (\n    some_value_or_function_with_parameters()\n)",
+          "[flake8]\nmax-line-length = 88\nextend-ignore = E203"
+        ]
+      },
+      "target_changes": {
+        "import_export/resources.py": "index 7d7ad475..99c3fe91 100644\n--- a/import_export/resources.py\n+++ b/import_export/resources.py\n@@ -1357,7 +1357,8 @@ class ModelDeclarativeMetaclass(DeclarativeMetaclass):\n                     continue\n \n                 if f.name in declared_fields:\n-                    # If model field is declared in `ModelResource`, remove it from `declared_fields`\n+                    # If model field is declared in `ModelResource`,\n+                    # remove it from `declared_fields`\n                     # to keep exact order of model fields\n                     field = declared_fields.pop(f.name)\n                 else:\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

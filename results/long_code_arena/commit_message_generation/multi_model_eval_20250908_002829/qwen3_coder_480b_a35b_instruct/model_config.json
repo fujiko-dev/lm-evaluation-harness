@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-coder-480b-a35b-instruct",
+  "display_name": "Qwen3-Coder-480B",
+  "api_provider": "qianfan",
+  "base_url": "https://qianfan.baidubce.com/v2/chat/completions",
+  "task": "lca_commit_message_generation",
+  "total_samples": 163,
+  "evaluated_samples": 163,
+  "timestamp": "2025-09-08T00:41:15.999061",
+  "model_config": {
+    "name": "qwen3-coder-480b-a35b-instruct",
+    "display_name": "Qwen3-Coder-480B",
+    "max_tokens": 256,
+    "temperature": 0.8
+  }
+}

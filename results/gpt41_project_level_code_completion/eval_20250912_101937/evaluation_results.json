@@ -1,0 +1,60 @@
+{
+  "results": {
+    "lca_project_level_code_completion": {
+      "exact_match": 0.3333333333333333,
+      "edit_distance": 0.4287749287749288,
+      "bleu_score": 0.48368924616982883,
+      "valid_samples": 3,
+      "total_samples": 3
+    }
+  },
+  "samples": {
+    "lca_project_level_code_completion": [
+      {
+        "sample_results": [
+          {
+            "line_num": 21,
+            "line_type": "random",
+            "predicted": "Any, Dict, List, Optional, Tuple, Union",
+            "target": "    Any,",
+            "exact_match": 0.0,
+            "edit_distance": 0.8974358974358975,
+            "bleu_score": 0.13483997249264845
+          }
+        ],
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/data_loader.py"
+      },
+      {
+        "sample_results": [
+          {
+            "line_num": 31,
+            "line_type": "non_informative",
+            "predicted": "from fuzz_introspector.datatypes import function_profile",
+            "target": "from fuzz_introspector.datatypes import function_profile",
+            "exact_match": 1.0,
+            "edit_distance": 0.0,
+            "bleu_score": 1.0
+          }
+        ],
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/datatypes/fuzzer_profile.py"
+      },
+      {
+        "sample_results": [
+          {
+            "line_num": 24,
+            "line_type": "non_informative",
+            "predicted": "from fuzz_introspector.datatypes import fuzzer_profile",
+            "target": "from fuzz_introspector import utils",
+            "exact_match": 0.0,
+            "edit_distance": 0.3888888888888889,
+            "bleu_score": 0.316227766016838
+          }
+        ],
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/datatypes/project_profile.py"
+      }
+    ]
+  }
+}

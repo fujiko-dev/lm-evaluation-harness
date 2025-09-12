@@ -1,0 +1,38 @@
+{
+  "timestamp": "2025-09-07T22:30:42.259281",
+  "sample_info": {
+    "index": 39,
+    "original_index": 39,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 107,
+  "repo_owner": "encode",
+  "repo_name": "httpx",
+  "difficulty": 2,
+  "generation_time": 18.090747833251953,
+  "prediction": "Looking at the CI failure logs, I can see that the issue is with `mypy` type checking in the `httpx/_client.py` file. The errors indicate:\n\n1. `Unexpected keyword argument \"verify\" for \"AsyncHTTPTransport\"`\n2. `Unexpected keyword argument \"cert\" for \"AsyncHTTPTransport\"`\n3. `Name \"verify\" is not defined`\n4. `Name \"cert\" is not defined`\n\n## Analysis of the Failure Cause\n\nThe root cause is in the `httpx/_client.py` file around line 1456, where the code is trying to pass `verify` and `cert` arguments to `AsyncHTTPTransport`, but these arguments don't exist or aren't properly defined in that context. Looking at the error message, it seems like there's a mismatch between what arguments are being passed and what the `AsyncHTTPTransport` constructor actually accepts.\n\nThis appears to be a type checking issue where either:\n1. The arguments are being passed incorrectly to `AsyncHTTPTransport`\n2. The variables `verify` and `cert` are not properly defined before use\n3. There's a version mismatch or incorrect usage pattern\n\n## Specific Changes Needed\n\nBased on the error pattern, I need to examine and fix the code in `httpx/_client.py` around line 1456 where `AsyncHTTPTransport` is being instantiated with `verify` and `cert` parameters.\n\n## Modified Code\n\nSince I cannot see the exact code, but based on the error messages, here's what needs to be fixed in `httpx/_client.py`:\n\n```python\n# Around line 1456, the problematic code likely looks something like:\n# transport = AsyncHTTPTransport(verify=verify, cert=cert, ...)\n\n# This should be changed to properly handle SSL configuration.\n# The correct approach would be to pass verify and cert as part of the \n# ssl_context or use the proper parameter names that AsyncHTTPTransport accepts.\n```\n\nHowever, since I need to provide a more concrete fix, let me suggest the most likely solution:\n\nIn `httpx/_client.py`, around line 1456, change the `AsyncHTTPTransport` instantiation from:\n\n```python\ntransport = AsyncHTTPTransport(\n    verify=verify,\n    cert=cert,\n    # other parameters\n)\n```\n\nto:\n\n```python\ntransport = AsyncHTTPTransport(\n    verify=ssl_context if ssl_context is not None else verify,\n    cert=cert,\n    # other parameters\n)\n```\n\nOr ensure that the `verify` and `cert` variables are properly defined before they're used:\n\n```python\n# Make sure verify and cert are properly defined before this point\nif 'verify' not in locals():\n    verify = self._verify\nif 'cert' not in locals():\n    cert = self._cert\n\ntransport = AsyncHTTPTransport(\n    verify=verify,\n    cert=cert,\n    # other parameters\n)\n```\n\nActually, looking more carefully at the error, the most likely issue is that `AsyncHTTPTransport` doesn't accept `verify` and `cert` as direct keyword arguments. The fix would be to either:\n\n1. Use the correct parameter names that `AsyncHTTPTransport` expects, or\n2. Create an SSL context and pass that instead\n\nHere's the most appropriate fix:\n\n```python\n# Instead of passing verify and cert directly, create proper SSL context\nimport ssl\nfrom httpx import create_ssl_context\n\n# Ensure verify and cert are defined\nverify = verify if 'verify' in locals() else self._verify\ncert = cert if 'cert' in locals() else self._cert\n\n# Create SSL context\nssl_context = create_ssl_context(verify=verify, cert=cert)\n\ntransport = AsyncHTTPTransport(\n    ssl_context=ssl_context,\n    # other parameters\n)\n```\n\nBut since I can't see the actual code, the most targeted fix based on the error would be to ensure the variables are defined and passed correctly:\n\n**In `httpx/_client.py`, around line 1456**, replace the problematic code with:\n\n```python\n# Ensure variables are defined\nif 'verify' not in locals():\n    verify = getattr(self, '_verify', True)\nif 'cert' not in locals():\n    cert = getattr(self, '_cert', None)\n\n# Check what parameters AsyncHTTPTransport actually accepts\ntransport = AsyncHTTPTransport(\n    ssl_context=create_ssl_context(verify=verify, cert=cert) if (verify is not True or cert is not None) else None,\n    # other valid parameters\n)\n```\n\nThe key fixes are:\n1. Ensure `verify` and `cert` variables are properly defined before use\n2. Pass them in a way that `AsyncHTTPTransport` accepts (likely through `ssl_context`)",
+  "evaluation": {
+    "success": false,
+    "score": 0.35219864673485446,
+    "explanation": "Similarity: 0.420, Key fixes: 0.250",
+    "details": {
+      "similarity_score": 0.4203310778914241,
+      "key_fixes_score": 0.25,
+      "predicted_changes": {
+        "httpx/_client.py": [
+          "# Around line 1456, the problematic code likely looks something like:\n# transport = AsyncHTTPTransport(verify=verify, cert=cert, ...)\n\n# This should be changed to properly handle SSL configuration.\n# The correct approach would be to pass verify and cert as part of the \n# ssl_context or use the proper parameter names that AsyncHTTPTransport accepts.",
+          "transport = AsyncHTTPTransport(\n    verify=verify,\n    cert=cert,\n    # other parameters\n)",
+          "transport = AsyncHTTPTransport(\n    verify=ssl_context if ssl_context is not None else verify,\n    cert=cert,\n    # other parameters\n)",
+          "# Make sure verify and cert are properly defined before this point\nif 'verify' not in locals():\n    verify = self._verify\nif 'cert' not in locals():\n    cert = self._cert\n\ntransport = AsyncHTTPTransport(\n    verify=verify,\n    cert=cert,\n    # other parameters\n)",
+          "# Instead of passing verify and cert directly, create proper SSL context\nimport ssl\nfrom httpx import create_ssl_context\n\n# Ensure verify and cert are defined\nverify = verify if 'verify' in locals() else self._verify\ncert = cert if 'cert' in locals() else self._cert\n\n# Create SSL context\nssl_context = create_ssl_context(verify=verify, cert=cert)\n\ntransport = AsyncHTTPTransport(\n    ssl_context=ssl_context,\n    # other parameters\n)",
+          "# Ensure variables are defined\nif 'verify' not in locals():\n    verify = getattr(self, '_verify', True)\nif 'cert' not in locals():\n    cert = getattr(self, '_cert', None)\n\n# Check what parameters AsyncHTTPTransport actually accepts\ntransport = AsyncHTTPTransport(\n    ssl_context=create_ssl_context(verify=verify, cert=cert) if (verify is not True or cert is not None) else None,\n    # other valid parameters\n)"
+        ]
+      },
+      "target_changes": {
+        "httpx/_client.py": "index e5cff5d..4dd2d07 100644\n--- a/httpx/_client.py\n+++ b/httpx/_client.py\n@@ -1455,8 +1455,6 @@ class AsyncClient(BaseClient):\n     ) -> AsyncBaseTransport:\n         return AsyncHTTPTransport(\n             ssl_context=ssl_context,\n-            verify=verify,\n-            cert=cert,\n             http1=http1,\n             http2=http2,\n             limits=limits,\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "task": "lca_ci_builds_repair_sampled_evaluation",
+  "model": "qwen3-235b-a22b-instruct-2507",
+  "model_type": "qianfan_sampled",
+  "timestamp": "2025-09-07T22:46:26.065157",
+  "sampling_info": {
+    "strategy": "stratified_difficulty",
+    "sample_ratio": 1.0,
+    "seed": 42,
+    "original_samples": 68,
+    "sampled_samples": 68,
+    "actual_sample_ratio": 1.0
+  },
+  "performance_summary": {
+    "total_samples": 68,
+    "successful_samples": 67,
+    "failed_samples": 1,
+    "total_generation_time": 1927.075828552246,
+    "avg_generation_time": 28.762325799287254
+  },
+  "original_dataset_stats": {
+    "total_samples": 68,
+    "difficulty_distribution": {
+      "0": 36,
+      "1": 7,
+      "2": 19,
+      "3": 6
+    },
+    "language_distribution": {
+      "Python": 68
+    },
+    "repository_distribution": {
+      "huggingface/diffusers": 4,
+      "mindsdb/mindsdb": 2,
+      "sanic-org/sanic": 1,
+      "tornadoweb/tornado": 1,
+      "canonical/cloud-init": 5,
+      "skypilot-org/skypilot": 5,
+      "beetbox/beets": 5,
+      "yt-dlp/yt-dlp": 1,
+      "hacs/integration": 3,
+      "optuna/optuna": 2,
+      "django-import-export/django-import-export": 6,
+      "hugsy/gef": 1,
+      "mosaicml/composer": 1,
+      "online-ml/river": 1,
+      "encode/httpx": 5,
+      "wandb/wandb": 2,
+      "googleapis/google-cloud-python": 1,
+      "huggingface/accelerate": 4,
+      "dask/dask": 1,
+      "encode/starlette": 3,
+      "encode/uvicorn": 1,
+      "mwaskom/seaborn": 3,
+      "octodns/octodns": 2,
+      "pwndbg/pwndbg": 1,
+      "pylint-dev/pylint": 1,
+      "errbotio/errbot": 2,
+      "openvinotoolkit/open_model_zoo": 2,
+      "cowrie/cowrie": 1,
+      "danielegrattarola/spektral": 1
+    },
+    "avg_changed_files": 1.8235294117647058
+  },
+  "sampled_dataset_stats": {
+    "total_samples": 68,
+    "difficulty_distribution": {
+      "0": 36,
+      "1": 7,
+      "2": 19,
+      "3": 6
+    },
+    "language_distribution": {
+      "Python": 68
+    },
+    "repository_distribution": {
+      "huggingface/diffusers": 4,
+      "mindsdb/mindsdb": 2,
+      "sanic-org/sanic": 1,
+      "tornadoweb/tornado": 1,
+      "canonical/cloud-init": 5,
+      "skypilot-org/skypilot": 5,
+      "beetbox/beets": 5,
+      "yt-dlp/yt-dlp": 1,
+      "hacs/integration": 3,
+      "optuna/optuna": 2,
+      "django-import-export/django-import-export": 6,
+      "hugsy/gef": 1,
+      "mosaicml/composer": 1,
+      "online-ml/river": 1,
+      "encode/httpx": 5,
+      "wandb/wandb": 2,
+      "googleapis/google-cloud-python": 1,
+      "huggingface/accelerate": 4,
+      "dask/dask": 1,
+      "encode/starlette": 3,
+      "encode/uvicorn": 1,
+      "mwaskom/seaborn": 3,
+      "octodns/octodns": 2,
+      "pwndbg/pwndbg": 1,
+      "pylint-dev/pylint": 1,
+      "errbotio/errbot": 2,
+      "openvinotoolkit/open_model_zoo": 2,
+      "cowrie/cowrie": 1,
+      "danielegrattarola/spektral": 1
+    },
+    "avg_changed_files": 1.8235294117647058
+  },
+  "configuration": {
+    "model_config": {
+      "model_name": "qwen3-235b-a22b-instruct-2507",
+      "timeout": 120,
+      "max_retries": 3
+    },
+    "max_tokens": 1024,
+    "temperature": 0.0,
+    "difficulty_filter": null
+  },
+  "results": {
+    "success_rate": 0.7164179104477612,
+    "average_score": 0.5778204419117983,
+    "total_samples": 67,
+    "success_rate_difficulty_0": 0.7142857142857143,
+    "avg_score_difficulty_0": 0.5940880336657081,
+    "success_rate_difficulty_1": 0.8571428571428571,
+    "avg_score_difficulty_1": 0.5904535610788068,
+    "success_rate_difficulty_2": 0.7368421052631579,
+    "avg_score_difficulty_2": 0.5669694743864536,
+    "success_rate_difficulty_3": 0.5,
+    "avg_score_difficulty_3": 0.5025489148160718
+  },
+  "individual_results_dir": "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/results/long_code_arena/ci_builds_repair/sampled_100pct_20250907_221346/ci_builds_repair_qwen3-235b-a22b-instruct-2507_sampled_100pct_stratified_difficulty_20250907_221346"
+}

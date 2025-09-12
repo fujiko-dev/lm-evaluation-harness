@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-09-07T22:34:38.235154",
+  "sample_info": {
+    "index": 55,
+    "original_index": 55,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 158,
+  "repo_owner": "mwaskom",
+  "repo_name": "seaborn",
+  "difficulty": 2,
+  "generation_time": 10.72986102104187,
+  "prediction": "Looking at the error logs, I can see that the failure is caused by a `ValueError: Invalid frequency: ME` in the test `TestBarPlot.test_datetime_native_scale_axis`. This error occurs when trying to use `pd.date_range` with `freq=\"ME\"`.\n\n## Analysis of the Failure Cause\n\nThe root cause is that the \"ME\" (Month End) frequency alias was introduced in newer versions of pandas, but the test is running on Python 3.8 with older dependencies (as indicated by the \"pinned\" dependency set). In older versions of pandas, the equivalent frequency was \"M\" (Month end).\n\nThe test is using `freq=\"ME\"` which is not recognized by the older version of pandas installed in the Python 3.8 environment with pinned dependencies.\n\n## Specific Changes Needed\n\nThe fix needs to be applied to make the test compatible with different pandas versions. We need to modify the test to use the appropriate frequency alias based on the pandas version.\n\n## Modified Code\n\nThe change should be made in `tests/test_categorical.py` around line 2081:\n\n```python\n# Before (failing code):\ndef test_datetime_native_scale_axis(self):\n    x = pd.date_range(\"2010-01-01\", periods=20, freq=\"ME\")\n\n# After (fixed code):\ndef test_datetime_native_scale_axis(self):\n    # Use \"ME\" for newer pandas versions, \"M\" for older versions\n    try:\n        x = pd.date_range(\"2010-01-01\", periods=20, freq=\"ME\")\n    except ValueError:\n        # Fallback for older pandas versions that don't support \"ME\"\n        x = pd.date_range(\"2010-01-01\", periods=20, freq=\"M\")\n```\n\nAlternatively, we could check the pandas version explicitly:\n\n```python\nimport pandas as pd\nfrom packaging import version\n\ndef test_datetime_native_scale_axis(self):\n    # Use \"ME\" for pandas >= 2.2.0, \"M\" for older versions\n    if version.parse(pd.__version__) >= version.parse(\"2.2.0\"):\n        freq = \"ME\"\n    else:\n        freq = \"M\"\n    x = pd.date_range(\"2010-01-01\", periods=20, freq=freq)\n```\n\nThe first approach with try/except is more robust as it directly tests for compatibility rather than relying on version parsing, so I recommend that approach.\n\nThis fix will make the test pass on both older and newer versions of pandas by gracefully falling back to the appropriate frequency alias.",
+  "evaluation": {
+    "success": true,
+    "score": 0.7059443155452436,
+    "explanation": "Similarity: 0.510, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.5099071925754061,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "tests/test_categorical.py": [
+          "# Before (failing code):\ndef test_datetime_native_scale_axis(self):\n    x = pd.date_range(\"2010-01-01\", periods=20, freq=\"ME\")\n\n# After (fixed code):\ndef test_datetime_native_scale_axis(self):\n    # Use \"ME\" for newer pandas versions, \"M\" for older versions\n    try:\n        x = pd.date_range(\"2010-01-01\", periods=20, freq=\"ME\")\n    except ValueError:\n        # Fallback for older pandas versions that don't support \"ME\"\n        x = pd.date_range(\"2010-01-01\", periods=20, freq=\"M\")",
+          "import pandas as pd\nfrom packaging import version\n\ndef test_datetime_native_scale_axis(self):\n    # Use \"ME\" for pandas >= 2.2.0, \"M\" for older versions\n    if version.parse(pd.__version__) >= version.parse(\"2.2.0\"):\n        freq = \"ME\"\n    else:\n        freq = \"M\"\n    x = pd.date_range(\"2010-01-01\", periods=20, freq=freq)"
+        ]
+      },
+      "target_changes": {
+        "tests/test_categorical.py": "index 8e5fd41d..3df78247 100644\n--- a/tests/test_categorical.py\n+++ b/tests/test_categorical.py\n@@ -2078,7 +2078,7 @@ class TestBarPlot(SharedAggTests):\n \n     def test_datetime_native_scale_axis(self):\n \n-        x = pd.date_range(\"2010-01-01\", periods=20, freq=\"ME\")\n+        x = pd.date_range(\"2010-01-01\", periods=20, freq=\"MS\")\n         y = np.arange(20)\n         ax = barplot(x=x, y=y, native_scale=True)\n         assert \"Date\" in ax.xaxis.get_major_locator().__class__.__name__\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

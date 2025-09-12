@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-09-07T22:24:34.320317",
+  "sample_info": {
+    "index": 3,
+    "original_index": 3,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 22,
+  "repo_owner": "sanic-org",
+  "repo_name": "sanic",
+  "difficulty": 2,
+  "generation_time": 31.868144035339355,
+  "prediction": "From analyzing the failed CI logs, here's the root cause and solution:\n\nAnalysis:\n1. The failure occurs in `tests/test_websockets.py` where test cases `test_ws_frame_put_message_into_queue` are failing.\n2. The error indicates that `has_calls()` is not a valid assertion on an AsyncMock object in Python 3.12.\n3. The issue stems from changes in Python 3.12's unittest.mock module regarding AsyncMock behavior.\n\nSolution:\nWe need to modify the test assertions to use the correct async mock assertion methods. The test is trying to verify calls to an async queue.put() method.\n\nSpecific Changes:\n1. Replace `has_calls()` with `assert_has_calls()` which is the correct assertion method for AsyncMock\n2. Ensure we await the async operations properly\n\nHere's the modified test code needed:\n\n```python\n# tests/test_websockets.py\n@pytest.mark.asyncio\n@pytest.mark.parametrize(\"opcode\", DATA_OPCODES)\nasync def test_ws_frame_put_message_into_queue(opcode):\n    assembler = WebsocketFrameAssembler(Mock())\n    assembler.chunks_queue = AsyncMock(spec=Queue)\n    assembler.message_fetched = AsyncMock()\n    assembler.message_fetched.is_set = Mock(return_value=False)\n\n    await assembler.put(Frame(opcode, b\"foo\"))\n\n    # Replace has_calls with assert_has_calls\n    assembler.chunks_queue.put.assert_has_calls([\n        call(b\"foo\"),\n        call(None),\n    ])\n```\n\nAdditional Recommendations:\n1. The workflow should also be updated to explicitly handle Python 3.12 compatibility:\n```yaml\n# .github/workflows/tests.yml\njobs:\n  run_tests:\n    # Existing config...\n    steps:\n      - name: Set up Python ${{ matrix.config.python-version }}\n        uses: actions/setup-python@v4\n        with:\n          python-version: ${{ matrix.config.python-version }}\n          check-latest: true  # Ensure latest patch version is used\n```\n\nThe changes needed are:\n1. Update the test assertions to use `assert_has_calls()` instead of `has_calls()`\n2. Optionally update the workflow to ensure latest Python patch versions are used\n3. No other changes to the workflow itself are necessary since the issue is with the test code, not the CI configuration.\n\nThis change maintains the same test functionality while making it compatible with Python 3.12's mock behavior. The tests will now properly verify that the specified calls were made to the async queue.put() method.",
+  "evaluation": {
+    "success": false,
+    "score": 0.4895704165090084,
+    "explanation": "Similarity: 0.316, Key fixes: 0.750",
+    "details": {
+      "similarity_score": 0.3159506941816806,
+      "key_fixes_score": 0.75,
+      "predicted_changes": {
+        "tests/test_websockets.py": [
+          "# tests/test_websockets.py\n@pytest.mark.asyncio\n@pytest.mark.parametrize(\"opcode\", DATA_OPCODES)\nasync def test_ws_frame_put_message_into_queue(opcode):\n    assembler = WebsocketFrameAssembler(Mock())\n    assembler.chunks_queue = AsyncMock(spec=Queue)\n    assembler.message_fetched = AsyncMock()\n    assembler.message_fetched.is_set = Mock(return_value=False)\n\n    await assembler.put(Frame(opcode, b\"foo\"))\n\n    # Replace has_calls with assert_has_calls\n    assembler.chunks_queue.put.assert_has_calls([\n        call(b\"foo\"),\n        call(None),\n    ])",
+          "# .github/workflows/tests.yml\njobs:\n  run_tests:\n    # Existing config...\n    steps:\n      - name: Set up Python ${{ matrix.config.python-version }}\n        uses: actions/setup-python@v4\n        with:\n          python-version: ${{ matrix.config.python-version }}\n          check-latest: true  # Ensure latest patch version is used"
+        ]
+      },
+      "target_changes": {
+        "sanic/__version__.py": "index 1cea76e9..5e62ad89 100644\n--- a/sanic/__version__.py\n+++ b/sanic/__version__.py\n@@ -1 +1 @@\n-__version__ = \"23.12.0\"\n+__version__ = \"23.12.1\"",
+        "tests/test_websockets.py": "index dd8413b9..5809cfc0 100644\n--- a/tests/test_websockets.py\n+++ b/tests/test_websockets.py\n@@ -5,7 +5,7 @@ from unittest.mock import Mock, call\n \n import pytest\n \n-from websockets.frames import CTRL_OPCODES, DATA_OPCODES, Frame\n+from websockets.frames import CTRL_OPCODES, DATA_OPCODES, Frame, OP_TEXT\n \n from sanic.exceptions import ServerError\n from sanic.server.websockets.frame import WebsocketFrameAssembler\n@@ -210,17 +210,14 @@ async def test_ws_frame_put_message_complete(opcode):\n @pytest.mark.asyncio\n @pytest.mark.parametrize(\"opcode\", DATA_OPCODES)\n async def test_ws_frame_put_message_into_queue(opcode):\n+    foo = 'foo' if (opcode == OP_TEXT) else b\"foo\"\n     assembler = WebsocketFrameAssembler(Mock())\n     assembler.chunks_queue = AsyncMock(spec=Queue)\n     assembler.message_fetched = AsyncMock()\n     assembler.message_fetched.is_set = Mock(return_value=False)\n-\n     await assembler.put(Frame(opcode, b\"foo\"))\n \n-    assembler.chunks_queue.put.has_calls(\n-        call(b\"foo\"),\n-        call(None),\n-    )\n+    assert assembler.chunks_queue.put.call_args_list == [call(foo), call(None)]\n \n \n @pytest.mark.asyncio\n"
+      },
+      "difficulty": 2
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-09-07T22:30:49.594624",
+  "sample_info": {
+    "index": 14,
+    "original_index": 14,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 37,
+  "repo_owner": "skypilot-org",
+  "repo_name": "skypilot",
+  "difficulty": 0,
+  "generation_time": 16.494372129440308,
+  "prediction": "## Analysis of the Failure Cause\n\nThe CI workflow is failing because the `yapf` formatter is detecting code that doesn't match the expected formatting style. Specifically, in the file `sky/resources.py`, there's a line break that yapf wants to change. The formatter is suggesting to move the `if` condition to a new line, which is causing the diff to show changes and thus failing the check.\n\nThe workflow is running `yapf --diff --recursive` which shows the differences but doesn't automatically fix them. Since there are formatting differences, the command exits with code 1, causing the CI to fail.\n\n## Specific Changes Needed\n\nThe fix is to apply the yapf formatting to the `sky/resources.py` file. The specific change needed is to reformat the conditional expression on lines 836-839 to match yapf's expected style.\n\n## Modified Code\n\nThe file `sky/resources.py` needs to be updated with the following change:\n\n```python\n# Before (lines 836-839):\nsize_comp = ('larger than' if image_size > self.disk_size\n             else 'equal to')\n\n# After (lines 836-839):\nsize_comp = ('larger than'\n             if image_size > self.disk_size else 'equal to')\n```\n\n## Alternative Fix Options\n\nSince this is a formatting issue, there are two approaches to fix it:\n\n1. **Apply the formatting** (recommended): Run yapf on the file to automatically fix the formatting\n2. **Update the workflow** to allow the current formatting (not recommended as it goes against the purpose of having a formatter)\n\nTo apply the formatting automatically, you can run:\n```bash\nyapf --recursive --in-place ./sky/resources.py\n```\n\nThis will automatically apply the formatting changes that yapf is suggesting, which should resolve the CI failure.",
+  "evaluation": {
+    "success": true,
+    "score": 0.7181246230731924,
+    "explanation": "Similarity: 0.530, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.5302077051219872,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "sky/resources.py": [
+          "# Before (lines 836-839):\nsize_comp = ('larger than' if image_size > self.disk_size\n             else 'equal to')\n\n# After (lines 836-839):\nsize_comp = ('larger than'\n             if image_size > self.disk_size else 'equal to')",
+          "yapf --recursive --in-place ./sky/resources.py"
+        ]
+      },
+      "target_changes": {
+        "sky/resources.py": "index b965401b..01cb9cce 100644\n--- a/sky/resources.py\n+++ b/sky/resources.py\n@@ -836,8 +836,8 @@ class Resources:\n             image_size = self.cloud.get_image_size(image_id, region)\n             if image_size >= self.disk_size:\n                 with ux_utils.print_exception_no_traceback():\n-                    size_comp = ('larger than' if image_size > self.disk_size\n-                                 else 'equal to')\n+                    size_comp = ('larger than'\n+                                 if image_size > self.disk_size else 'equal to')\n                     raise ValueError(\n                         f'Image {image_id!r} is {image_size}GB, which is '\n                         f'{size_comp} the specified disk_size: '\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

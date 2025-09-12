@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-09-07T22:26:56.190084",
+  "sample_info": {
+    "index": 30,
+    "original_index": 30,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 84,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 6.599211931228638,
+  "prediction": "## 1. Analysis of the Failure Cause\n\nThe CI workflow is failing due to a `flake8` pre-commit hook violation. Specifically, two lines in `import_export/admin.py` exceed the maximum line length limit of 88 characters:\n\n- Line 749: 96 characters (exceeds 88)\n- Line 756: 98 characters (exceeds 88)\n\nThe error code `E501` indicates \"line too long\" violations. This is a style enforcement issue that prevents the commit from passing pre-commit checks.\n\n## 2. Specific Changes Needed\n\nTo fix this issue, we need to modify the `import_export/admin.py` file to shorten the two problematic lines to be under 88 characters. The most appropriate approach is to break these long lines into multiple lines for better readability while maintaining functionality.\n\n## 3. Modified Code/Configuration\n\nSince the workflow configuration itself is correct, the fix requires modifying the source code. Here are the specific changes needed in `import_export/admin.py`:\n\n```python\n# In import_export/admin.py, around lines 749 and 756:\n\n# Before (problematic):\n# ... very long line that exceeds 88 characters ...\n\n# After (fixed):\n# For line 749:\n# Instead of one long line, break it into multiple lines:\nsome_function_call(\n    parameter1=value1,\n    parameter2=value2,\n    parameter3=value3,\n    # ... other parameters\n)\n\n# For line 756:\n# Similarly, restructure the long line:\nanother_function_call(\n    param_a=long_value_a,\n    param_b=long_value_b,\n    param_c=long_value_c,\n    # ... other parameters\n)\n```\n\nHowever, since I don't have access to the exact content of those specific lines, here's what you should do:\n\n1. Open `import_export/admin.py`\n2. Find line 749 and line 756\n3. Break the long lines into multiple lines by:\n   - Adding line breaks after commas in function calls\n   - Using parentheses to wrap arguments\n   - Breaking long strings or expressions into multiple lines\n   - Using proper indentation for readability\n\nExample pattern:\n```python\n# Instead of:\nsome_function(parameter1=value1, parameter2=value2, parameter3=value3, parameter4=value4, parameter5=value5)\n\n# Do:\nsome_function(\n    parameter1=value1,\n    parameter2=value2,\n    parameter3=value3,\n    parameter4=value4,\n    parameter5=value5,\n)\n```\n\nThis will resolve the E501 line-too-long errors and allow the pre-commit workflow to pass successfully.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6530093074738919,
+    "explanation": "Similarity: 0.422, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.4216821791231532,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "import_export/admin.py": [
+          "# In import_export/admin.py, around lines 749 and 756:\n\n# Before (problematic):\n# ... very long line that exceeds 88 characters ...\n\n# After (fixed):\n# For line 749:\n# Instead of one long line, break it into multiple lines:\nsome_function_call(\n    parameter1=value1,\n    parameter2=value2,\n    parameter3=value3,\n    # ... other parameters\n)\n\n# For line 756:\n# Similarly, restructure the long line:\nanother_function_call(\n    param_a=long_value_a,\n    param_b=long_value_b,\n    param_c=long_value_c,\n    # ... other parameters\n)",
+          "# Instead of:\nsome_function(parameter1=value1, parameter2=value2, parameter3=value3, parameter4=value4, parameter5=value5)\n\n# Do:\nsome_function(\n    parameter1=value1,\n    parameter2=value2,\n    parameter3=value3,\n    parameter4=value4,\n    parameter5=value5,\n)"
+        ]
+      },
+      "target_changes": {
+        "import_export/admin.py": "index a1b288e9..8bb2db67 100644\n--- a/import_export/admin.py\n+++ b/import_export/admin.py\n@@ -746,14 +746,16 @@ class ExportMixin(BaseExportMixin, ImportExportMixinBase):\n             def get_results(self, request):\n                 \"\"\"\n                 We override this method because we only call ChangeList.get_queryset()\n-                so we don't need anything from this method. The get_results() gets called during\n-                ChangeList.__init__() and we do want to avoid unnecessary COUNT queries.\n+                so we don't need anything from this method.\n+                The get_results() gets called during ChangeList.__init__()\n+                and we do want to avoid unnecessary COUNT queries.\n                 \"\"\"\n                 pass\n \n         cl = ExportChangeList(**changelist_kwargs)\n \n-        # get_queryset() is already called during initialization, it is enough to get it's results\n+        # get_queryset() is already called during initialization,\n+        # it is enough to get it's results\n         if hasattr(cl, \"queryset\"):\n             return cl.queryset\n \n"
+      },
+      "difficulty": 0
+    }
+  }
+}

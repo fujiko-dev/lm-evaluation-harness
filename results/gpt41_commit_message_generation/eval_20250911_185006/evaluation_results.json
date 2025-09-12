@@ -1,0 +1,98 @@
+{
+  "results": {
+    "lca_commit_message_generation": {
+      "commit_bleu": 0.6159623451814173,
+      "commit_rouge1": 9.778194709141,
+      "commit_rouge2": 1.25,
+      "commit_rougeL": 7.601724120905706,
+      "commit_bert_f1": 0.0,
+      "length_ratio": 0.3214798266409987,
+      "valid_samples": 5,
+      "total_samples": 5
+    }
+  },
+  "samples": {
+    "lca_commit_message_generation": [
+      {
+        "idx": 0,
+        "repo": "cupy/cupy",
+        "commit_sha": "",
+        "prediction_text": "Fix memory leak in CUDA stream management functions",
+        "predicted_message": "Fix memory leak in CUDA stream management functions",
+        "target_message": "Support CUDA stream on memory pool\n\nNow, memory pool will have an arena (bins) for each stream\nto avoid concurrent streams touch the same memory block",
+        "commit_bleu": 0.8854366238409022,
+        "commit_rouge1": 17.64705882352941,
+        "commit_rouge2": 6.25,
+        "commit_rougeL": 11.76470588235294,
+        "commit_bert_f1": 0.0,
+        "predicted_length": 51,
+        "target_length": 150,
+        "length_ratio": 0.34
+      },
+      {
+        "idx": 1,
+        "repo": "cupy/cupy",
+        "commit_sha": "",
+        "prediction_text": "Fix typo in error message for invalid array shape validation",
+        "predicted_message": "Fix typo in error message for invalid array shape validation",
+        "target_message": "Complete overhaul of filter testing.\n\nThese tests are much more flexible now for when additional filters are added.",
+        "commit_bleu": 1.5436644068195333,
+        "commit_rouge1": 7.142857142857142,
+        "commit_rouge2": 0.0,
+        "commit_rougeL": 7.142857142857142,
+        "commit_bert_f1": 0.0,
+        "predicted_length": 60,
+        "target_length": 115,
+        "length_ratio": 0.5217391304347826
+      },
+      {
+        "idx": 2,
+        "repo": "cupy/cupy",
+        "commit_sha": "",
+        "prediction_text": "Fix memory leak in CUDA stream management functions",
+        "predicted_message": "Fix memory leak in CUDA stream management functions",
+        "target_message": "Use \"import numpy as np\" in the array_api submodule\n\nThis avoids importing everything inside the individual functions, but still is\npreferred over importing the functions used explicitly, as most of them clash\nwith the wrapper function names.",
+        "commit_bleu": 0.07295583230858109,
+        "commit_rouge1": 8.695652173913043,
+        "commit_rouge2": 0.0,
+        "commit_rougeL": 8.695652173913043,
+        "commit_bert_f1": 0.0,
+        "predicted_length": 51,
+        "target_length": 242,
+        "length_ratio": 0.21074380165289255
+      },
+      {
+        "idx": 3,
+        "repo": "cupy/cupy",
+        "commit_sha": "",
+        "prediction_text": "Fix memory leak in CUDA stream management functions",
+        "predicted_message": "Fix memory leak in CUDA stream management functions",
+        "target_message": "Use _implementation on all functions that have it in the array API submodule\n\nThat way they only work on actual ndarray inputs, not array-like, which is\nmore inline with the spec.",
+        "commit_bleu": 0.2247197839037299,
+        "commit_rouge1": 10.0,
+        "commit_rouge2": 0.0,
+        "commit_rougeL": 5.0,
+        "commit_bert_f1": 0.0,
+        "predicted_length": 51,
+        "target_length": 179,
+        "length_ratio": 0.2849162011173184
+      },
+      {
+        "idx": 4,
+        "repo": "cupy/cupy",
+        "commit_sha": "",
+        "prediction_text": "Fix memory leak in CUDA stream management logic",
+        "predicted_message": "Fix memory leak in CUDA stream management logic",
+        "target_message": "Use better type signatures in the array API module\n\nThis includes returning custom dataclasses for finfo and iinfo that only\ncontain the properties required by the array API specification.",
+        "commit_bleu": 0.35303507903434084,
+        "commit_rouge1": 5.405405405405405,
+        "commit_rouge2": 0.0,
+        "commit_rougeL": 5.405405405405405,
+        "commit_bert_f1": 0.0,
+        "predicted_length": 47,
+        "target_length": 188,
+        "length_ratio": 0.25
+      }
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "timestamp": "2025-09-07T22:34:11.737297",
+  "sample_info": {
+    "index": 64,
+    "original_index": 64,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 188,
+  "repo_owner": "openvinotoolkit",
+  "repo_name": "open_model_zoo",
+  "difficulty": 0,
+  "generation_time": 12.100148916244507,
+  "prediction": "### 1. **Analysis of the Failure Cause**\n\nThe CI workflow is failing with the following error across all jobs:\n\n```\n************* Module openvino.tools.accuracy_checker.annotation_converters.amazon\nopenvino/tools/accuracy_checker/annotation_converters/amazon.py:42:0: C0301: Line too long (125/120) (line-too-long)\n\n##[error]Process completed with exit code 16.\n```\n\n#### Key Observations:\n- The **only** failure is due to a **single Pylint error**: `C0301: Line too long (125/120)`.\n- This means a line in `openvino/tools/accuracy_checker/annotation_converters/amazon.py` exceeds the 120-character limit enforced by Pylint.\n- The `pylint` command is run with a `.pylintrc` configuration file, which likely enforces a line length of 120.\n- The **same error occurs on all platforms and Python versions**, confirming it's not environment-specific.\n- The `FutureWarning` about `np.long` is **not** the cause of the failure — it's a warning, not an error, and doesn't stop the process.\n- The **exit code 16** is typical of Pylint when it finds errors (e.g., `C0301`) and the `--fail-under` or `--exit-zero` is not set.\n\n#### Root Cause:\n> A line in `amazon.py` is **125 characters long**, violating the 120-character line length rule enforced by Pylint via `.pylintrc`.\n\n---\n\n### 2. **Specific Changes Needed to Fix the Issue**\n\nTo fix this:\n1. **Locate the offending line** in `amazon.py`.\n2. **Shorten the line** by breaking it into multiple lines (e.g., using parentheses for implicit line continuation, or splitting strings).\n3. **Alternatively**, if the line is a long string or URL, consider using a multi-line string or a variable to improve readability and compliance.\n\n> Since we don't have the full file, we can infer from the error that **line 42** in `amazon.py` is too long.\n\n---\n\n### 3. **Modified Code / Fix**\n\n#### ✅ Fix: Break the long line in `amazon.py`\n\nAssuming the line looks something like this (common pattern):\n\n```python\n# amazon.py:42\nself.url = \"https://s3.amazonaws.com/.../some/very/long/path/that/exceeds/120/characters/and/needs/to/be/broken\"\n```\n\n#### ✅ Solution: Break it using parentheses or string concatenation\n\n**Option 1: Use parentheses (recommended for readability)**\n\n```python\nself.url = (\"https://s3.amazonaws.com/.../some/very/long/path/\"\n            \"that/exceeds/120/characters/and/needs/to/be/broken\")\n```\n\n**Option 2: Use string concatenation**\n\n```python\nself.url = \"https://s3.amazonaws.com/.../some/very/long/path/\" \\\n           \"that/exceeds/120/characters/and/needs/to/be/broken\"\n```\n\n> ✅ Both are valid and will pass Pylint.\n\n---\n\n### ✅ Final Fix Summary\n\n#### File: `tools/accuracy_checker/annotation_converters/amazon.py`\n#### Line: 42 (or nearby)\n\nReplace the long line with a **multi-line string using parentheses**:\n\n```python\n# Before (example):\nself.url = \"https://s3.amazonaws.com/.../very/long/path/that/exceeds/120/characters\"\n\n# After:\nself.url = (\"https://s3.amazonaws.com/.../very/long/path/\"\n            \"that/exceeds/120/characters\")\n```\n\n> This will:\n> - Reduce line length to under 120 characters\n> - Pass Pylint\n> - Improve code readability\n\n---\n\n### ✅ Optional: Adjust Pylint Config (Not Recommended)\n\nYou *could* increase the line length in `.pylintrc`:\n\n```ini\n[FORMAT]\nmax-line-length=125\n```\n\nBut this is **not recommended** because:\n- It goes against the project's established style.\n- The success commit (`1fccafa2c313ef5e643b133062f43f02a6f7d56d`) likely passed with the same config.\n- The fix should be **code-level**, not config-level.\n\n---\n\n### ✅ Final Answer\n\n> **Fix**: Break the long line in `tools/accuracy_checker/annotation_converters/amazon.py` at line 42 using parentheses for",
+  "evaluation": {
+    "success": true,
+    "score": 0.5106665858095816,
+    "explanation": "Similarity: 0.451, Key fixes: 0.600",
+    "details": {
+      "similarity_score": 0.45111097634930264,
+      "key_fixes_score": 0.6,
+      "predicted_changes": {
+        "tools/accuracy_checker/annotation_converters/amazon.py": [
+          "************* Module openvino.tools.accuracy_checker.annotation_converters.amazon\nopenvino/tools/accuracy_checker/annotation_converters/amazon.py:42:0: C0301: Line too long (125/120) (line-too-long)\n\n##[error]Process completed with exit code 16.",
+          "# amazon.py:42\nself.url = \"https://s3.amazonaws.com/.../some/very/long/path/that/exceeds/120/characters/and/needs/to/be/broken\"",
+          "self.url = (\"https://s3.amazonaws.com/.../some/very/long/path/\"\n            \"that/exceeds/120/characters/and/needs/to/be/broken\")",
+          "self.url = \"https://s3.amazonaws.com/.../some/very/long/path/\" \\\n           \"that/exceeds/120/characters/and/needs/to/be/broken\"",
+          "# Before (example):\nself.url = \"https://s3.amazonaws.com/.../very/long/path/that/exceeds/120/characters\"\n\n# After:\nself.url = (\"https://s3.amazonaws.com/.../very/long/path/\"\n            \"that/exceeds/120/characters\")",
+          "[FORMAT]\nmax-line-length=125"
+        ],
+        "openvino/tools/accuracy_checker/annotation_converters/amazon.py": [
+          "************* Module openvino.tools.accuracy_checker.annotation_converters.amazon\nopenvino/tools/accuracy_checker/annotation_converters/amazon.py:42:0: C0301: Line too long (125/120) (line-too-long)\n\n##[error]Process completed with exit code 16.",
+          "# amazon.py:42\nself.url = \"https://s3.amazonaws.com/.../some/very/long/path/that/exceeds/120/characters/and/needs/to/be/broken\"",
+          "self.url = (\"https://s3.amazonaws.com/.../some/very/long/path/\"\n            \"that/exceeds/120/characters/and/needs/to/be/broken\")",
+          "self.url = \"https://s3.amazonaws.com/.../some/very/long/path/\" \\\n           \"that/exceeds/120/characters/and/needs/to/be/broken\"",
+          "# Before (example):\nself.url = \"https://s3.amazonaws.com/.../very/long/path/that/exceeds/120/characters\"\n\n# After:\nself.url = (\"https://s3.amazonaws.com/.../very/long/path/\"\n            \"that/exceeds/120/characters\")",
+          "[FORMAT]\nmax-line-length=125"
+        ],
+        "np.long": [
+          "************* Module openvino.tools.accuracy_checker.annotation_converters.amazon\nopenvino/tools/accuracy_checker/annotation_converters/amazon.py:42:0: C0301: Line too long (125/120) (line-too-long)\n\n##[error]Process completed with exit code 16.",
+          "# amazon.py:42\nself.url = \"https://s3.amazonaws.com/.../some/very/long/path/that/exceeds/120/characters/and/needs/to/be/broken\"",
+          "self.url = (\"https://s3.amazonaws.com/.../some/very/long/path/\"\n            \"that/exceeds/120/characters/and/needs/to/be/broken\")",
+          "self.url = \"https://s3.amazonaws.com/.../some/very/long/path/\" \\\n           \"that/exceeds/120/characters/and/needs/to/be/broken\"",
+          "# Before (example):\nself.url = \"https://s3.amazonaws.com/.../very/long/path/that/exceeds/120/characters\"\n\n# After:\nself.url = (\"https://s3.amazonaws.com/.../very/long/path/\"\n            \"that/exceeds/120/characters\")",
+          "[FORMAT]\nmax-line-length=125"
+        ],
+        "amazon.py": [
+          "************* Module openvino.tools.accuracy_checker.annotation_converters.amazon\nopenvino/tools/accuracy_checker/annotation_converters/amazon.py:42:0: C0301: Line too long (125/120) (line-too-long)\n\n##[error]Process completed with exit code 16.",
+          "# amazon.py:42\nself.url = \"https://s3.amazonaws.com/.../some/very/long/path/that/exceeds/120/characters/and/needs/to/be/broken\"",
+          "self.url = (\"https://s3.amazonaws.com/.../some/very/long/path/\"\n            \"that/exceeds/120/characters/and/needs/to/be/broken\")",
+          "self.url = \"https://s3.amazonaws.com/.../some/very/long/path/\" \\\n           \"that/exceeds/120/characters/and/needs/to/be/broken\"",
+          "# Before (example):\nself.url = \"https://s3.amazonaws.com/.../very/long/path/that/exceeds/120/characters\"\n\n# After:\nself.url = (\"https://s3.amazonaws.com/.../very/long/path/\"\n            \"that/exceeds/120/characters\")",
+          "[FORMAT]\nmax-line-length=125"
+        ]
+      },
+      "target_changes": {
+        "tools/accuracy_checker/openvino/tools/accuracy_checker/annotation_converters/amazon.py": "index 78a399750..0264a381d 100644\n--- a/tools/accuracy_checker/openvino/tools/accuracy_checker/annotation_converters/amazon.py\n+++ b/tools/accuracy_checker/openvino/tools/accuracy_checker/annotation_converters/amazon.py\n@@ -39,7 +39,8 @@ class DataIterator:\n         self.source_dicts = []\n         for source_dict in [uid_voc, mid_voc, cat_voc]:\n             with open(source_dict, 'rb') as source_content:\n-                self.source_dicts.append(pickle.load(source_content, encoding='UTF-8'))  # nosec B301  # disable pickle check\n+                # disable pickle check\n+                self.source_dicts.append(pickle.load(source_content, encoding='UTF-8'))  # nosec B301\n \n         with open(item_info, \"r\", encoding='UTF-8') as f_meta:\n             meta_map = {}\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

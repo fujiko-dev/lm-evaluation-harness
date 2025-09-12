@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-09-07T22:27:43.698577",
+  "sample_info": {
+    "index": 33,
+    "original_index": 33,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 87,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 11.566164016723633,
+  "prediction": "### ✅ **1. Analysis of the Failure Cause**\n\nThe CI workflow is failing because **`pre-commit` ran successfully but made changes to the code (specifically `import_export/admin.py`), and the CI job did not allow these changes to be committed or staged.**\n\nHere’s the key part of the log:\n\n```log\nblack....................................................................Failed\n- hook id: black\n- files were modified by this hook\n\nreformatted import_export/admin.py\n\nAll done! ✨ 🍰 ✨\n1 file reformatted, 56 files left unchanged.\n\npre-commit hook(s) made changes.\nIf you are seeing this message in CI, reproduce locally with: `pre-commit run --all-files`.\nTo run `pre-commit` as part of git workflow, use `pre-commit install`.\nAll changes made by hooks:\ndiff --git a/import_export/admin.py b/import_export/admin.py\nindex c5151ef..a39508d 100644\n--- a/import_export/admin.py\n+++ b/import_export/admin.py\n@@ -747,6 +747,7 @@ class ExportMixin(BaseExportMixin, ImportExportMixinBase):\n         class FakePaginator:\n             count = 0\n+        \n         original_get_paginator = self.get_paginator\n```\n\n#### 🔍 Root Cause:\n- The `black` formatter **added an extra blank line** (a newline) between `count = 0` and `original_get_paginator = ...`.\n- This change was **not committed** in the PR/commit.\n- In CI, `pre-commit` runs with `--all-files`, and if any hook modifies files, **the job fails by default** unless explicitly allowed.\n- The workflow does **not** include a step to **commit or push** the changes made by `pre-commit`, so the modified file remains uncommitted and the CI fails.\n\n> ❌ **This is a common anti-pattern in CI**: `pre-commit` modifies files, but the CI doesn't commit them, so the job fails.\n\n---\n\n### ✅ **2. Solution: Fix the Workflow to Allow Pre-Commit Changes in CI**\n\nWe need to **allow pre-commit to make changes in CI** and **automatically commit them** if needed.\n\nHowever, **we cannot commit changes in a PR from a fork** unless the PR is from a branch in the same repo (due to GitHub Actions security restrictions). So we must **either**:\n- **Allow pre-commit to fail if it modifies files** (not ideal), or\n- **Only run pre-commit in CI if it doesn’t modify files**, or\n- **Use a special workflow that commits changes only on the main branch**.\n\nBut in this case, the **correct and safe approach** is to **not allow pre-commit to modify files in CI** — instead, **fail early** and **require contributors to run `pre-commit run --all-files` locally**.\n\n> ✅ **Best practice**: Pre-commit should **fail in CI if it modifies files**, so developers are forced to fix formatting locally.\n\n---\n\n### ✅ **3. Corrected Workflow Configuration**\n\nWe need to **modify the `pre-commit/action` step** to **fail if any files are changed**.\n\nThe `pre-commit/action` already supports this via the `fail_fast` or `fail_on_changes` option, but the **correct way** is to use `--all-files` and **not allow changes**.\n\nThe **fix** is to **add `--files` or ensure the action fails on changes**.\n\nBut the **real issue** is that `pre-commit/action@v3.0.0` **does not fail by default** when hooks modify files — it only fails if the hook itself fails (e.g., linting error), not if it reformats.\n\nSo we must **explicitly fail on changes**.\n\n---\n\n### ✅ **Fixed Workflow: `.github/workflows/pre-commit.yml`**\n\n```yaml\non:\n  pull_request:\n  push:\n    branches:\n      - main\n\njobs:\n  main:\n    runs-on: ubuntu-latest\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    steps:\n    - uses: actions/checkout@v3\n      with:\n        fetch-depth: 0  # Required to allow git operations in CI\n\n    - uses: actions/setup-python@v4\n      with:\n        python-version: 3.x\n\n    - uses: pre-commit/action@v3.0.0\n      with:\n        extra_args: --all-files\n        fail_on_changes: true  # ✅ This is the key fix: fail if any file is changed\n\n    - uses: pre-commit-ci/lite-action@v1.0.1\n      if: always()\n\nenv:\n  P",
+  "evaluation": {
+    "success": true,
+    "score": 0.7838868636077938,
+    "explanation": "Similarity: 0.640, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.639811439346323,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "import_export/admin.py": [
+          "black....................................................................Failed\n- hook id: black\n- files were modified by this hook\n\nreformatted import_export/admin.py\n\nAll done! ✨ 🍰 ✨\n1 file reformatted, 56 files left unchanged.\n\npre-commit hook(s) made changes.\nIf you are seeing this message in CI, reproduce locally with: `pre-commit run --all-files`.\nTo run `pre-commit` as part of git workflow, use `pre-commit install`.\nAll changes made by hooks:\ndiff --git a/import_export/admin.py b/import_export/admin.py\nindex c5151ef..a39508d 100644\n--- a/import_export/admin.py\n+++ b/import_export/admin.py\n@@ -747,6 +747,7 @@ class ExportMixin(BaseExportMixin, ImportExportMixinBase):\n         class FakePaginator:\n             count = 0\n+        \n         original_get_paginator = self.get_paginator"
+        ],
+        ".github/workflows/pre-commit.yml": [
+          "black....................................................................Failed\n- hook id: black\n- files were modified by this hook\n\nreformatted import_export/admin.py\n\nAll done! ✨ 🍰 ✨\n1 file reformatted, 56 files left unchanged.\n\npre-commit hook(s) made changes.\nIf you are seeing this message in CI, reproduce locally with: `pre-commit run --all-files`.\nTo run `pre-commit` as part of git workflow, use `pre-commit install`.\nAll changes made by hooks:\ndiff --git a/import_export/admin.py b/import_export/admin.py\nindex c5151ef..a39508d 100644\n--- a/import_export/admin.py\n+++ b/import_export/admin.py\n@@ -747,6 +747,7 @@ class ExportMixin(BaseExportMixin, ImportExportMixinBase):\n         class FakePaginator:\n             count = 0\n+        \n         original_get_paginator = self.get_paginator"
+        ]
+      },
+      "target_changes": {
+        "import_export/admin.py": "index c5151ef2..a39508d3 100644\n--- a/import_export/admin.py\n+++ b/import_export/admin.py\n@@ -747,6 +747,7 @@ class ExportMixin(BaseExportMixin, ImportExportMixinBase):\n \n         class FakePaginator:\n             count = 0\n+\n         original_get_paginator = self.get_paginator\n         self.get_paginator = lambda request, queryset, per_page: FakePaginator()\n         cl = ChangeList(**changelist_kwargs)\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

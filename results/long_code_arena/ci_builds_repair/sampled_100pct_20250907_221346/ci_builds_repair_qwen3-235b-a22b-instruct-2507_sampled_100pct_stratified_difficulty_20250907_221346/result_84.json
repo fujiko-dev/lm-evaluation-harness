@@ -1,0 +1,55 @@
+{
+  "timestamp": "2025-09-07T22:29:20.189824",
+  "sample_info": {
+    "index": 30,
+    "original_index": 30,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 84,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 25.055541038513184,
+  "prediction": "### 1. **Analysis of the Failure Cause**\n\nThe CI workflow is failing due to a **`flake8`** check enforced by **`pre-commit`**, specifically because of **line length violations** (error `E501`) in the file `import_export/admin.py`.\n\nFrom the logs:\n```\nimport_export/admin.py:749:89: E501 line too long (96 > 88 characters)\nimport_export/admin.py:756:89: E501 line too long (98 > 88 characters)\n```\n\nThis indicates that:\n- The `flake8` linter is configured to enforce a **maximum line length of 88 characters**.\n- Two lines in `admin.py` exceed this limit (96 and 98 characters respectively).\n- The `pre-commit` action runs `flake8` as one of its hooks and fails the build when style issues are found.\n\nHowever, the **workflow itself is correctly configured** — it's doing exactly what it should: catching code style violations.\n\nBut here's the key insight: **the failure is not in the workflow configuration**, but in the **code not meeting the linting standards**.\n\nYet, you're being asked to **fix the CI workflow**, not the code. This suggests one of two possibilities:\n1. The workflow should be adjusted to match project standards (e.g., increase line length limit).\n2. Or, the failure is due to a **transient or environment issue**, but logs clearly show it's a **consistent code style issue**.\n\nBut wait — you're told that:\n- **Failed Commit**: `2a59b55e6124b33dca7f48c12845c78130b20fd5`\n- **Success Commit**: `36786764b3ef1c4c3c8d0db451cea9e1b325616c`\n\nThis implies that the **same workflow passed later**, so the issue was likely **fixed in the code**, not the workflow.\n\nBut if you're being asked to **fix the workflow**, perhaps the real issue is that **`pre-commit` is using cached environments or outdated config**, or the **`pypi_wayback` service is interfering with dependency resolution**, even though the error is clearly `E501`.\n\nWait — the **error is not dependency-related**, and `black` and `isort` passed. So the tools are installed and working.\n\nBut note: the workflow uses a **frozen PyPI index** via `pypi_wayback`:\n```yaml\nenv:\n  PIP_INDEX_URL: http://localhost:8629/2023-12-15\n  UV_INDEX_URL: http://localhost:8629/2023-12-15\n```\n\nThis pins dependencies to a snapshot from **December 15, 2023**. It's possible that:\n- The `pre-commit` hooks (like `flake8`) depend on configuration in `.pre-commit-config.yaml`.\n- But if the `flake8` version or its behavior changed, and the index is frozen, we might expect inconsistencies.\n\nHowever, in this case:\n- `flake8` is likely installed as a dependency of one of the pre-commit hooks (e.g., `flake8` hook in `.pre-commit-config.yaml`).\n- The line length limit is usually defined in config files like `setup.cfg`, `tox.ini`, or `.flake8`.\n\nSo the **real root cause** is likely:\n> The `flake8` configuration enforces a line length of 88, but the code has lines longer than that.\n\nBut since the **CI is working correctly** (it's catching real issues), and a later commit fixed it, the **workflow doesn't need fixing** — the **code does**.\n\nHowever, if you're being asked to **fix the workflow to make it pass**, and you **cannot modify the code**, then the only option is to **adjust the linter configuration via the workflow** — but that's not typical.\n\nAlternatively, the issue might be that the **`pre-commit` action is not using the latest configuration** from the repo, or **caching is causing stale hooks**.\n\nBut the logs show:\n```\nCache restored from key: pre-commit-3|/opt/hostedtoolcache/Python/3.12.1/x64|78083b3309c934e46e7d0a952b7a4c6dc6df8860edaa74474d06dd8c36e1b0a2\n```\n\nThe cache key includes a hash — likely of the config.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6489091520861373,
+    "explanation": "Similarity: 0.415, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.41484858681022885,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "import_export/admin.py": [
+          "import_export/admin.py:749:89: E501 line too long (96 > 88 characters)\nimport_export/admin.py:756:89: E501 line too long (98 > 88 characters)",
+          "env:\n  PIP_INDEX_URL: http://localhost:8629/2023-12-15\n  UV_INDEX_URL: http://localhost:8629/2023-12-15",
+          "Cache restored from key: pre-commit-3|/opt/hostedtoolcache/Python/3.12.1/x64|78083b3309c934e46e7d0a952b7a4c6dc6df8860edaa74474d06dd8c36e1b0a2"
+        ],
+        "admin.py": [
+          "import_export/admin.py:749:89: E501 line too long (96 > 88 characters)\nimport_export/admin.py:756:89: E501 line too long (98 > 88 characters)",
+          "env:\n  PIP_INDEX_URL: http://localhost:8629/2023-12-15\n  UV_INDEX_URL: http://localhost:8629/2023-12-15",
+          "Cache restored from key: pre-commit-3|/opt/hostedtoolcache/Python/3.12.1/x64|78083b3309c934e46e7d0a952b7a4c6dc6df8860edaa74474d06dd8c36e1b0a2"
+        ],
+        ".pre-commit-config.yaml": [
+          "import_export/admin.py:749:89: E501 line too long (96 > 88 characters)\nimport_export/admin.py:756:89: E501 line too long (98 > 88 characters)",
+          "env:\n  PIP_INDEX_URL: http://localhost:8629/2023-12-15\n  UV_INDEX_URL: http://localhost:8629/2023-12-15",
+          "Cache restored from key: pre-commit-3|/opt/hostedtoolcache/Python/3.12.1/x64|78083b3309c934e46e7d0a952b7a4c6dc6df8860edaa74474d06dd8c36e1b0a2"
+        ],
+        "setup.cfg": [
+          "import_export/admin.py:749:89: E501 line too long (96 > 88 characters)\nimport_export/admin.py:756:89: E501 line too long (98 > 88 characters)",
+          "env:\n  PIP_INDEX_URL: http://localhost:8629/2023-12-15\n  UV_INDEX_URL: http://localhost:8629/2023-12-15",
+          "Cache restored from key: pre-commit-3|/opt/hostedtoolcache/Python/3.12.1/x64|78083b3309c934e46e7d0a952b7a4c6dc6df8860edaa74474d06dd8c36e1b0a2"
+        ],
+        "tox.ini": [
+          "import_export/admin.py:749:89: E501 line too long (96 > 88 characters)\nimport_export/admin.py:756:89: E501 line too long (98 > 88 characters)",
+          "env:\n  PIP_INDEX_URL: http://localhost:8629/2023-12-15\n  UV_INDEX_URL: http://localhost:8629/2023-12-15",
+          "Cache restored from key: pre-commit-3|/opt/hostedtoolcache/Python/3.12.1/x64|78083b3309c934e46e7d0a952b7a4c6dc6df8860edaa74474d06dd8c36e1b0a2"
+        ]
+      },
+      "target_changes": {
+        "import_export/admin.py": "index a1b288e9..8bb2db67 100644\n--- a/import_export/admin.py\n+++ b/import_export/admin.py\n@@ -746,14 +746,16 @@ class ExportMixin(BaseExportMixin, ImportExportMixinBase):\n             def get_results(self, request):\n                 \"\"\"\n                 We override this method because we only call ChangeList.get_queryset()\n-                so we don't need anything from this method. The get_results() gets called during\n-                ChangeList.__init__() and we do want to avoid unnecessary COUNT queries.\n+                so we don't need anything from this method.\n+                The get_results() gets called during ChangeList.__init__()\n+                and we do want to avoid unnecessary COUNT queries.\n                 \"\"\"\n                 pass\n \n         cl = ExportChangeList(**changelist_kwargs)\n \n-        # get_queryset() is already called during initialization, it is enough to get it's results\n+        # get_queryset() is already called during initialization,\n+        # it is enough to get it's results\n         if hasattr(cl, \"queryset\"):\n             return cl.queryset\n \n"
+      },
+      "difficulty": 0
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "model_key": "kimi-k2-instruct",
+  "model_name": "openai-chat-completions",
+  "model_args": {
+    "model": "kimi-k2-instruct",
+    "base_url": "https://qianfan.baidubce.com/v2/chat/completions",
+    "num_concurrent": 5,
+    "max_retries": 10,
+    "tokenized_requests": false,
+    "stop": "<|endoftext|>",
+    "timeout": 120,
+    "apply_chat_template": true
+  },
+  "description": "Kimi K2 Instruct via Baidu Qianfan API",
+  "total_samples": 10,
+  "start_time": "2025-09-07T23:06:07.079839"
+}

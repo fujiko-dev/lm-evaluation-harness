@@ -1,0 +1,44 @@
+task: lca_module_summarization
+class: lm_eval.tasks.long_code_arena.module_summarization.lca_module_summarization_task:LCAModuleSummarizationTask
+description: |
+  Module Summarization task from Long Code Arena benchmark.
+  Given code files and module information, generate comprehensive
+  summaries that explain the module's purpose, functionality, and usage.
+  
+config:
+  dataset_path: "${LCA_MS_DATASET_PATH:/Users/xiaoyunting/Documents/ModelDev/working_path/datasets/long_code_arena/datasets/lca_module_summarization}"
+  split: "test"
+  batch_size: 1
+  max_context_length: 16000
+  include_metadata: true
+  max_summary_length: 1000
+
+num_fewshot: 0
+output_type: generate_until
+generation_kwargs:
+  max_gen_toks: 1000
+  temperature: 0.1
+  do_sample: false
+
+metric_list:
+  - metric: module_summary_bleu
+    aggregation: mean
+    higher_is_better: true
+  - metric: module_summary_rouge_l
+    aggregation: mean
+    higher_is_better: true
+  - metric: module_summary_bert_score
+    aggregation: mean
+    higher_is_better: true
+  - metric: module_summary_semantic_sim
+    aggregation: mean
+    higher_is_better: true
+  - metric: module_summary_coverage
+    aggregation: mean
+    higher_is_better: true
+
+metadata:
+  version: 1.0
+  paper_title: "Long Code Arena: a Set of Benchmarks for Long-Context Code Models"
+  paper_url: "https://arxiv.org/abs/2406.11612"
+  dataset_url: "https://huggingface.co/datasets/JetBrains-Research/lca-module-summarization"

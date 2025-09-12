@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-09-07T22:50:15.073305",
+  "sample_info": {
+    "index": 56,
+    "original_index": 56,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 159,
+  "repo_owner": "mwaskom",
+  "repo_name": "seaborn",
+  "difficulty": 2,
+  "generation_time": 26.78131413459778,
+  "prediction": "## Analysis of the Failure Cause\n\nThe CI workflow is failing due to a `NameError: name 'get_layout_engine' is not defined` in the `seaborn/_core/plot.py` file. This error occurs in the `_finalize_figure` method when trying to use `get_layout_engine()` which appears to be a matplotlib function that was introduced in matplotlib 3.6.\n\nLooking at the test failures, we can see that:\n1. The `build-docs` job fails when trying to execute notebooks that use the plotting functionality\n2. The `lint` job fails with flake8 detecting the undefined name\n3. The `run-tests` job fails with 3 specific tests related to layout functionality\n\nThe issue is that `get_layout_engine` is being used without being imported or defined, and based on the test skip conditions, this function is only available in matplotlib 3.6+.\n\n## Specific Changes Needed\n\nThe fix involves importing the `get_layout_engine` function from matplotlib when available, and providing a fallback for older matplotlib versions. Based on the test code, we can see that there's already version checking logic in place.\n\n## Modified Code\n\nHere's the change needed in `seaborn/_core/plot.py`:\n\n```python\n# Add this import near the top of the file with other matplotlib imports\ntry:\n    from matplotlib.figure import get_layout_engine\nexcept ImportError:\n    # Fallback for matplotlib < 3.6\n    def get_layout_engine(fig):\n        \"\"\"Return the layout engine of the figure, or None if not set.\"\"\"\n        return fig.get_layout_engine() if hasattr(fig, 'get_layout_engine') else None\n```\n\nThe specific location to add this would be around line 20-30 in `seaborn/_core/plot.py` where other matplotlib imports are located. The existing code likely has imports like:\n\n```python\nfrom matplotlib import pyplot\nfrom matplotlib.figure import Figure\n```\n\nThe complete import section should be updated to include the new import with fallback:\n\n```python\nfrom matplotlib import pyplot\nfrom matplotlib.figure import Figure\ntry:\n    from matplotlib.figure import get_layout_engine\nexcept ImportError:\n    # Fallback for matplotlib < 3.6\n    def get_layout_engine(fig):\n        \"\"\"Return the layout engine of the figure, or None if not set.\"\"\"\n        return fig.get_layout_engine() if hasattr(fig, 'get_layout_engine') else None\n```\n\nThis change will:\n1. Import `get_layout_engine` from matplotlib when available (matplotlib 3.6+)\n2. Provide a fallback implementation for older matplotlib versions\n3. Allow the code to work across different matplotlib versions\n4. Fix the `NameError` that is causing the CI failures\n\nThe tests already have appropriate skip conditions for matplotlib versions that don't support this functionality, so this change should make all tests pass.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6557450465504894,
+    "explanation": "Similarity: 0.426, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.4262417442508156,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "seaborn/_core/plot.py": [
+          "# Add this import near the top of the file with other matplotlib imports\ntry:\n    from matplotlib.figure import get_layout_engine\nexcept ImportError:\n    # Fallback for matplotlib < 3.6\n    def get_layout_engine(fig):\n        \"\"\"Return the layout engine of the figure, or None if not set.\"\"\"\n        return fig.get_layout_engine() if hasattr(fig, 'get_layout_engine') else None",
+          "from matplotlib import pyplot\nfrom matplotlib.figure import Figure",
+          "from matplotlib import pyplot\nfrom matplotlib.figure import Figure\ntry:\n    from matplotlib.figure import get_layout_engine\nexcept ImportError:\n    # Fallback for matplotlib < 3.6\n    def get_layout_engine(fig):\n        \"\"\"Return the layout engine of the figure, or None if not set.\"\"\"\n        return fig.get_layout_engine() if hasattr(fig, 'get_layout_engine') else None"
+        ]
+      },
+      "target_changes": {
+        "seaborn/_core/plot.py": "index af4669c6..39ccd2e0 100644\n--- a/seaborn/_core/plot.py\n+++ b/seaborn/_core/plot.py\n@@ -40,7 +40,7 @@ from seaborn._core.typing import (\n )\n from seaborn._core.exceptions import PlotSpecError\n from seaborn._core.rules import categorical_order\n-from seaborn._compat import set_layout_engine\n+from seaborn._compat import get_layout_engine, set_layout_engine\n from seaborn.rcmod import axes_style, plotting_context\n from seaborn.palettes import color_palette\n \n"
+      },
+      "difficulty": 2
+    }
+  }
+}

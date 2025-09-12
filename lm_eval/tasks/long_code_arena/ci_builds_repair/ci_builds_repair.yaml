@@ -1,0 +1,44 @@
+task: lca_ci_builds_repair
+class: lm_eval.tasks.long_code_arena.ci_builds_repair.lca_ci_builds_repair_task:LCACIBuildsRepairTask
+description: |
+  CI Builds Repair task from Long Code Arena benchmark.
+  Given the logs of a failed GitHub Actions workflow and the corresponding 
+  repository snapshot, repair the repository contents in order to make 
+  the workflow pass.
+  
+config:
+  dataset_path: "/Users/xiaoyunting/Documents/ModelDev/working_path/datasets/long_code_arena/datasets/lca_ci_builds_repair"
+  split: "test"
+  batch_size: 1
+  max_context_length: 16000
+  include_logs: true
+
+num_fewshot: 0
+output_type: generate_until
+generation_kwargs:
+  max_gen_toks: 2048
+  temperature: 0.1
+  do_sample: false
+
+metric_list:
+  - metric: ci_repair_score
+    aggregation: mean
+    higher_is_better: true
+  - metric: ci_repair_success_rate
+    aggregation: mean
+    higher_is_better: true
+  - metric: ci_repair_bleu
+    aggregation: mean
+    higher_is_better: true
+  - metric: ci_repair_rouge_l
+    aggregation: mean
+    higher_is_better: true
+  - metric: ci_repair_exact_match
+    aggregation: mean
+    higher_is_better: true
+
+metadata:
+  version: 1.0
+  paper_title: "Long Code Arena: a Set of Benchmarks for Long-Context Code Models"
+  paper_url: "https://arxiv.org/abs/2406.11612"
+  dataset_url: "https://huggingface.co/datasets/JetBrains-Research/lca-ci-builds-repair"

@@ -1,0 +1,199 @@
+{
+  "summary": {
+    "model_key": "qwen3-235b-a22b-instruct-2507",
+    "evaluation_summary": {
+      "total_samples": 5,
+      "successful_samples": 5,
+      "failed_samples": 0,
+      "success_rate": 1.0
+    },
+    "performance_metrics": {
+      "avg_f1_score": 0.6,
+      "avg_precision": 0.6,
+      "avg_recall": 0.6,
+      "all_correct_rate": 0.6,
+      "at_least_one_correct_rate": 0.6,
+      "all_incorrect_rate": 0.4
+    },
+    "timing_statistics": {
+      "total_evaluation_time_minutes": 0.4072849154472351,
+      "avg_inference_time_seconds": 0.9755265712738037,
+      "min_inference_time_seconds": 0.5800178050994873,
+      "max_inference_time_seconds": 1.3830797672271729
+    }
+  },
+  "detailed_results": [
+    {
+      "text_id": "thealgorithms/python/295/289",
+      "repo_owner": "thealgorithms",
+      "repo_name": "python",
+      "prediction_text": "{\"files\": [\"Project Euler/Problem 01/sol2.py\"]}",
+      "predicted_files": [
+        "Project Euler/Problem 01/sol2.py"
+      ],
+      "target_files": [
+        "Project Euler/Problem 01/sol2.py"
+      ],
+      "all_files_count": 195,
+      "target_files_count": 1,
+      "predicted_files_count": 1,
+      "bug_loc_precision": 1.0,
+      "bug_loc_recall": 1.0,
+      "bug_loc_f1": 1.0,
+      "bug_loc_fpr": 0.0,
+      "bug_loc_all_correct": 1,
+      "bug_loc_at_least_one_correct": 1,
+      "bug_loc_all_incorrect": 0,
+      "bug_loc_target_files_rate": 0.005128205128205128,
+      "expected_files_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 194,
+      "inference_time": 1.1442689895629883,
+      "sample_index": 1,
+      "model_key": "qwen3-235b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "keras-team/keras/15943/15942",
+      "repo_owner": "keras-team",
+      "repo_name": "keras",
+      "prediction_text": "{\"files\": [\"keras/layers/convolutional.py\"]}",
+      "predicted_files": [
+        "keras/layers/convolutional.py"
+      ],
+      "target_files": [
+        "keras/layers/convolutional/base_conv.py"
+      ],
+      "all_files_count": 309,
+      "target_files_count": 1,
+      "predicted_files_count": 1,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "bug_loc_f1": 0.0,
+      "bug_loc_fpr": 0.003236245954692557,
+      "bug_loc_all_correct": 0,
+      "bug_loc_at_least_one_correct": 0,
+      "bug_loc_all_incorrect": 1,
+      "bug_loc_target_files_rate": 0.003236245954692557,
+      "expected_files_count": 1,
+      "true_positives": 0,
+      "false_positives": 1,
+      "false_negatives": 1,
+      "true_negatives": 308,
+      "inference_time": 0.8843080997467041,
+      "sample_index": 2,
+      "model_key": "qwen3-235b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "serverless/serverless/5500/5499",
+      "repo_owner": "serverless",
+      "repo_name": "serverless",
+      "prediction_text": "{\"files\": [\"lib/plugins/aws/invokeLocal/invoke.py\"]}",
+      "predicted_files": [
+        "lib/plugins/aws/invokeLocal/invoke.py"
+      ],
+      "target_files": [
+        "lib/plugins/aws/invokeLocal/invoke.py"
+      ],
+      "all_files_count": 10,
+      "target_files_count": 1,
+      "predicted_files_count": 1,
+      "bug_loc_precision": 1.0,
+      "bug_loc_recall": 1.0,
+      "bug_loc_f1": 1.0,
+      "bug_loc_fpr": 0.0,
+      "bug_loc_all_correct": 1,
+      "bug_loc_at_least_one_correct": 1,
+      "bug_loc_all_incorrect": 0,
+      "bug_loc_target_files_rate": 0.1,
+      "expected_files_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 9,
+      "inference_time": 0.5800178050994873,
+      "sample_index": 3,
+      "model_key": "qwen3-235b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "textualize/rich/2212/2197",
+      "repo_owner": "textualize",
+      "repo_name": "rich",
+      "prediction_text": "{\"files\": [\"rich/__init__.py\"]}",
+      "predicted_files": [
+        "rich/__init__.py"
+      ],
+      "target_files": [
+        "rich/__init__.py"
+      ],
+      "all_files_count": 121,
+      "target_files_count": 1,
+      "predicted_files_count": 1,
+      "bug_loc_precision": 1.0,
+      "bug_loc_recall": 1.0,
+      "bug_loc_f1": 1.0,
+      "bug_loc_fpr": 0.0,
+      "bug_loc_all_correct": 1,
+      "bug_loc_at_least_one_correct": 1,
+      "bug_loc_all_incorrect": 0,
+      "bug_loc_target_files_rate": 0.008264462809917356,
+      "expected_files_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 120,
+      "inference_time": 0.885958194732666,
+      "sample_index": 4,
+      "model_key": "qwen3-235b-a22b-instruct-2507"
+    },
+    {
+      "text_id": "mitmproxy/mitmproxy/4298/3994",
+      "repo_owner": "mitmproxy",
+      "repo_name": "mitmproxy",
+      "prediction_text": "{\"files\": [\"mitmproxy/net/check.py\", \"mitmproxy/proxy/modes/transparent_proxy.py\"]}",
+      "predicted_files": [
+        "mitmproxy/net/check.py",
+        "mitmproxy/proxy/modes/transparent_proxy.py"
+      ],
+      "target_files": [
+        "mitmproxy/net/tls.py",
+        "test/mitmproxy/net/test_tls.py",
+        "setup.py"
+      ],
+      "all_files_count": 294,
+      "target_files_count": 3,
+      "predicted_files_count": 2,
+      "bug_loc_precision": 0.0,
+      "bug_loc_recall": 0.0,
+      "bug_loc_f1": 0.0,
+      "bug_loc_fpr": 0.00684931506849315,
+      "bug_loc_all_correct": 0,
+      "bug_loc_at_least_one_correct": 0,
+      "bug_loc_all_incorrect": 1,
+      "bug_loc_target_files_rate": 0.006802721088435374,
+      "expected_files_count": 3,
+      "true_positives": 0,
+      "false_positives": 2,
+      "false_negatives": 3,
+      "true_negatives": 290,
+      "inference_time": 1.3830797672271729,
+      "sample_index": 5,
+      "model_key": "qwen3-235b-a22b-instruct-2507"
+    }
+  ],
+  "model_config": {
+    "model_name": "openai-chat-completions",
+    "model_args": {
+      "model": "qwen3-235b-a22b-instruct-2507",
+      "base_url": "https://qianfan.baidubce.com/v2/chat/completions",
+      "num_concurrent": 5,
+      "max_retries": 10,
+      "tokenized_requests": false,
+      "stop": "<|endoftext|>",
+      "timeout": 120,
+      "apply_chat_template": true
+    },
+    "description": "Qwen3-235B via Baidu Qianfan API"
+  }
+}

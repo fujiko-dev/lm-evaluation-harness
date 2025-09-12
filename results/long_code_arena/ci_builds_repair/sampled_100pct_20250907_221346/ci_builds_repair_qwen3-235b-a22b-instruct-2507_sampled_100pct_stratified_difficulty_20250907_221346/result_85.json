@@ -1,0 +1,42 @@
+{
+  "timestamp": "2025-09-07T22:29:44.776896",
+  "sample_info": {
+    "index": 31,
+    "original_index": 31,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 85,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 24.583796977996826,
+  "prediction": "### 1. **Analysis of the Failure Cause**\n\nThe CI workflow is failing due to a **`flake8`** check in the `pre-commit` suite, specifically because of the **`E501`** error:\n\n```\nimport_export/resources.py:1360:89: E501 line too long (101 > 88 characters)\n```\n\nThis indicates that:\n- The `flake8` linter enforces a maximum line length of **88 characters** (common default when using `black` + `flake8` together).\n- A line in `import_export/resources.py` at line 1360 exceeds this limit (101 characters).\n- The `pre-commit` action runs `flake8` as one of its hooks and fails the build when linting errors are found.\n\nThe workflow itself is **correctly configured** — it:\n- Sets up Python\n- Installs `pre-commit`\n- Restores cache\n- Runs `pre-commit run --all-files`\n\nThere is **no issue with the GitHub Actions workflow YAML** in terms of syntax or structure. The failure is **not due to configuration**, but due to **failing linting rules on the code**.\n\nHowever, since the **workflow is failing on a commit that was later fixed** (you provided a \"success commit\": `d1e35b26f1cfc1bd08b03ac606fa8bcd26dc91cb`), the fix likely already exists in the repo history — but we are to determine how to **prevent or fix** this failure.\n\nBut note: **We are asked to fix the CI workflow**, not the source code. So unless the workflow is misconfigured, we should not be changing `.py` files.\n\nWait — is there a way the **workflow could be adjusted** to avoid this failure?\n\nLet’s double-check: The `pre-commit` action runs checks defined in `.pre-commit-config.yaml` in the repo, not in the workflow file. The workflow is just executing whatever pre-commit hooks are defined.\n\nSo the **root cause** is:\n> The `flake8` hook in `.pre-commit-config.yaml` enforces line length of 88, and a file violates it.\n\nBut the **workflow is not at fault** — it's doing its job by catching the violation.\n\nHowever, there is **one subtle issue** in the workflow: **It uses cached pre-commit environments from a key that includes the Python version path**, which can be **non-hermetic** or **unstable**.\n\nLooking at the cache key:\n```yaml\nkey: pre-commit-3|/opt/hostedtoolcache/Python/3.12.0/x64|78083b3309c934e46e7d0a952b7a4c6dc6df8860edaa74474d06dd8c36e1b0a2\n```\n\nThis includes the **absolute path to Python**, which may vary across runners or Python versions. This is **not a stable key**. The correct approach is to key off the **Python version string**, not the path.\n\nBut more importantly: **The real issue is that the cache is being restored, but the linter fails** — which is expected if the code changed.\n\nBut the **failure is legitimate** — the code has a linting error.\n\nSo why did it **pass in the success commit**?\n\nLikely, the developer **fixed the long line** in `resources.py` in `d1e35b26f1cfc1bd08b03ac606fa8bcd26dc91cb`.\n\nBut we are not asked to fix the code — we are asked to fix the **workflow**.\n\nSo unless the workflow is misconfigured, we should not change behavior to **ignore** valid linting errors.\n\nBut wait — there's a **potential misconfiguration**:\n\n### The `pre-commit/action@v3.0.0` uses `--all-files` by default, but the cache key includes a hash that may be based on `.pre-commit-config.yaml`. If that file changed, the cache should be invalidated.\n\nBut the bigger issue: **The cache key includes the Python path, which is not stable**.\n\nFrom [pre-commit/action docs](https://github.com/pre-commit/action), the recommended way is to let the action **auto-generate the cache key** based on config and Python version.\n\nInstead, here it's **manually constructing** a key that includes a hardcoded Python path — which is **fragile**.\n\nAlso, the action `pre-commit/action@v3.0.0` **automatically handles caching**, so **explicitly using `actions/cache@v3` is redundant and error-prone**.\n\n###",
+  "evaluation": {
+    "success": true,
+    "score": 0.6659671373555841,
+    "explanation": "Similarity: 0.443, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.44327856225930684,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "import_export/resources.py": [
+          "import_export/resources.py:1360:89: E501 line too long (101 > 88 characters)",
+          "key: pre-commit-3|/opt/hostedtoolcache/Python/3.12.0/x64|78083b3309c934e46e7d0a952b7a4c6dc6df8860edaa74474d06dd8c36e1b0a2"
+        ],
+        ".pre-commit-config.yaml": [
+          "import_export/resources.py:1360:89: E501 line too long (101 > 88 characters)",
+          "key: pre-commit-3|/opt/hostedtoolcache/Python/3.12.0/x64|78083b3309c934e46e7d0a952b7a4c6dc6df8860edaa74474d06dd8c36e1b0a2"
+        ],
+        "resources.py": [
+          "import_export/resources.py:1360:89: E501 line too long (101 > 88 characters)",
+          "key: pre-commit-3|/opt/hostedtoolcache/Python/3.12.0/x64|78083b3309c934e46e7d0a952b7a4c6dc6df8860edaa74474d06dd8c36e1b0a2"
+        ]
+      },
+      "target_changes": {
+        "import_export/resources.py": "index 7d7ad475..99c3fe91 100644\n--- a/import_export/resources.py\n+++ b/import_export/resources.py\n@@ -1357,7 +1357,8 @@ class ModelDeclarativeMetaclass(DeclarativeMetaclass):\n                     continue\n \n                 if f.name in declared_fields:\n-                    # If model field is declared in `ModelResource`, remove it from `declared_fields`\n+                    # If model field is declared in `ModelResource`,\n+                    # remove it from `declared_fields`\n                     # to keep exact order of model fields\n                     field = declared_fields.pop(f.name)\n                 else:\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "model": "openai-chat-completions",
+  "split": "test",
+  "timestamp": "2025-09-11T17:58:57.296332",
+  "lca_ci_builds_repair_metrics": {
+    "score": 0.0,
+    "success_rate": 0.0,
+    "bleu": 0.0,
+    "rouge_l": 0.0,
+    "exact_match": 0.0
+  },
+  "total_samples": 2
+}

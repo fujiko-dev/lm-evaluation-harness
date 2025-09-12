@@ -1,0 +1,33 @@
+{
+  "timestamp": "2025-09-07T22:40:40.007090",
+  "sample_info": {
+    "index": 56,
+    "original_index": 56,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 159,
+  "repo_owner": "mwaskom",
+  "repo_name": "seaborn",
+  "difficulty": 2,
+  "generation_time": 15.370044946670532,
+  "prediction": "# CI Workflow Failure Analysis and Fix\n\n## 1. Analysis of the Failure Cause\n\nThe CI workflow is failing due to a `NameError: name 'get_layout_engine' is not defined` in `seaborn/_core/plot.py` at line 1815. This error is occurring in multiple places:\n\n1. **Documentation build** (`build-docs` job): The notebook-to-document conversion fails when executing a cell that calls `p.layout(extent=[0, 0, .8, 1]).show()`\n2. **Linting** (`lint` job): Flake8 reports `F821 undefined name 'get_layout_engine'` in the same file\n3. **Testing** (`run-tests` job): Three tests are failing with the same `NameError`\n\nThe root cause is that the function `get_layout_engine` is being used in `seaborn/_core/plot.py` but it hasn't been imported. This function is part of matplotlib (available since version 3.6), but the code is trying to use it without importing it.\n\n## 2. Specific Changes Needed\n\nThe fix is to add the import statement for `get_layout_engine` from matplotlib at the top of the `seaborn/_core/plot.py` file, alongside the other matplotlib imports.\n\n## 3. Modified Code\n\n```python\n# seaborn/_core/plot.py\n# Add this import near the other matplotlib imports at the top of the file\n\nfrom matplotlib import get_layout_engine, set_layout_engine\n```\n\nThis single line addition will resolve all three failures:\n- The linting error will disappear because `get_layout_engine` will be properly defined\n- The test failures will be fixed because the function will be available when called\n- The documentation build will succeed because the notebook execution will no longer raise a NameError\n\nThe import should be added in the imports section of `seaborn/_core/plot.py`, likely near other matplotlib imports like `set_layout_engine` which is already being used in the same file. This maintains code consistency and ensures the function is available when needed.",
+  "evaluation": {
+    "success": true,
+    "score": 0.6870846681922197,
+    "explanation": "Similarity: 0.478, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.4784744469870328,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "seaborn/_core/plot.py": [
+          "# seaborn/_core/plot.py\n# Add this import near the other matplotlib imports at the top of the file\n\nfrom matplotlib import get_layout_engine, set_layout_engine"
+        ]
+      },
+      "target_changes": {
+        "seaborn/_core/plot.py": "index af4669c6..39ccd2e0 100644\n--- a/seaborn/_core/plot.py\n+++ b/seaborn/_core/plot.py\n@@ -40,7 +40,7 @@ from seaborn._core.typing import (\n )\n from seaborn._core.exceptions import PlotSpecError\n from seaborn._core.rules import categorical_order\n-from seaborn._compat import set_layout_engine\n+from seaborn._compat import get_layout_engine, set_layout_engine\n from seaborn.rcmod import axes_style, plotting_context\n from seaborn.palettes import color_palette\n \n"
+      },
+      "difficulty": 2
+    }
+  }
+}

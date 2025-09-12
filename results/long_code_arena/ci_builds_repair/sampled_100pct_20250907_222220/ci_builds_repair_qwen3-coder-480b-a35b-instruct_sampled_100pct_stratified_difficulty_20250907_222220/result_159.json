@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-09-07T22:34:51.390465",
+  "sample_info": {
+    "index": 56,
+    "original_index": 56,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 159,
+  "repo_owner": "mwaskom",
+  "repo_name": "seaborn",
+  "difficulty": 2,
+  "generation_time": 13.151033878326416,
+  "prediction": "Looking at the error logs, I can see that the root cause is a `NameError: name 'get_layout_engine' is not defined` occurring in `seaborn/_core/plot.py` at line 1815. This function is being called but hasn't been imported or defined.\n\nLet me analyze the failure:\n\n1. The error occurs in the `_finalize_figure` method where `get_layout_engine` is called\n2. Looking at the test files, there are skip conditions checking for matplotlib version >= 3.6 for this functionality\n3. The function `get_layout_engine` is likely from matplotlib but needs to be properly imported\n\nFrom the traceback and the test skip conditions, it's clear that `get_layout_engine` should be imported from matplotlib, similar to how `set_layout_engine` is likely already imported.\n\n## Analysis of the failure cause:\nThe `get_layout_engine` function is being used in the `_finalize_figure` method but hasn't been imported from matplotlib. This causes a NameError during execution.\n\n## Specific changes needed:\nThe `get_layout_engine` function needs to be imported from matplotlib in the `seaborn/_core/plot.py` file, similar to how other matplotlib functions are imported.\n\n## Modified code:\n\n```python\n# In seaborn/_core/plot.py, near the top of the file where imports are located\n# Add the import for get_layout_engine alongside other matplotlib imports\n\n# Look for existing matplotlib imports and add get_layout_engine\n# This is typically around lines importing set_layout_engine\n```\n\nHowever, since I can't see the full import section, here's what needs to be added to the imports:\n\n```python\n# In seaborn/_core/plot.py, in the import section\nfrom matplotlib.pyplot import get_layout_engine\n```\n\nOr if it's imported differently:\n\n```python\n# Alternative import approach\nfrom matplotlib.figure import get_layout_engine\n```\n\nBut looking more carefully at matplotlib's API, `get_layout_engine` is actually a method on the figure object, so the correct fix would be to access it as a method rather than importing it as a standalone function.\n\nLet me provide the proper fix:\n\n```python\n# In seaborn/_core/plot.py, line 1815\n# Replace:\nengine = get_layout_engine(self._figure)\n\n# With:\nengine = self._figure.get_layout_engine()\n```\n\nThis assumes that `get_layout_engine` is a method on the figure object, which is the standard way this works in matplotlib 3.6+.",
+  "evaluation": {
+    "success": true,
+    "score": 0.589905842110001,
+    "explanation": "Similarity: 0.428, Key fixes: 0.833",
+    "details": {
+      "similarity_score": 0.4276208479611126,
+      "key_fixes_score": 0.8333333333333334,
+      "predicted_changes": {
+        "seaborn/_core/plot.py": [
+          "# In seaborn/_core/plot.py, near the top of the file where imports are located\n# Add the import for get_layout_engine alongside other matplotlib imports\n\n# Look for existing matplotlib imports and add get_layout_engine\n# This is typically around lines importing set_layout_engine",
+          "# In seaborn/_core/plot.py, in the import section\nfrom matplotlib.pyplot import get_layout_engine",
+          "# Alternative import approach\nfrom matplotlib.figure import get_layout_engine",
+          "# In seaborn/_core/plot.py, line 1815\n# Replace:\nengine = get_layout_engine(self._figure)\n\n# With:\nengine = self._figure.get_layout_engine()"
+        ]
+      },
+      "target_changes": {
+        "seaborn/_core/plot.py": "index af4669c6..39ccd2e0 100644\n--- a/seaborn/_core/plot.py\n+++ b/seaborn/_core/plot.py\n@@ -40,7 +40,7 @@ from seaborn._core.typing import (\n )\n from seaborn._core.exceptions import PlotSpecError\n from seaborn._core.rules import categorical_order\n-from seaborn._compat import set_layout_engine\n+from seaborn._compat import get_layout_engine, set_layout_engine\n from seaborn.rcmod import axes_style, plotting_context\n from seaborn.palettes import color_palette\n \n"
+      },
+      "difficulty": 2
+    }
+  }
+}

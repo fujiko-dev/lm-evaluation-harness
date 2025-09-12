@@ -1,4 +1,2 @@
 # Library-based code generation task from Long Code Arena
-from . import lca_custom_task
-
-
+# Cleaned up - removed lca_custom_task import as the file was deleted

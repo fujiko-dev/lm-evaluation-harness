@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-09-07T22:29:09.326583",
+  "sample_info": {
+    "index": 33,
+    "original_index": 33,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 87,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 7.05945611000061,
+  "prediction": "Looking at the CI failure logs, I can identify the root cause and provide a solution.\n\n## Analysis of the Failure Cause\n\nThe CI workflow is failing because the `black` code formatter is automatically reformating the file `import_export/admin.py` and adding a blank line. The pre-commit hook detects this change and fails because the code doesn't match the expected formatting standards.\n\nSpecifically, `black` is adding a blank line after `count = 0` in the `FakePaginator` class definition within the `ExportMixin` class. This indicates that the current code in the repository doesn't comply with `black`'s formatting rules.\n\n## Specific Changes Needed\n\nThe fix requires modifying `import_export/admin.py` to add the missing blank line that `black` expects, so that the pre-commit check passes without making any changes.\n\n## Modified Code\n\nHere's the specific change needed in `import_export/admin.py`:\n\n```python\n# In the ExportMixin class, around line 747-750, modify the FakePaginator class:\n\nclass FakePaginator:\n    count = 0\n\n    # Add this blank line that black expects\n```\n\nMore specifically, the change is to ensure there's a blank line between the class declaration and the `count = 0` assignment, and then another blank line after it (which is what black is adding).\n\nThe exact location in context should look like this:\n\n```python\nclass FakePaginator:\n    count = 0\n\noriginal_get_paginator = self.get_paginator\n```\n\nRather than:\n\n```python\nclass FakePaginator:\n    count = 0\noriginal_get_paginator = self.get_paginator\n```\n\nThis simple formatting change will make the code compliant with black's formatting standards and allow the pre-commit checks to pass.",
+  "evaluation": {
+    "success": true,
+    "score": 0.672015009380863,
+    "explanation": "Similarity: 0.453, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.4533583489681051,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "import_export/admin.py": [
+          "# In the ExportMixin class, around line 747-750, modify the FakePaginator class:\n\nclass FakePaginator:\n    count = 0\n\n    # Add this blank line that black expects",
+          "class FakePaginator:\n    count = 0\n\noriginal_get_paginator = self.get_paginator",
+          "class FakePaginator:\n    count = 0\noriginal_get_paginator = self.get_paginator"
+        ]
+      },
+      "target_changes": {
+        "import_export/admin.py": "index c5151ef2..a39508d3 100644\n--- a/import_export/admin.py\n+++ b/import_export/admin.py\n@@ -747,6 +747,7 @@ class ExportMixin(BaseExportMixin, ImportExportMixinBase):\n \n         class FakePaginator:\n             count = 0\n+\n         original_get_paginator = self.get_paginator\n         self.get_paginator = lambda request, queryset, per_page: FakePaginator()\n         cl = ChangeList(**changelist_kwargs)\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

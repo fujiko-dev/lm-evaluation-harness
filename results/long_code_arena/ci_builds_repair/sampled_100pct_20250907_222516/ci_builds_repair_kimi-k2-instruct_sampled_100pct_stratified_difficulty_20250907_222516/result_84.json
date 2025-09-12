@@ -1,0 +1,33 @@
+{
+  "timestamp": "2025-09-07T22:37:27.636178",
+  "sample_info": {
+    "index": 30,
+    "original_index": 30,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 84,
+  "repo_owner": "django-import-export",
+  "repo_name": "django-import-export",
+  "difficulty": 0,
+  "generation_time": 23.742111921310425,
+  "prediction": "## Analysis of the Failure Cause\n\nThe CI workflow is failing because the `flake8` pre-commit hook is detecting line length violations in the `import_export/admin.py` file. Specifically:\n\n1. Line 749 has 96 characters, exceeding the 88-character limit\n2. Line 756 has 98 characters, exceeding the 88-character limit\n\nThese are E501 errors from flake8, which enforces PEP 8 style guidelines.\n\n## Specific Changes Needed\n\nThe fix requires shortening these two lines in `import_export/admin.py` to be within the 88-character limit. Based on the error messages, we need to:\n\n1. Identify the exact content of lines 749 and 756 in `import_export/admin.py`\n2. Refactor these lines to be shorter, likely by breaking them into multiple lines or using shorter variable names\n\n## Modified Code\n\nSince I don't have the exact content of the file, I'll provide a general approach for fixing line length issues. The typical patterns for fixing E501 errors include:\n\n1. **Breaking long strings into multiple lines** using implicit line continuation within parentheses\n2. **Using shorter variable names** or imports\n3. **Extracting long expressions** into variables\n\nHere's an example of how the fix might look (this is illustrative since we don't have the exact file content):\n\n```python\n# Before (line 749 - 96 characters):\nsome_very_long_variable_name = some_very_long_function_call_with_many_parameters(parameter1, parameter2, parameter3)\n\n# After (within 88 characters):\nsome_very_long_variable_name = some_very_long_function_call_with_many_parameters(\n    parameter1, parameter2, parameter3\n)\n\n# Before (line 756 - 98 characters):\nanother_very_long_line_that_exceeds_the_character_limit = some_complex_expression_with_multiple_parts\n\n# After (within 88 characters):\nanother_very_long_line = (\n    some_complex_expression_with_multiple_parts\n)\n```\n\n## Immediate Fix Strategy\n\nSince the workflow is using pre-commit hooks, the most straightforward fix is to:\n\n1. Run `pre-commit run --all-files` locally to reproduce the issue\n2. Fix the specific lines mentioned in the error\n3. Commit the changes\n\nThe workflow itself doesn't need modification - it's working correctly by catching style violations. The issue is in the source code that needs to conform to the project's style guidelines.\n\n## Verification\n\nAfter making the changes, you can verify the fix by:\n1. Running `flake8 import_export/admin.py` locally\n2. Running `pre-commit run --all-files` to ensure all hooks pass\n3. Pushing the changes to trigger the CI workflow again",
+  "evaluation": {
+    "success": true,
+    "score": 0.6488154402895054,
+    "explanation": "Similarity: 0.415, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.41469240048250905,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "import_export/admin.py": [
+          "# Before (line 749 - 96 characters):\nsome_very_long_variable_name = some_very_long_function_call_with_many_parameters(parameter1, parameter2, parameter3)\n\n# After (within 88 characters):\nsome_very_long_variable_name = some_very_long_function_call_with_many_parameters(\n    parameter1, parameter2, parameter3\n)\n\n# Before (line 756 - 98 characters):\nanother_very_long_line_that_exceeds_the_character_limit = some_complex_expression_with_multiple_parts\n\n# After (within 88 characters):\nanother_very_long_line = (\n    some_complex_expression_with_multiple_parts\n)"
+        ]
+      },
+      "target_changes": {
+        "import_export/admin.py": "index a1b288e9..8bb2db67 100644\n--- a/import_export/admin.py\n+++ b/import_export/admin.py\n@@ -746,14 +746,16 @@ class ExportMixin(BaseExportMixin, ImportExportMixinBase):\n             def get_results(self, request):\n                 \"\"\"\n                 We override this method because we only call ChangeList.get_queryset()\n-                so we don't need anything from this method. The get_results() gets called during\n-                ChangeList.__init__() and we do want to avoid unnecessary COUNT queries.\n+                so we don't need anything from this method.\n+                The get_results() gets called during ChangeList.__init__()\n+                and we do want to avoid unnecessary COUNT queries.\n                 \"\"\"\n                 pass\n \n         cl = ExportChangeList(**changelist_kwargs)\n \n-        # get_queryset() is already called during initialization, it is enough to get it's results\n+        # get_queryset() is already called during initialization,\n+        # it is enough to get it's results\n         if hasattr(cl, \"queryset\"):\n             return cl.queryset\n \n"
+      },
+      "difficulty": 0
+    }
+  }
+}

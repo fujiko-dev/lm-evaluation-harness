@@ -1,0 +1,47 @@
+{
+  "timestamp": "2025-09-07T22:22:34.585441",
+  "sample_info": {
+    "index": 0,
+    "original_index": 0,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 4,
+  "repo_owner": "huggingface",
+  "repo_name": "diffusers",
+  "difficulty": 0,
+  "generation_time": 13.779062747955322,
+  "prediction": "### 1. **Analysis of the Failure Cause**\n\nThe CI workflow fails in the `check_code_quality` job during the step that runs `ruff check` and `ruff format --check`. Specifically, it reports:\n\n```\nexamples/community/ip_adapter_face_id.py:15:1: I001 [*] Import block is un-sorted or un-formatted\nFound 1 error.\n[*] 1 fixable with the `--fix` option.\n```\n\nThis means that Ruff has detected an import sorting/formatting issue in the file `ip_adapter_face_id.py`, which violates the project's code style guidelines enforced by Ruff.\n\nSince this is a formatting issue (I001), it can be automatically fixed using `ruff check --fix` or `ruff format`.\n\nHowever, the current CI configuration only runs checks (`--check`) without applying fixes. Therefore, if any file does not conform to expected formatting rules, the pipeline will fail — as we see here.\n\n---\n\n### 2. **Specific Changes Needed to Fix the Issue**\n\nTo resolve the immediate problem:\n\n#### Option A: Manually reformat the problematic file\nApply automatic formatting to the affected file so that future CI runs pass cleanly.\n\n#### Option B: Update the CI workflow to auto-fix such issues (optional for local use but discouraged in CI)\n\nIn practice, you'd want developers to ensure their code passes all linting/formatting before pushing. So the best approach is to apply the fix locally and commit the corrected version.\n\nWe'll proceed with **Option A** since modifying the workflow to auto-fix isn't typically desired in CI environments.\n\n---\n\n### 3. **Modified Code / Commands Required**\n\n#### ✅ Step-by-step Fix:\n\nRun the following command locally to auto-format the file:\n\n```bash\nruff format examples/community/ip_adapter_face_id.py\n```\n\nOr, more generally (to cover other possible similar issues):\n\n```bash\nruff format examples tests src utils scripts\n```\n\nThen commit and push the updated file(s).\n\nAlternatively, if you're working directly from the repo root:\n\n```bash\n# Ensure ruff is installed\npip install ruff\n\n# Format the specific file\nruff format examples/community/ip_adapter_face_id.py\n```\n\nAfter running the above, verify there are no remaining errors:\n\n```bash\nruff check examples/community/ip_adapter_face_id.py\n```\n\nOnce done, commit and push the formatted file.\n\n---\n\n### 🛠 Optional Suggestion – Improve Workflow Robustness\n\nIf you'd like to prevent such issues proactively, consider adding a pre-commit hook using [pre-commit](https://pre-commit.com/) configured with Ruff. This ensures formatting/linting happens automatically before commits.\n\nExample `.pre-commit-config.yaml` entry:\n\n```yaml\nrepos:\n  - repo: https://github.com/astral-sh/ruff-pre-commit\n    rev: v0.1.6\n    hooks:\n      - id: ruff\n        args: [--fix, --exit-non-zero-on-fix]\n      - id: ruff-format\n```\n\nBut again, this is optional and outside the scope of just fixing the failing CI job.\n\n--- \n\n### ✅ Summary\n\n| Task | Action |\n|------|--------|\n| Root Cause | Ruff detected improperly sorted/formatted imports in `ip_adapter_face_id.py` |\n| Solution | Auto-format the file using `ruff format` |\n| Command | `ruff format examples/community/ip_adapter_face_id.py` |\n| Follow-up | Commit and push the reformatted file |\n\nLet me know if you’d like help generating a PR diff or integrating pre-commit hooks!",
+  "evaluation": {
+    "success": true,
+    "score": 0.5299045849398429,
+    "explanation": "Similarity: 0.217, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.21650764156640498,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "ip_adapter_face_id.py": [
+          "examples/community/ip_adapter_face_id.py:15:1: I001 [*] Import block is un-sorted or un-formatted\nFound 1 error.\n[*] 1 fixable with the `--fix` option.",
+          "ruff format examples/community/ip_adapter_face_id.py",
+          "ruff format examples tests src utils scripts",
+          "# Ensure ruff is installed\npip install ruff\n\n# Format the specific file\nruff format examples/community/ip_adapter_face_id.py",
+          "ruff check examples/community/ip_adapter_face_id.py",
+          "repos:\n  - repo: https://github.com/astral-sh/ruff-pre-commit\n    rev: v0.1.6\n    hooks:\n      - id: ruff\n        args: [--fix, --exit-non-zero-on-fix]\n      - id: ruff-format"
+        ],
+        ".pre-commit-config.yaml": [
+          "examples/community/ip_adapter_face_id.py:15:1: I001 [*] Import block is un-sorted or un-formatted\nFound 1 error.\n[*] 1 fixable with the `--fix` option.",
+          "ruff format examples/community/ip_adapter_face_id.py",
+          "ruff format examples tests src utils scripts",
+          "# Ensure ruff is installed\npip install ruff\n\n# Format the specific file\nruff format examples/community/ip_adapter_face_id.py",
+          "ruff check examples/community/ip_adapter_face_id.py",
+          "repos:\n  - repo: https://github.com/astral-sh/ruff-pre-commit\n    rev: v0.1.6\n    hooks:\n      - id: ruff\n        args: [--fix, --exit-non-zero-on-fix]\n      - id: ruff-format"
+        ]
+      },
+      "target_changes": {
+        "examples/community/README.md": "index f205f3b70..2fdbdb414 100755\n--- a/examples/community/README.md\n+++ b/examples/community/README.md\n@@ -3307,7 +3307,7 @@ pipeline = DiffusionPipeline.from_pretrained(\n     torch_dtype=torch.float16,\n     scheduler=noise_scheduler,\n     vae=vae,\n-    custom_pipeline=\"./forked/diffusers/examples/community/ip_adapter_face_id.py\"\n+    custom_pipeline=\"ip_adapter_face_id\"\n )\n pipeline.load_ip_adapter_face_id(\"h94/IP-Adapter-FaceID\", \"ip-adapter-faceid_sd15.bin\")\n pipeline.to(\"cuda\")",
+        "examples/community/ip_adapter_face_id.py": "index e3c5a2c84..d9325742c 100644\n--- a/examples/community/ip_adapter_face_id.py\n+++ b/examples/community/ip_adapter_face_id.py\n@@ -14,12 +14,12 @@\n \n import inspect\n from typing import Any, Callable, Dict, List, Optional, Union\n-from safetensors import safe_open\n \n import torch\n import torch.nn as nn\n import torch.nn.functional as F\n from packaging import version\n+from safetensors import safe_open\n from transformers import CLIPImageProcessor, CLIPTextModel, CLIPTokenizer, CLIPVisionModelWithProjection\n \n from diffusers.configuration_utils import FrozenDict\n@@ -27,20 +27,20 @@ from diffusers.image_processor import VaeImageProcessor\n from diffusers.loaders import FromSingleFileMixin, IPAdapterMixin, LoraLoaderMixin, TextualInversionLoaderMixin\n from diffusers.models import AutoencoderKL, UNet2DConditionModel\n from diffusers.models.attention_processor import FusedAttnProcessor2_0\n-from diffusers.models.lora import adjust_lora_scale_text_encoder, LoRALinearLayer\n+from diffusers.models.lora import LoRALinearLayer, adjust_lora_scale_text_encoder\n+from diffusers.pipelines.pipeline_utils import DiffusionPipeline\n+from diffusers.pipelines.stable_diffusion.pipeline_output import StableDiffusionPipelineOutput\n+from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker\n from diffusers.schedulers import KarrasDiffusionSchedulers\n from diffusers.utils import (\n-    _get_model_file,\n     USE_PEFT_BACKEND,\n+    _get_model_file,\n     deprecate,\n     logging,\n     scale_lora_layers,\n     unscale_lora_layers,\n )\n from diffusers.utils.torch_utils import randn_tensor\n-from diffusers.pipelines.pipeline_utils import DiffusionPipeline\n-from diffusers.pipelines.stable_diffusion.pipeline_output import StableDiffusionPipelineOutput\n-from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker\n \n \n logger = logging.get_logger(__name__)  # pylint: disable=invalid-name\n@@ -555,7 +555,7 @@ class IPAdapterFaceIDStableDiffusionPipeline(\n             revision=revision,\n             subfolder=subfolder,\n             user_agent=user_agent,\n-            )\n+        )\n         if weight_name.endswith(\".safetensors\"):\n             state_dict = {\"image_proj\": {}, \"ip_adapter\": {}}\n             with safe_open(model_file, framework=\"pt\", device=\"cpu\") as f:\n@@ -1438,7 +1438,7 @@ class IPAdapterFaceIDStableDiffusionPipeline(\n         extra_step_kwargs = self.prepare_extra_step_kwargs(generator, eta)\n \n         # 6.1 Add image embeds for IP-Adapter\n-        added_cond_kwargs ={\"image_embeds\": image_embeds} if image_embeds is not None else None\n+        added_cond_kwargs = {\"image_embeds\": image_embeds} if image_embeds is not None else None\n \n         # 6.2 Optionally get Guidance Scale Embedding\n         timestep_cond = None\n"
+      },
+      "difficulty": 0
+    }
+  }
+}

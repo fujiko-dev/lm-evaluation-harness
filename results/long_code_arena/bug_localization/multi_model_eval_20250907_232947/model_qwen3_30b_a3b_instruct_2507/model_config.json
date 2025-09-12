@@ -1,0 +1,17 @@
+{
+  "model_key": "qwen3-30b-a3b-instruct-2507",
+  "model_name": "openai-chat-completions",
+  "model_args": {
+    "model": "qwen3-30b-a3b-instruct-2507",
+    "base_url": "https://qianfan.baidubce.com/v2/chat/completions",
+    "num_concurrent": 5,
+    "max_retries": 10,
+    "tokenized_requests": false,
+    "stop": "<|endoftext|>",
+    "timeout": 120,
+    "apply_chat_template": true
+  },
+  "description": "Qwen3-30B-A3B via Baidu Qianfan API",
+  "total_samples": 50,
+  "start_time": "2025-09-07T23:31:41.707765"
+}

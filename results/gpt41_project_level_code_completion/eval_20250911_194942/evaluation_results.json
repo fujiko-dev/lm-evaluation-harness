@@ -1,0 +1,45 @@
+{
+  "results": {
+    "lca_project_level_code_completion": {
+      "exact_match": 0.0,
+      "edit_distance": 0.0,
+      "bleu_score": 0.0,
+      "valid_samples": 2,
+      "total_samples": 2
+    }
+  },
+  "samples": {
+    "lca_project_level_code_completion": [
+      {
+        "sample_results": [
+          {
+            "line_num": 21,
+            "line_type": "random",
+            "predicted": "from typing import Dict, Any, Optional",
+            "target": "    Any,",
+            "exact_match": 0.0,
+            "edit_distance": 0.8947368421052632,
+            "bleu_score": 0.18898223650461357
+          }
+        ],
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/data_loader.py"
+      },
+      {
+        "sample_results": [
+          {
+            "line_num": 31,
+            "line_type": "non_informative",
+            "predicted": "class FuzzerProfile:",
+            "target": "from fuzz_introspector.datatypes import function_profile",
+            "exact_match": 0.0,
+            "edit_distance": 0.8214285714285714,
+            "bleu_score": 0.0
+          }
+        ],
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/datatypes/fuzzer_profile.py"
+      }
+    ]
+  }
+}

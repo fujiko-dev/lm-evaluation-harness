@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-09-07T22:23:40.204685",
+  "sample_info": {
+    "index": 4,
+    "original_index": 4,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 23,
+  "repo_owner": "tornadoweb",
+  "repo_name": "tornado",
+  "difficulty": 3,
+  "generation_time": 13.327770948410034,
+  "prediction": "Looking at the CI failure logs, I can identify the root cause and provide a fix.\n\n## Analysis of the Failure Cause\n\nThe failure is occurring in the Windows test job (`test_win`) with a specific test error:\n\n```\nERROR: test_no_match (tornado.test.iostream_test.TestIOStreamCheckHostname.test_no_match)\n...\nException: did not get expected log message\n```\n\nThe error indicates that a test expecting a specific log message \"alert bad certificate\" with WARNING level was not found. This is happening specifically on Windows in the `TestIOStreamCheckHostname.test_no_match` test.\n\nLooking at the workflow, the Windows test job uses a different approach than the other jobs:\n- Other jobs use `tox` to run tests\n- The Windows job directly runs `py -m tornado.test --fail-if-logs=false`\n\nThe key issue is that the Windows test job is missing the `pypi_wayback` service that provides the required dependencies. The other jobs have:\n\n```yaml\nservices:\n  pypi_wayback:\n    image: ghcr.io/waleko/pypi-wayback\n    ports:\n      - 8629:8080\n```\n\nBut the Windows job doesn't have this service, which means it's trying to install packages from the real PyPI during testing, but some network/SSL related tests may be failing due to dependency version mismatches or missing mock packages.\n\n## Specific Changes Needed\n\nAdd the missing `pypi_wayback` service to the Windows test job and ensure it has the same environment variables as other jobs.\n\n## Modified Code/Configuration\n\n```yaml\n  test_win:\n    # Windows tests are fairly slow, so only run one configuration here.\n    # We test on windows but not mac because even though mac is a more\n    # fully-supported platform, it's similar enough to linux that we\n    # don't generally need to test it separately. Windows is different\n    # enough that we'll break it if we don't test it in CI.\n    name: Run windows tests\n    needs: test_quick\n    runs-on: windows-2022\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    steps:\n      - uses: actions/checkout@v3\n      - uses: actions/setup-python@v4\n        name: Install Python\n        with:\n          python-version: '3.11'\n      - name: Run test suite\n        # TODO: figure out what's up with these log messages\n        run: py -m tornado.test --fail-if-logs=false\n\nenv:\n  PIP_INDEX_URL: http://localhost:8629/2023-11-14\n  UV_INDEX_URL: http://localhost:8629/2023-11-14\n```\n\nThe fix adds the missing `services` section with the `pypi_wayback` container to the Windows test job, ensuring that it has access to the same mocked package repository that the other test jobs use. This should resolve the dependency issues that are causing the SSL certificate test to fail.",
+  "evaluation": {
+    "success": false,
+    "score": 0.30000000000000004,
+    "explanation": "Similarity: 0.000, Key fixes: 0.750",
+    "details": {
+      "similarity_score": 0.0,
+      "key_fixes_score": 0.75,
+      "predicted_changes": {
+        "inferred_file": [
+          "ERROR: test_no_match (tornado.test.iostream_test.TestIOStreamCheckHostname.test_no_match)\n...\nException: did not get expected log message",
+          "services:\n  pypi_wayback:\n    image: ghcr.io/waleko/pypi-wayback\n    ports:\n      - 8629:8080",
+          "test_win:\n    # Windows tests are fairly slow, so only run one configuration here.\n    # We test on windows but not mac because even though mac is a more\n    # fully-supported platform, it's similar enough to linux that we\n    # don't generally need to test it separately. Windows is different\n    # enough that we'll break it if we don't test it in CI.\n    name: Run windows tests\n    needs: test_quick\n    runs-on: windows-2022\n    services:\n      pypi_wayback:\n        image: ghcr.io/waleko/pypi-wayback\n        ports:\n          - 8629:8080\n    steps:\n      - uses: actions/checkout@v3\n      - uses: actions/setup-python@v4\n        name: Install Python\n        with:\n          python-version: '3.11'\n      - name: Run test suite\n        # TODO: figure out what's up with these log messages\n        run: py -m tornado.test --fail-if-logs=false\n\nenv:\n  PIP_INDEX_URL: http://localhost:8629/2023-11-14\n  UV_INDEX_URL: http://localhost:8629/2023-11-14"
+        ]
+      },
+      "target_changes": {
+        "tornado/test/iostream_test.py": "index 02318db3..02fcd3e1 100644\n--- a/tornado/test/iostream_test.py\n+++ b/tornado/test/iostream_test.py\n@@ -1197,7 +1197,12 @@ class TestIOStreamCheckHostname(AsyncTestCase):\n     @gen_test\n     async def test_no_match(self):\n         stream = SSLIOStream(socket.socket(), ssl_options=self.client_ssl_ctx)\n-        with ExpectLog(gen_log, \".*alert bad certificate\", level=logging.WARNING):\n+        with ExpectLog(\n+            gen_log,\n+            \".*alert bad certificate\",\n+            level=logging.WARNING,\n+            required=platform.system() != \"Windows\",\n+        ):\n             with self.assertRaises(ssl.SSLCertVerificationError):\n                 with ExpectLog(\n                     gen_log,\n@@ -1210,7 +1215,9 @@ class TestIOStreamCheckHostname(AsyncTestCase):\n                     )\n             # The server logs a warning while cleaning up the failed connection.\n             # Unfortunately there's no good hook to wait for this logging.\n-            await asyncio.sleep(1 if platform.system() == \"Windows\" else 0.1)\n+            # It doesn't seem to happen on windows; I'm not sure why.\n+            if platform.system() != \"Windows\":\n+                await asyncio.sleep(0.1)\n \n     @gen_test\n     async def test_check_disabled(self):\n"
+      },
+      "difficulty": 3
+    }
+  }
+}

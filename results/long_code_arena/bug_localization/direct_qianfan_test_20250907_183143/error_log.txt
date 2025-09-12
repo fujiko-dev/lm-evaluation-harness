@@ -1,0 +1,17 @@
+Error: Attempted to load model 'openai-chat-completions', but no model for this name found! Supported model names: 
+
+Traceback (most recent call last):
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/api/registry.py", line 36, in get_model
+    return MODEL_REGISTRY[model_name]
+KeyError: 'openai-chat-completions'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/tasks/long_code_arena/bug_localization/direct_qianfan_test.py", line 87, in run_direct_test
+    model = create_model()
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/tasks/long_code_arena/bug_localization/direct_qianfan_test.py", line 65, in create_model
+    model = get_model('openai-chat-completions').create_from_arg_string(
+  File "/Users/xiaoyunting/Documents/ModelDev/working_path/projects/lm-evaluation-harness/lm_eval/api/registry.py", line 38, in get_model
+    raise ValueError(
+ValueError: Attempted to load model 'openai-chat-completions', but no model for this name found! Supported model names: 

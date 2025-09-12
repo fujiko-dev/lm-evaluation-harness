@@ -1,0 +1,56 @@
+{
+  "timestamp": "2025-09-07T22:29:05.017415",
+  "sample_info": {
+    "index": 40,
+    "original_index": 40,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 108,
+  "repo_owner": "encode",
+  "repo_name": "httpx",
+  "difficulty": 3,
+  "generation_time": 11.14426064491272,
+  "prediction": "### 1. **Analysis of the Failure Cause**\n\nThe CI workflow is failing during the **\"Enforce coverage\"** step with the following error:\n\n```\nCoverage failure: total of 99 is less than fail-under=100\n```\n\nThis means that the test coverage is **99%**, which is **below the required 100%** threshold set by `--fail-under=100`.\n\nFrom the logs, we see:\n- Only one file has a missing line: `httpx/_config.py`, with **1 missing line out of 133**.\n- The total coverage across all files is **99%**.\n- The rest of the files are fully covered (58 files skipped due to complete coverage).\n\n#### Root Cause:\n- The test coverage is **just shy of 100%** due to a single uncovered line in `httpx/_config.py`.\n- This line is likely a **conditional or configuration path** that is not being exercised during testing.\n- The issue is **not in the CI workflow configuration itself**, but in the **test coverage** — specifically, **a missing test case** for a line in `_config.py`.\n\nHowever, the **workflow is correctly configured** to enforce 100% coverage. The problem is that the **codebase does not yet have full coverage**, and the CI is correctly catching it.\n\nBut here's the key insight: **The failure is consistent across all Python versions (3.8–3.11)**, and the **same file and line (139)** is missing in `httpx/_config.py`. This suggests the issue is **not environment-specific**, but rather a **genuine gap in test coverage**.\n\n---\n\n### 2. **Specific Changes Needed to Fix the Issue**\n\nWe have two options:\n\n#### ✅ **Option 1 (Recommended): Fix the root cause — add a test to cover the missing line**\n- Identify the missing line (line 139) in `httpx/_config.py`.\n- Add a test that triggers that line.\n- This ensures **true 100% coverage** and prevents future regressions.\n\n#### ❌ **Option 2: Lower the coverage threshold (Not recommended)**\n- Change `--fail-under=100` to `--fail-under=99`.\n- This would **mask the real issue** and allow incomplete coverage to pass.\n\n> **We should not lower the threshold.** The goal of CI is to **enforce quality**, not to bypass it.\n\n---\n\n### 3. **The Modified Code/Configuration**\n\nWe **do not need to change the `.github/workflows/test-suite.yml`** file — it is correctly configured.\n\nInstead, we must **fix the code and tests** to achieve 100% coverage.\n\n#### 🔍 Step 1: Inspect `httpx/_config.py` — Line 139\n\nFrom the commit history (failed commit: `7f351340260c165e18ccd7c83dc783bb371b3797`), we can infer that the missing line is likely in a conditional block.\n\nExample (hypothetical):\n```python\n# httpx/_config.py\nif some_condition:\n    # line 139: this line is not covered\n    return default_value\n```\n\n#### ✅ Step 2: Add a test to cover line 139\n\nWe need to **add a test** that triggers the condition causing line 139 to be executed.\n\nFor example, if the code looks like:\n```python\nif config.get(\"timeout\") is None:\n    timeout = 5.0  # line 139\n```\n\nThen we need a test that:\n- Sets `config` without a `timeout` key.\n- Calls the function that uses this logic.\n- Ensures the `timeout = 5.0` line is executed.\n\n#### ✅ Example Fix: Add a test in `tests/test_config.py`\n\n```python\n# tests/test_config.py\nimport httpx\n\ndef test_config_timeout_default():\n    config = {\"other_key\": \"value\"}  # no timeout key\n    # Ensure the code path that sets default timeout is triggered\n    assert httpx._config.get_timeout(config) == 5.0\n```\n\nThis test will now cover line 139.\n\n#### ✅ Step 3: Re-run CI\n\nAfter adding the test, push the change. The CI will now pass because:\n- Coverage will be **100%**.\n- `--fail-under=100` will be satisfied.\n\n---\n\n### ✅ Final Answer: What to Do\n\n> **You do not need to change the GitHub Actions workflow file.**  \n> The workflow is correct. The failure is due to **incomplete test coverage**, not a CI",
+  "evaluation": {
+    "success": true,
+    "score": 0.5764962023328378,
+    "explanation": "Similarity: 0.294, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.29416033722139634,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "httpx/_config.py": [
+          "Coverage failure: total of 99 is less than fail-under=100",
+          "# httpx/_config.py\nif some_condition:\n    # line 139: this line is not covered\n    return default_value",
+          "if config.get(\"timeout\") is None:\n    timeout = 5.0  # line 139",
+          "# tests/test_config.py\nimport httpx\n\ndef test_config_timeout_default():\n    config = {\"other_key\": \"value\"}  # no timeout key\n    # Ensure the code path that sets default timeout is triggered\n    assert httpx._config.get_timeout(config) == 5.0"
+        ],
+        "_config.py": [
+          "Coverage failure: total of 99 is less than fail-under=100",
+          "# httpx/_config.py\nif some_condition:\n    # line 139: this line is not covered\n    return default_value",
+          "if config.get(\"timeout\") is None:\n    timeout = 5.0  # line 139",
+          "# tests/test_config.py\nimport httpx\n\ndef test_config_timeout_default():\n    config = {\"other_key\": \"value\"}  # no timeout key\n    # Ensure the code path that sets default timeout is triggered\n    assert httpx._config.get_timeout(config) == 5.0"
+        ],
+        ".github/workflows/test-suite.yml": [
+          "Coverage failure: total of 99 is less than fail-under=100",
+          "# httpx/_config.py\nif some_condition:\n    # line 139: this line is not covered\n    return default_value",
+          "if config.get(\"timeout\") is None:\n    timeout = 5.0  # line 139",
+          "# tests/test_config.py\nimport httpx\n\ndef test_config_timeout_default():\n    config = {\"other_key\": \"value\"}  # no timeout key\n    # Ensure the code path that sets default timeout is triggered\n    assert httpx._config.get_timeout(config) == 5.0"
+        ],
+        "tests/test_config.py": [
+          "Coverage failure: total of 99 is less than fail-under=100",
+          "# httpx/_config.py\nif some_condition:\n    # line 139: this line is not covered\n    return default_value",
+          "if config.get(\"timeout\") is None:\n    timeout = 5.0  # line 139",
+          "# tests/test_config.py\nimport httpx\n\ndef test_config_timeout_default():\n    config = {\"other_key\": \"value\"}  # no timeout key\n    # Ensure the code path that sets default timeout is triggered\n    assert httpx._config.get_timeout(config) == 5.0"
+        ]
+      },
+      "target_changes": {
+        "docs/advanced/ssl.md": "index 1eec32f..2c3e679 100644\n--- a/docs/advanced/ssl.md\n+++ b/docs/advanced/ssl.md\n@@ -14,7 +14,7 @@ You can configure the verification using `httpx.SSLContext()`.\n ```pycon\n >>> ssl_context = httpx.SSLContext()\n >>> ssl_context\n-<SSLContext [verify=True]>\n+SSLContext(verify=True)\n >>> httpx.get(\"https://www.example.com\", ssl_context=ssl_context)\n httpx.ConnectError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:997)\n ```\n@@ -24,7 +24,7 @@ For example, you can use this to disable verification completely and allow insec\n ```pycon\n >>> no_verify = httpx.SSLContext(verify=False)\n >>> no_verify\n-<SSLContext [verify=False]>\n+SSLContext(verify=False)\n >>> httpx.get(\"https://expired.badssl.com/\", ssl_context=no_verify)\n <Response [200 OK]>\n ```",
+        "httpx/_config.py": "index 303388d..8cfeea7 100644\n--- a/httpx/_config.py\n+++ b/httpx/_config.py\n@@ -136,7 +136,9 @@ class SSLContext(ssl.SSLContext):\n                 )\n \n     def __repr__(self) -> str:\n-        return f\"<SSLContext [verify={self.verify}]>\"\n+        class_name = self.__class__.__name__\n+\n+        return f\"{class_name}(verify={self.verify!r})\"\n \n     def __new__(\n         cls,",
+        "tests/test_config.py": "index 530b150..b39efa8 100644\n--- a/tests/test_config.py\n+++ b/tests/test_config.py\n@@ -74,6 +74,16 @@ def test_SSLContext_with_get_request(server, cert_pem_file):\n     assert response.status_code == 200\n \n \n+def test_SSLContext_repr():\n+    ssl_context = httpx.SSLContext()\n+\n+    assert repr(ssl_context) == \"SSLContext(verify=True)\"\n+\n+    ssl_context = httpx.SSLContext(verify=certifi.where())\n+\n+    assert repr(ssl_context) == \"SSLContext(verify='{}')\".format(certifi.where())\n+\n+\n def test_limits_repr():\n     limits = httpx.Limits(max_connections=100)\n     expected = (\n"
+      },
+      "difficulty": 3
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "results": {
+    "lca_project_level_code_completion": {
+      "exact_match": 0.0,
+      "edit_distance": 0.0,
+      "bleu_score": 0.0,
+      "valid_samples": 3,
+      "total_samples": 3
+    }
+  },
+  "samples": {
+    "lca_project_level_code_completion": [
+      {
+        "sample_results": [
+          {
+            "line_num": 21,
+            "line_type": "random",
+            "predicted": "Here's a possible completion for the `src/fuzz_introspector/data_loader.py` file, including the necessary imports, class definitions, and functions to load and process fuzz introspector data:",
+            "target": "    Any,",
+            "exact_match": 0.0,
+            "edit_distance": 0.9842931937172775,
+            "bleu_score": 0.02702702702702703
+          }
+        ],
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/data_loader.py"
+      },
+      {
+        "sample_results": [
+          {
+            "line_num": 31,
+            "line_type": "non_informative",
+            "predicted": "```python",
+            "target": "from fuzz_introspector.datatypes import function_profile",
+            "exact_match": 0.0,
+            "edit_distance": 0.9107142857142857,
+            "bleu_score": 0.0
+          }
+        ],
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/datatypes/fuzzer_profile.py"
+      },
+      {
+        "sample_results": [
+          {
+            "line_num": 24,
+            "line_type": "non_informative",
+            "predicted": "```python",
+            "target": "from fuzz_introspector import utils",
+            "exact_match": 0.0,
+            "edit_distance": 0.9142857142857143,
+            "bleu_score": 0.0
+          }
+        ],
+        "repo": "ossf__fuzz-introspector",
+        "filename": "src/fuzz_introspector/datatypes/project_profile.py"
+      }
+    ]
+  }
+}

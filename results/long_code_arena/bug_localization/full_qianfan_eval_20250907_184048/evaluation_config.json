@@ -1,0 +1,8 @@
+{
+  "model": "qwen3-235b-a22b-instruct-2507",
+  "api": "Baidu Qianfan",
+  "task": "lca_bug_localization_py",
+  "total_samples": 50,
+  "evaluation_type": "full",
+  "start_time": "2025-09-07T18:41:06.114421"
+}

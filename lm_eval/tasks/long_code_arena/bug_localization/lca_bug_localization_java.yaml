@@ -1,0 +1,10 @@
+task: lca_bug_localization_java
+dataset_path: /Users/xiaoyunting/Documents/ModelDev/working_path/datasets/long_code_arena/datasets/lca_bug_localization
+repos_path: /Users/xiaoyunting/Documents/ModelDev/working_path/datasets/long_code_arena/datasets/lca_bug_localization/repos
+language: java
+split: test
+max_context_files: 50
+description: |
+  Bug localization task for Java projects from Long Code Arena benchmark.
+  Given a bug issue description and repository file list,
+  identify Java files that need to be modified to fix the bug.

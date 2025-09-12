@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-09-07T22:32:24.037893",
+  "sample_info": {
+    "index": 59,
+    "original_index": 59,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 162,
+  "repo_owner": "octodns",
+  "repo_name": "octodns",
+  "difficulty": 3,
+  "generation_time": 30.773721933364868,
+  "prediction": "Looking at the CI failure logs, I can see that the `test_missing_zone` test is failing across all Python versions (3.8, 3.9, 3.10, 3.11, 3.12). The error message shows:\n\n```\nAssertionError: False is not true\ntests/test_octodns_manager.py:87: AssertionError\n```\n\nThe test expects that when a `ManagerException` is raised with a missing zone, the exception message should contain 'Requested zone:', but it doesn't.\n\nLet me analyze what's happening:\n\n1. **Root Cause**: The test is expecting a specific error message format that includes \"Requested zone:\" but the actual exception being thrown doesn't contain this text.\n\n2. **Analysis**: Looking at the test code structure, it's calling `Manager(get_config_filename('dynamic-config.yaml')).sync(['missing.zones.'])` and expecting the exception to contain \"Requested zone:\". This suggests that the Manager's sync method should throw an exception with a specific message format when a requested zone is missing.\n\n3. **Problem**: The actual implementation likely throws a different exception type or with a different message format than what the test expects.\n\nLooking at the test failure pattern across all Python versions, this is clearly a logic issue in the Manager class rather than a Python version compatibility problem.\n\nLet me examine the test more carefully. The test is checking that the exception message contains \"Requested zone:\", which suggests that the Manager should be throwing a specific type of exception with a specific message format when zones are missing.\n\nThe fix should be in the Manager class where it handles missing zones. Based on the error pattern, I need to modify the Manager to ensure it throws exceptions with the expected message format.\n\nHowever, since I don't have access to the full source code, I'll need to make an educated guess about what needs to be fixed. The most likely scenario is that the Manager class needs to be updated to properly format its exception messages.\n\nBut wait - looking more closely at the workflow, I notice that the test is failing because the assertion `self.assertTrue('Requested zone:' in str(ctx.exception))` is failing. This means the exception message does NOT contain \"Requested zone:\".\n\nThe most logical fix would be to check if there's a configuration or code change that affects how missing zones are handled. Since this is a CI workflow failure between two commits, let me focus on what might have changed in the Manager logic.\n\nLooking at the error more carefully, the issue seems to be that the Manager is not raising the expected exception format. However, since I can only work with what's provided, I'll need to look at the most likely fix.\n\nThe most probable fix is in the Manager class where it handles missing zones. But since I can't see the source code, I'll provide a general approach and then suggest the most likely fix based on typical patterns.\n\nActually, looking at the workflow definition and the fact that this is a test failure, the issue is likely that the Manager class has been modified to not raise the expected exception format.\n\nSince I cannot see the source code, but I can see the test expectation, the fix would be to ensure the Manager raises exceptions with the proper message format. \n\nHowever, given that this is a CI workflow issue and we're asked to provide specific fixes, let me propose the most likely solution:\n\n**The Fix:**\n\nThe issue is that the Manager class is not raising exceptions with the expected message format. The test expects that when a missing zone is encountered, the exception message should contain \"Requested zone:\".\n\nLooking at the test failure pattern, the most likely fix is to modify the Manager's exception handling to ensure it raises exceptions with the correct message format.\n\nBut since I don't have access to the Manager source code, and the workflow definition itself looks correct, the most likely issue is that the test expectation was changed or the implementation was changed in a way that broke backward compatibility.\n\nHowever, looking at the workflow definition again, I notice that the `setup-py` job is also failing, but the main failure is in the `ci` jobs. Let me re-examine...\n\nActually, looking at the workflow definition, I see that the `setup-py` job is separate from the `ci` jobs. The main failures are in the `ci` jobs, and they all show the same test failure.\n\nThe most likely fix is to modify the test expectation or the Manager implementation to match each other. Since I'm asked to provide specific changes, and the test is expecting a specific message format, I'll assume the fix is in the Manager class.\n\nBut since I can only work with what's shown, here's my analysis and suggested fix:\n\n## Solution\n\n**1. Root Cause Analysis:**\nThe test `test_missing_zone` in `tests/test_octodns_manager.py` line 87 expects that when a ManagerException is raised for a missing zone, the exception message should contain \"Requested zone:\". However, the current implementation is not producing this",
+  "evaluation": {
+    "success": true,
+    "score": 0.674559646539028,
+    "explanation": "Similarity: 0.458, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.45759941089837997,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "name('dynamic-config.yaml')).sync(['missing.zones": [
+          "AssertionError: False is not true\ntests/test_octodns_manager.py:87: AssertionError"
+        ],
+        "tests/test_octodns_manager.py": [
+          "AssertionError: False is not true\ntests/test_octodns_manager.py:87: AssertionError"
+        ]
+      },
+      "target_changes": {
+        "tests/test_octodns_manager.py": "index b8f3c92..b93c9b8 100644\n--- a/tests/test_octodns_manager.py\n+++ b/tests/test_octodns_manager.py\n@@ -84,7 +84,7 @@ class TestManager(TestCase):\n             Manager(get_config_filename('dynamic-config.yaml')).sync(\n                 ['missing.zones.']\n             )\n-        self.assertTrue('Requested zone:' in str(ctx.exception))\n+        self.assertTrue('Requested zone ' in str(ctx.exception))\n \n     def test_missing_targets(self):\n         with self.assertRaises(ManagerException) as ctx:\n"
+      },
+      "difficulty": 3
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "timestamp": "2025-09-07T22:31:20.934859",
+  "sample_info": {
+    "index": 52,
+    "original_index": 52,
+    "sampling_strategy": "stratified_difficulty",
+    "sample_ratio": 1.0
+  },
+  "id": 144,
+  "repo_owner": "encode",
+  "repo_name": "starlette",
+  "difficulty": 2,
+  "generation_time": 9.38717269897461,
+  "prediction": "# Analysis of the Failure Cause\n\nThe test failure is due to a **Python `TypeError: unhashable type: 'dict'`** in the `test_file_response_with_pathsend` test, specifically when passing the `extensions` dictionary to the `FileResponse` application.\n\nLooking at the failing line:\n```python\nawait app(\n    {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n    receive,\n    send,\n)\n```\n\nThe issue is in the `extensions` dictionary. The code uses a **set literal** syntax `{...}` instead of a **dictionary literal** `{...}`. Specifically:\n\n```python\n{\"http.response.pathsend\", {}}\n```\n\nThis creates a **set** containing the string `\"http.response.pathsend\"` and an empty dictionary `{}`. However, **dictionaries are unhashable in Python**, and you cannot have a dictionary as an element in a set. This causes the `TypeError: unhashable type: 'dict'`.\n\nThe correct syntax should be a dictionary:\n```python\n{\"http.response.pathsend\": {}}\n```\n\nThis is a **syntax error** in the test code, not a CI configuration issue. The CI workflow itself is correctly configured and running the tests as intended.\n\n---\n\n# Specific Changes Needed\n\nThe fix is to **correct the test file** where the `extensions` dictionary is defined. The test file is `tests/test_responses.py`.\n\n## ✅ Fix: Correct the `extensions` dictionary syntax\n\nChange this line:\n```python\n\"extensions\": {\"http.response.pathsend\", {}}\n```\n\nTo:\n```python\n\"extensions\": {\"http.response.pathsend\": {}}\n```\n\nThis ensures that `extensions` is a proper dictionary (which is hashable), not a set containing an unhashable dictionary.\n\n---\n\n# Modified Code\n\n### File: `tests/test_responses.py`\n\n```python\n@pytest.mark.anyio\nasync def test_file_response_with_pathsend(tmpdir: Path):\n    path = os.path.join(tmpdir, \"xyz\")\n    content = b\"<file content>\" * 1000\n    with open(path, \"wb\") as file:\n        file.write(content)\n\n    app = FileResponse(path=path, filename=\"example.png\")\n\n    async def receive() -> Message:  # type: ignore[empty-body]\n        ...  # pragma: no cover\n\n    async def send(message: Message) -> None:\n        if message[\"type\"] == \"http.response.start\":\n            assert message[\"status\"] == status.HTTP_200_OK\n            headers = Headers(raw=message[\"headers\"])\n            assert headers[\"content-type\"] == \"image/png\"\n            assert \"content-length\" in headers\n            assert \"content-disposition\" in headers\n            assert \"last-modified\" in headers\n            assert \"etag\" in headers\n        elif message[\"type\"] == \"http.response.pathsend\":\n            assert message[\"path\"] == str(path)\n\n    # Since the TestClient doesn't support `pathsend`, we need to test this directly.\n    await app(\n        {\n            \"type\": \"http\",\n            \"method\": \"get\",\n            \"extensions\": {\"http.response.pathsend\": {}},  # ✅ Fixed: use dict, not set\n        },\n        receive,\n        send,\n    )\n```\n\n---\n\n# Summary\n\n- **Root Cause**: A syntax error in `tests/test_responses.py` where a set literal `{...}` was used instead of a dictionary literal `{...}` for the `extensions` field.\n- **Fix**: Change `{\"http.response.pathsend\", {}}` to `{\"http.response.pathsend\": {}}`.\n- **Impact**: This resolves the `TypeError: unhashable type: 'dict'` and allows the test to pass.\n- **CI Workflow**: No changes needed to `.github/workflows/test-suite.yml` — the workflow is correct and the failure was due to a bug in the test code.\n\nAfter this fix, the CI should pass on all Python versions.",
+  "evaluation": {
+    "success": true,
+    "score": 0.7247301373521113,
+    "explanation": "Similarity: 0.541, Key fixes: 1.000",
+    "details": {
+      "similarity_score": 0.5412168955868523,
+      "key_fixes_score": 1.0,
+      "predicted_changes": {
+        "{\"http.response.pathsend": [
+          "await app(\n    {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n    receive,\n    send,\n)",
+          "{\"http.response.pathsend\", {}}",
+          "{\"http.response.pathsend\": {}}",
+          "\"extensions\": {\"http.response.pathsend\", {}}",
+          "\"extensions\": {\"http.response.pathsend\": {}}",
+          "@pytest.mark.anyio\nasync def test_file_response_with_pathsend(tmpdir: Path):\n    path = os.path.join(tmpdir, \"xyz\")\n    content = b\"<file content>\" * 1000\n    with open(path, \"wb\") as file:\n        file.write(content)\n\n    app = FileResponse(path=path, filename=\"example.png\")\n\n    async def receive() -> Message:  # type: ignore[empty-body]\n        ...  # pragma: no cover\n\n    async def send(message: Message) -> None:\n        if message[\"type\"] == \"http.response.start\":\n            assert message[\"status\"] == status.HTTP_200_OK\n            headers = Headers(raw=message[\"headers\"])\n            assert headers[\"content-type\"] == \"image/png\"\n            assert \"content-length\" in headers\n            assert \"content-disposition\" in headers\n            assert \"last-modified\" in headers\n            assert \"etag\" in headers\n        elif message[\"type\"] == \"http.response.pathsend\":\n            assert message[\"path\"] == str(path)\n\n    # Since the TestClient doesn't support `pathsend`, we need to test this directly.\n    await app(\n        {\n            \"type\": \"http\",\n            \"method\": \"get\",\n            \"extensions\": {\"http.response.pathsend\": {}},  # ✅ Fixed: use dict, not set\n        },\n        receive,\n        send,\n    )"
+        ],
+        "tests/test_responses.py": [
+          "await app(\n    {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n    receive,\n    send,\n)",
+          "{\"http.response.pathsend\", {}}",
+          "{\"http.response.pathsend\": {}}",
+          "\"extensions\": {\"http.response.pathsend\", {}}",
+          "\"extensions\": {\"http.response.pathsend\": {}}",
+          "@pytest.mark.anyio\nasync def test_file_response_with_pathsend(tmpdir: Path):\n    path = os.path.join(tmpdir, \"xyz\")\n    content = b\"<file content>\" * 1000\n    with open(path, \"wb\") as file:\n        file.write(content)\n\n    app = FileResponse(path=path, filename=\"example.png\")\n\n    async def receive() -> Message:  # type: ignore[empty-body]\n        ...  # pragma: no cover\n\n    async def send(message: Message) -> None:\n        if message[\"type\"] == \"http.response.start\":\n            assert message[\"status\"] == status.HTTP_200_OK\n            headers = Headers(raw=message[\"headers\"])\n            assert headers[\"content-type\"] == \"image/png\"\n            assert \"content-length\" in headers\n            assert \"content-disposition\" in headers\n            assert \"last-modified\" in headers\n            assert \"etag\" in headers\n        elif message[\"type\"] == \"http.response.pathsend\":\n            assert message[\"path\"] == str(path)\n\n    # Since the TestClient doesn't support `pathsend`, we need to test this directly.\n    await app(\n        {\n            \"type\": \"http\",\n            \"method\": \"get\",\n            \"extensions\": {\"http.response.pathsend\": {}},  # ✅ Fixed: use dict, not set\n        },\n        receive,\n        send,\n    )"
+        ],
+        "file.write": [
+          "await app(\n    {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n    receive,\n    send,\n)",
+          "{\"http.response.pathsend\", {}}",
+          "{\"http.response.pathsend\": {}}",
+          "\"extensions\": {\"http.response.pathsend\", {}}",
+          "\"extensions\": {\"http.response.pathsend\": {}}",
+          "@pytest.mark.anyio\nasync def test_file_response_with_pathsend(tmpdir: Path):\n    path = os.path.join(tmpdir, \"xyz\")\n    content = b\"<file content>\" * 1000\n    with open(path, \"wb\") as file:\n        file.write(content)\n\n    app = FileResponse(path=path, filename=\"example.png\")\n\n    async def receive() -> Message:  # type: ignore[empty-body]\n        ...  # pragma: no cover\n\n    async def send(message: Message) -> None:\n        if message[\"type\"] == \"http.response.start\":\n            assert message[\"status\"] == status.HTTP_200_OK\n            headers = Headers(raw=message[\"headers\"])\n            assert headers[\"content-type\"] == \"image/png\"\n            assert \"content-length\" in headers\n            assert \"content-disposition\" in headers\n            assert \"last-modified\" in headers\n            assert \"etag\" in headers\n        elif message[\"type\"] == \"http.response.pathsend\":\n            assert message[\"path\"] == str(path)\n\n    # Since the TestClient doesn't support `pathsend`, we need to test this directly.\n    await app(\n        {\n            \"type\": \"http\",\n            \"method\": \"get\",\n            \"extensions\": {\"http.response.pathsend\": {}},  # ✅ Fixed: use dict, not set\n        },\n        receive,\n        send,\n    )"
+        ],
+        "name=\"example.png": [
+          "await app(\n    {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n    receive,\n    send,\n)",
+          "{\"http.response.pathsend\", {}}",
+          "{\"http.response.pathsend\": {}}",
+          "\"extensions\": {\"http.response.pathsend\", {}}",
+          "\"extensions\": {\"http.response.pathsend\": {}}",
+          "@pytest.mark.anyio\nasync def test_file_response_with_pathsend(tmpdir: Path):\n    path = os.path.join(tmpdir, \"xyz\")\n    content = b\"<file content>\" * 1000\n    with open(path, \"wb\") as file:\n        file.write(content)\n\n    app = FileResponse(path=path, filename=\"example.png\")\n\n    async def receive() -> Message:  # type: ignore[empty-body]\n        ...  # pragma: no cover\n\n    async def send(message: Message) -> None:\n        if message[\"type\"] == \"http.response.start\":\n            assert message[\"status\"] == status.HTTP_200_OK\n            headers = Headers(raw=message[\"headers\"])\n            assert headers[\"content-type\"] == \"image/png\"\n            assert \"content-length\" in headers\n            assert \"content-disposition\" in headers\n            assert \"last-modified\" in headers\n            assert \"etag\" in headers\n        elif message[\"type\"] == \"http.response.pathsend\":\n            assert message[\"path\"] == str(path)\n\n    # Since the TestClient doesn't support `pathsend`, we need to test this directly.\n    await app(\n        {\n            \"type\": \"http\",\n            \"method\": \"get\",\n            \"extensions\": {\"http.response.pathsend\": {}},  # ✅ Fixed: use dict, not set\n        },\n        receive,\n        send,\n    )"
+        ],
+        ".github/workflows/test-suite.yml": [
+          "await app(\n    {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n    receive,\n    send,\n)",
+          "{\"http.response.pathsend\", {}}",
+          "{\"http.response.pathsend\": {}}",
+          "\"extensions\": {\"http.response.pathsend\", {}}",
+          "\"extensions\": {\"http.response.pathsend\": {}}",
+          "@pytest.mark.anyio\nasync def test_file_response_with_pathsend(tmpdir: Path):\n    path = os.path.join(tmpdir, \"xyz\")\n    content = b\"<file content>\" * 1000\n    with open(path, \"wb\") as file:\n        file.write(content)\n\n    app = FileResponse(path=path, filename=\"example.png\")\n\n    async def receive() -> Message:  # type: ignore[empty-body]\n        ...  # pragma: no cover\n\n    async def send(message: Message) -> None:\n        if message[\"type\"] == \"http.response.start\":\n            assert message[\"status\"] == status.HTTP_200_OK\n            headers = Headers(raw=message[\"headers\"])\n            assert headers[\"content-type\"] == \"image/png\"\n            assert \"content-length\" in headers\n            assert \"content-disposition\" in headers\n            assert \"last-modified\" in headers\n            assert \"etag\" in headers\n        elif message[\"type\"] == \"http.response.pathsend\":\n            assert message[\"path\"] == str(path)\n\n    # Since the TestClient doesn't support `pathsend`, we need to test this directly.\n    await app(\n        {\n            \"type\": \"http\",\n            \"method\": \"get\",\n            \"extensions\": {\"http.response.pathsend\": {}},  # ✅ Fixed: use dict, not set\n        },\n        receive,\n        send,\n    )"
+        ]
+      },
+      "target_changes": {
+        "tests/test_responses.py": "index 8106fad..625a129 100644\n--- a/tests/test_responses.py\n+++ b/tests/test_responses.py\n@@ -355,7 +355,7 @@ async def test_file_response_with_pathsend(tmpdir: Path):\n \n     # Since the TestClient doesn't support `pathsend`, we need to test this directly.\n     await app(\n-        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\", {}}},\n+        {\"type\": \"http\", \"method\": \"get\", \"extensions\": {\"http.response.pathsend\": {}}},\n         receive,\n         send,\n     )\n"
+      },
+      "difficulty": 2
+    }
+  }
+}
